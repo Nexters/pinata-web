@@ -29,5 +29,5 @@ jobs:
           run: npm run build
 
         - name: Upload to S3
-          run: aws s3 s3://pinata-web --delete
+          run: aws s3 sync ./build s3://pinata-web --delete
           working-directory: ./build
