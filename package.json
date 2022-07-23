@@ -25,7 +25,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:fix": "eslint . --fix",
-    "lint:check": "eslint ."
+    "lint:check": "eslint .",
+    "check": "tsc --noEmit --declaration false --emitDeclarationOnly false"
   },
   "browserslist": {
     "production": [

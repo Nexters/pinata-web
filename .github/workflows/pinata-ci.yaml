@@ -1,0 +1,30 @@
+name: s3-upload
+on:
+    pull_request:
+        branches: [main]
+jobs:
+    ci:
+        strategy:
+            matrix:
+                node-version: [16.x]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v2
+
+            - name: Cache npm dependencies
+              uses: actions/cache@v1
+              id: npm-cache
+              with:
+                  path: node_modules
+                  key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+            - name: Install dependencies
+              run: npm install
+
+            - name: Lint
+              run: npm run lint:check
+
+            - name: Check types
+              run: npm run check
