@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -27,10 +27,10 @@ const Logo = styled.div`
 `;
 
 export const HeaderMenu = () => {
-  return (
-    <Wrapper>
-      <Logo />
-      <Menu />
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <Logo />
+            <Menu />
+        </Wrapper>
+    );
 };

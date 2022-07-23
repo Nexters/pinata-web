@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -26,9 +26,9 @@ type Props = {
 };
 
 export const MobileWrapper: React.FC<Props> = ({ children }) => {
-  return (
-    <Wrapper>
-      <MobileScreen>{children}</MobileScreen>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <MobileScreen>{children}</MobileScreen>
+        </Wrapper>
+    );
 };
