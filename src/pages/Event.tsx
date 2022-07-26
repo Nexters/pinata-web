@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 
-import NeedLogin from "components/event/NeedLogin";
+import NeedLogin from 'components/event/NeedLogin';
 
 const Event: React.FC = () => {
-  const isLoggined = false;
+    const isLoggined = false;
 
-  if (!isLoggined) {
-    return <NeedLogin />;
-  }
+    if (!isLoggined) {
+        return <NeedLogin />;
+    }
 
-  return (
-    <div className="App">
-      <h1>Event Page</h1>
-    </div>
-  );
+    return (
+        <div className="App">
+            <h1>Event Page</h1>
+        </div>
+    );
 };
 
 export default Event;
