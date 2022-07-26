@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -41,16 +41,16 @@ const LoginButton = styled.button`
 `;
 
 const NeedLogin: React.FC = () => {
-  return (
-    <Wrapper>
-      <Text>
+    return (
+        <Wrapper>
+            <Text>
         이벤트에 참여하기 위해
-        <br />
+                <br />
         로그인이 필요합니다.
-      </Text>
-      <LoginButton>카카오로 로그인</LoginButton>
-    </Wrapper>
-  );
+            </Text>
+            <LoginButton>카카오로 로그인</LoginButton>
+        </Wrapper>
+    );
 };
 
 export default NeedLogin;
