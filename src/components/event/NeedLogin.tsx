@@ -1,21 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
-  height: 100%;
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #32aaff;
-  background-image: url(${require('assets/image/need-login-background.png')});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-`;
+import EventWrapper from 'components/event/EventWrapper'
 
 const Text = styled.div`
   font-family: "Pretendard";
@@ -56,13 +42,13 @@ const LoginButton = styled.button`
 
 const NeedLogin: React.FC = () => {
     return (
-        <Wrapper>
+        <EventWrapper>
             <Text>
                 이벤트에 참여하기 위해<br />
                 로그인이 필요합니다.
             </Text>
             <LoginButton>카카오로 로그인</LoginButton>
-        </Wrapper>
+        </EventWrapper>
     );
 };
 
