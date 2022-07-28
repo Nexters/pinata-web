@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import EventWrapper from 'components/event/EventWrapper';
 
-import { useInterval } from 'util/useInterval';
+import { useInterval } from 'hooks/useInterval';
 import { Event } from 'types/Event';
 
 const Timer = styled.div`
