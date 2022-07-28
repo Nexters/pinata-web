@@ -11,7 +11,13 @@
         "$app/*": ["app/*"],
         "$router/*": ["router/*"],
         "$layout/*": ["layout/*"],
-        "$pages/*": ["pages/*"]
+        "$pages/*": ["pages/*"],
+        "$fetchs/*": ["fetchs/*"],
+        "$types/*": ["types/*"],
+        "$assets/*": ["assets/*"],
+        "src/*": [
+          "./src/*"
+        ],
       }
     }
   }

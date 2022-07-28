@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const MobileScreen = styled.div`
+  position:relative;
   width: 480px;
   height: 100%;
 
