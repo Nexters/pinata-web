@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
-import EventWrapper from 'components/event/EventWrapper';
+import EventWrapper from '$components/event/EventWrapper';
 
 import { useInterval } from 'hooks/useInterval';
 import { Event } from 'types/Event';

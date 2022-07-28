@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Main from 'pages/Main';
-import Event from 'pages/Event';
-import EventLists from 'pages/EventLists';
-import CreateEvent from 'pages/CreateEvent';
-import Gifts from 'pages/Gifts';
-import ROUTE from 'constants/route';
+import Main from '../pages/Main';
+import Event from '../pages/Event';
+import EventLists from '../pages/EventLists';
+import CreateEvent from '../pages/CreateEvent';
+import Gifts from '../pages/Gifts';
+import ROUTE from '../constants/route';
 
 export const Router = () => {
     return (

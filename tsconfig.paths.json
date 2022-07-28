@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "baseUrl": "src",
+      "paths": {
+        "$components/*": ["components/*"],
+        "$constants/*": ["constants/*"],
+        "$constants": ["constants/index"],
+        "$hooks/*": ["hooks/*"],
+        "$reducer/*": ["reducer/*"],
+        "$util/*": ["util/*"],
+        "$app/*": ["app/*"],
+        "$router/*": ["router/*"],
+        "$layout/*": ["layout/*"],
+        "$pages/*": ["pages/*"],
+        "$fetchs/*": ["fetchs/*"],
+        "$types/*": ["types/*"],
+        "$assets/*": ["assets/*"],
+        "src/*": [
+          "./src/*"
+        ],
+      }
+    }
+  }
