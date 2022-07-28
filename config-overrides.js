@@ -14,5 +14,8 @@ module.exports = override(
         $router: path.resolve(__dirname, 'src/hooks'),
         $layout: path.resolve(__dirname, 'src/hooks'),
         $pages: path.resolve(__dirname, 'src/pages'),
+        $fetchs: path.resolve(__dirname, 'src/fetchs'),
+        $types: path.resolve(__dirname, 'src/types'),
+        $assets: path.resolve(__dirname, 'src/assets'),
     }),
 )
