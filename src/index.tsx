@@ -11,6 +11,7 @@ import './common.css';
 function setupLoginConfig() {
     if (process.env.REACT_APP_KAKAO_APP_KEY && !window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_APP_KEY)
+        console.log('init')
     }
 }
 
@@ -18,6 +19,8 @@ function main() {
     const container = document.getElementById('root')!;
     const root = createRoot(container);
   
+    setupLoginConfig()
+    
     root.render(
         <React.StrictMode>
             <Provider store={store}>
@@ -27,7 +30,7 @@ function main() {
             </Provider>
         </React.StrictMode>
     );
-    setupLoginConfig()
+    
 }
 
 main()

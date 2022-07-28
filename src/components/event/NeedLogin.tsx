@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   align-items: center;
 
   background-color: #32aaff;
-  background-image: url(${require('assets/image/need-login-background.png')});
+  background-image: url(${require('../../assets/image/need-login-background.png')});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

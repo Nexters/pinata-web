@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NeedLogin from 'components/event/NeedLogin';
+import NeedLogin from '../components/event/NeedLogin';
 
 const Event: React.FC = () => {
     const isLoggined = false;

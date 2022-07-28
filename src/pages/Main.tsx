@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Main: React.FC = () => {
-    useKakaoLogin()
+    const {login} = useKakaoLogin()
     return (
         <div className="App">
             <h1>Main Page</h1>
@@ -14,7 +14,7 @@ const Main: React.FC = () => {
             <Link to={ROUTE.EVENT.LIST}>
         Event List
             </Link>
-            <button>카카오 로그인</button>
+            <button onClick={login}>카카오 로그인</button>
         </div>
     );
 };
