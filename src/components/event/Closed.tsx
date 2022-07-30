@@ -5,6 +5,18 @@ import { useNavigate } from 'react-router-dom';
 
 import EventWrapper from '$components/event/EventWrapper'
 
+const Dim = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #00000066;
+`
+
 const Text = styled.div`
     font-family: 'Pretendard';
     font-style: normal;
@@ -51,12 +63,14 @@ const Closed: React.FC = () => {
 
     return (
         <EventWrapper>
-            <Text>
-                이미 참여한
-                <br />
-                이벤트 입니다.
-            </Text>
-            <ReturnHomeButton onClick={returnToHome}>홈으로 돌아가기</ReturnHomeButton>
+            <Dim>
+                <Text>
+                    이미 참여한
+                    <br />
+                    이벤트 입니다.
+                </Text>
+                <ReturnHomeButton onClick={returnToHome}>홈으로 돌아가기</ReturnHomeButton>              
+            </Dim>
         </EventWrapper>
     )
 }
