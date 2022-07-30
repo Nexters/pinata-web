@@ -1,5 +1,6 @@
 import {useMemo} from 'react'
 import {useCookies} from 'react-cookie'
+import {login as fetchLogin} from '$api/login'
 
 type AccessInfo = {
     access_token: string
@@ -20,16 +21,19 @@ const useKakaoLogin = () => {
 
         window.Kakao.Auth.login({
             success: function (accessInfo: AccessInfo) {
-                console.log(accessInfo)
-                const currentTime = new Date()
-                setCookie('pln', accessInfo.access_token, {
-                    path: '/',
-                    expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + accessInfo.expires_in)),
-                })
                 window.Kakao.API.request({
                     url: '/v2/user/me',
-                    success: function (profile: any) {
-                        console.log(profile)
+                    success: async function (profile: any) {
+                        const currentTime = new Date()
+                        const {accessToken} = await fetchLogin({
+                            email: profile.kakao_account.email,
+                            nickname: profile.kakao_account.profile.nickname,
+                            profileImageUrl: profile.kakao_account.profile.thumbnail_image_url,
+                        })
+                        setCookie('pln', accessToken, {
+                            path: '/',
+                            expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + accessInfo.expires_in)),
+                        })
                     },
                     fail: function (error: Error) {
                         console.log(error)
