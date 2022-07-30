@@ -3,15 +3,19 @@ import React, {useEffect, useState} from 'react'
 import NeedLogin from '$components/event/NeedLogin'
 import Waiting from '$components/event/Waiting'
 import Closed from '$components/event/Closed'
+import Participation from '$components/event/Participation'
 
 import {getEvent} from '$fetchs/getEvent'
 
 import {Event} from '$types/Event'
 
 const EventPage: React.FC = () => {
-    const isLoggined = true
-    const isClosed = true;
     const [event, setEvent] = useState<Event>()
+
+    const isLoggined = true
+    const isClosed = false
+    const isWaiting = event && event.status === 'wait'
+    const isParticipation = event && true
 
     // 여기서 이벤트 정보 호출후 상태 만듬
     useEffect(() => {
@@ -30,8 +34,12 @@ const EventPage: React.FC = () => {
         return <Closed />
     }
 
-    if (event && event.status === 'wait') {
+    if (isWaiting) {
         return <Waiting event={event} />
+    }
+
+    if (isParticipation) {
+        return <Participation />
     }
 
     return (
