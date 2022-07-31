@@ -1,4 +1,4 @@
-import {ApiResponse} from '$types/ApiResponse'
+import {useRequest} from '$hooks/useRequest'
 import client from '$util/client'
 
 export type LoginRequest = {
@@ -12,11 +12,22 @@ export type LoginResponse = {
 }
 
 export const login = async (req: LoginRequest) => {
-    const {
-        data: {data},
-    } = await client.post<ApiResponse<LoginResponse>>('/v1/auth/signup', {
-        ...req,
-    })
+    try {
+        /**
+         * @delete 성공 테스트용 mock
+         */
+        // return sleep<LoginResponse>({accessToken: 'tester'}, 2000)
+        const {data} = await client.post<LoginResponse>('/v1/auth/signup', {
+            ...req,
+        })
 
-    return data
+        return data
+    } catch (e) {
+        throw e
+    }
+}
+
+export const useLogin = () => {
+    const {mutateAsync, data, error, isLoading} = useRequest<LoginRequest, LoginResponse>(login)
+    return {callLogin: mutateAsync, data, error, isLoading}
 }

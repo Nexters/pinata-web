@@ -8,13 +8,22 @@ import {MobileWrapper} from './layout/MobileWrapper'
 
 import './common.css'
 import {CookiesProvider} from 'react-cookie'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import ErrorBoundary from '$components/ErrorBoundary'
 
 function setupLoginConfig() {
     if (process.env.REACT_APP_KAKAO_APP_KEY && !window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.REACT_APP_KAKAO_APP_KEY)
-        console.log('init')
     }
 }
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            suspense: true,
+        },
+    },
+})
 
 function main() {
     const container = document.getElementById('root')!
@@ -24,13 +33,17 @@ function main() {
 
     root.render(
         <React.StrictMode>
-            <CookiesProvider>
-                <Provider store={store}>
-                    <MobileWrapper>
-                        <Router />
-                    </MobileWrapper>
-                </Provider>
-            </CookiesProvider>
+            <ErrorBoundary>
+                <QueryClientProvider client={queryClient}>
+                    <CookiesProvider>
+                        <Provider store={store}>
+                            <MobileWrapper>
+                                <Router />
+                            </MobileWrapper>
+                        </Provider>
+                    </CookiesProvider>
+                </QueryClientProvider>
+            </ErrorBoundary>
         </React.StrictMode>,
     )
 }

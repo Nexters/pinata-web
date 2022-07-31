@@ -7,6 +7,7 @@ const ROUTE = {
         LIST: '/events',
         DETAIL: '/event',
     },
+    ERROR: '/error',
 }
 
 export default ROUTE

@@ -1,38 +1,39 @@
-import {useMemo} from 'react'
+import {useEffect, useMemo} from 'react'
 import {useCookies} from 'react-cookie'
-import {login as fetchLogin} from '$api/login'
+import {useLogin} from '$api/login'
 
-type AccessInfo = {
-    access_token: string
-    expires_in: number
-    scope: string
-    token_type: string
-    refresh_token: string
-    refresh_token_expires_in: number
-}
+const ONE_DAY = 24 * 60 * 60
 
 const useKakaoLogin = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['pln'])
+    const {callLogin, data, isLoading} = useLogin()
     const isInitialized = window.Kakao.isInitialized()
+
+    useEffect(() => {
+        if (!isLoading && !!data) {
+            const currentTime = new Date()
+            setCookie('pln', data.accessToken, {
+                path: '/',
+                expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + ONE_DAY)),
+            })
+        }
+    }, [data])
+
     const login = () => {
         if (!isInitialized) {
             throw new Error('Kakao Login should be initialized.')
         }
 
         window.Kakao.Auth.login({
-            success: function (accessInfo: AccessInfo) {
+            success: function () {
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: async function (profile: any) {
-                        const currentTime = new Date()
-                        const {accessToken} = await fetchLogin({
+                        // const currentTime = new Date()
+                        await callLogin({
                             email: profile.kakao_account.email,
                             nickname: profile.kakao_account.profile.nickname,
                             profileImageUrl: profile.kakao_account.profile.thumbnail_image_url,
-                        })
-                        setCookie('pln', accessToken, {
-                            path: '/',
-                            expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + accessInfo.expires_in)),
                         })
                     },
                     fail: function (error: Error) {
@@ -64,7 +65,7 @@ const useKakaoLogin = () => {
     }
 
     const isLogined = useMemo(() => !!cookies.pln, [cookies])
-    return {login, logout, isLogined}
+    return {login, logout, isLogined, isLoading}
 }
 
 export default useKakaoLogin
