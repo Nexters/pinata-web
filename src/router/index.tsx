@@ -8,6 +8,7 @@ import Gifts from '../pages/Gifts'
 import ROUTE from '../constants/route'
 import Authenticated from '$components/auth/Authenticated'
 import Login from '$pages/Login'
+import ErrorPage from '$pages/ErrorPage'
 
 export const Router = () => {
     return (
@@ -21,6 +22,7 @@ export const Router = () => {
                     <Route path={ROUTE.GIFTS} element={<Gifts />} />
                 </Route>
                 <Route path={ROUTE.LOGIN} element={<Login />} />
+                <Route path={ROUTE.ERROR} element={<ErrorPage />} />
             </Routes>
         </BrowserRouter>
     )

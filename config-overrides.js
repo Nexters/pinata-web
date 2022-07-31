@@ -17,5 +17,6 @@ module.exports = override(
         $fetchs: path.resolve(__dirname, 'src/fetchs'),
         $types: path.resolve(__dirname, 'src/types'),
         $assets: path.resolve(__dirname, 'src/assets'),
+        $api: path.resolve(__dirname, 'src/api'),
     }),
 )

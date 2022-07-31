@@ -25,16 +25,15 @@ const EventPage: React.FC = () => {
         })
     }, [])
 
-
     if (!isLoggined) {
         return <NeedLogin />
     }
 
-    if(isClosed){
+    if (isClosed) {
         return <Closed />
     }
 
-    if (isWaiting) {
+    if (isWaiting && event) {
         return <Waiting event={event} />
     }
 

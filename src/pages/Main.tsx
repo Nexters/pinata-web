@@ -4,7 +4,11 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 const Main: React.FC = () => {
-    const {login, logout, isLogined} = useKakaoLogin()
+    const {login, logout, isLogined, isLoading} = useKakaoLogin()
+
+    if (isLoading) {
+        return <div>로그인 중...</div>
+    }
     return (
         <div className="App">
             <h1>Main Page</h1>
