@@ -31,6 +31,7 @@ const useKakaoLogin = () => {
                     success: async function (profile: any) {
                         // const currentTime = new Date()
                         await callLogin({
+                            providerId: profile.id,
                             email: profile.kakao_account.email,
                             nickname: profile.kakao_account.profile.nickname,
                             profileImageUrl: profile.kakao_account.profile.thumbnail_image_url,
