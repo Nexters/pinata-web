@@ -20,6 +20,8 @@ const MobileScreen = styled.div`
     min-height: 100vh;
 
     background: #fff;
+
+    overflow: hidden;
 `
 
 type Props = {
