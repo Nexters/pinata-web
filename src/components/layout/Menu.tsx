@@ -13,7 +13,7 @@ const Wrapper = styled.div<{isOpen: boolean}>`
     height: calc(100% - 60px);
     background-color: white;
 
-    margin-top: 60px;
+    padding-top: 60px;
 
     z-index: 100;
 
