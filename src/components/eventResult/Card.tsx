@@ -1,3 +1,4 @@
+import CloseIcon from '$assets/icons/CloseIcon'
 import Flex from '$components/commons/Flex'
 import styled from 'styled-components'
 import Badge from './Badge'
@@ -8,6 +9,9 @@ const Card = () => {
             <CardWrapper direction={'row'} justifyContent={'center'} alignItems="center">
                 <CardImage>
                     <CardImageTitle>Image 설명</CardImageTitle>
+                    <IconBox>
+                        <CloseIcon size={26} />
+                    </IconBox>
                 </CardImage>
                 <CardContent>
                     <Badge text={'탈락'} type="default" marginBottom={6} />
@@ -20,6 +24,13 @@ const Card = () => {
         </>
     )
 }
+
+const IconBox = styled.span`
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    cursor: pointer;
+`
 
 const Overlay = styled.div`
     background: #000000;
