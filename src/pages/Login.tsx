@@ -3,6 +3,7 @@ import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import ROUTE from '$constants/route'
 import useKakaoLogin from '$hooks/useKakaoLogin'
+import LayoutWrapper from '$layout/LayoutWrapper'
 import {Navigate} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -13,21 +14,22 @@ const Login = () => {
     }
     return (
         <LoginWrapper>
-            <PinataImage
-                size={330}
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                }}
-            />
-            <Container>
-                <Box>
-                    누구나 쉽게 이벤트 만들고
-                    <br />
-                    모두 함께 참여해요.
-                </Box>
-                <Button onClick={login}>카카오로 로그인</Button>
-            </Container>
+            <LayoutWrapper isWhite>
+                <PinataImage
+                    size={330}
+                    style={{
+                        marginTop: '-60px',
+                    }}
+                />
+                <Container>
+                    <Box>
+                        누구나 쉽게 이벤트 만들고
+                        <br />
+                        모두 함께 참여해요.
+                    </Box>
+                    <Button onClick={login}>카카오로 로그인</Button>
+                </Container>
+            </LayoutWrapper>
         </LoginWrapper>
     )
 }
@@ -49,7 +51,7 @@ const Button = styled.button`
 
 const LoginWrapper = styled(Flex).attrs({
     direction: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
 })`
     height: 100%;

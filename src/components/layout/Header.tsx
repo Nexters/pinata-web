@@ -1,15 +1,7 @@
+import MenuIcon from '$assets/icons/MenuIcon'
+import Logo from '$assets/image/Logo'
 import React from 'react'
 import styled from 'styled-components'
-
-const MenuIcon = {
-    black: require('$assets/image/menu_icon_black.png'),
-    white: require('$assets/image/menu_icon_white.png'),
-}
-
-const MenuLogo = {
-    black: require('$assets/image/menu_logo_black.png'),
-    white: require('$assets/image/menu_logo_white.png'),
-}
 
 const Wrapper = styled.div`
     position: absolute;
@@ -28,26 +20,11 @@ const Wrapper = styled.div`
     justify-content: space-between;
 `
 
-const Logo = styled.div<{isWhite: boolean}>`
-    width: 100px;
-    height: 30px;
-    background-image: url(${(props) => (props.isWhite ? MenuLogo.white : MenuLogo.black)});
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-`
-
-const MenuButton = styled.button<{isWhite: boolean}>`
-    width: 20px;
-    height: 20px;
-
-    background-color: transparent;
+const MenuButton = styled.button`
     border: none;
-
-    background-image: url(${(props) => (props.isWhite ? MenuIcon.white : MenuIcon.black)});
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    outline: none;
+    background: transparent;
+    padding: 0;
 `
 
 type Props = {
@@ -60,10 +37,14 @@ const Header: React.FC<Props> = ({isWhite = false, setIsOpen}) => {
         setIsOpen((open) => !open)
     }
 
+    const color = isWhite ? '#fff' : '#1B1B1E'
+
     return (
         <Wrapper>
-            <Logo isWhite={isWhite} />
-            <MenuButton isWhite={isWhite} onClick={toggleMenu} />
+            <Logo size={87} color={color} />
+            <MenuButton onClick={toggleMenu}>
+                <MenuIcon size={20} color={color} />
+            </MenuButton>
         </Wrapper>
     )
 }
