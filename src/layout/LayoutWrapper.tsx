@@ -18,7 +18,7 @@ const LayoutWrapper: React.FC<Props> = ({children, isWhite}) => {
 
     return (
         <>
-            <Header isWhite={isWhite} setIsOpen={setIsOpen} />
+            <Header isWhite={isWhite && !isOpen} setIsOpen={setIsOpen} />
             <Menu isOpen={isOpen} />
             <InnerWrapper>{children}</InnerWrapper>
         </>
