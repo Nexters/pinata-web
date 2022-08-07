@@ -1,27 +1,46 @@
 import CloseIcon from '$assets/icons/CloseIcon'
 import Flex from '$components/commons/Flex'
+import {extractProp} from '$util/common'
+import {ReactNode} from 'react'
 import styled from 'styled-components'
-import Badge from './Badge'
+import Overlay from './Overlay'
 
-const Card = () => {
+const Card = ({children}: {children: ReactNode}) => {
     return (
         <>
             <CardWrapper direction={'row'} justifyContent={'center'} alignItems="center">
-                <CardImage>
-                    <CardImageTitle>Image 설명</CardImageTitle>
-                    <IconBox>
-                        <CloseIcon size={26} />
-                    </IconBox>
-                </CardImage>
-                <CardContent>
-                    <Badge text={'탈락'} type="default" marginBottom={6} />
-                    <CardTitle>Card</CardTitle>
-                    <CardDesc>This is description in card.</CardDesc>
-                    <Button>나도 이벤트 개설하러 가기</Button>
-                </CardContent>
+                {children}
             </CardWrapper>
             <Overlay />
         </>
+    )
+}
+
+const Content = ({children}: {children: ReactNode}) => {
+    return <CardContent>{children}</CardContent>
+}
+
+const Title = ({children}: {children: ReactNode}) => {
+    return <CardTitle>{children}</CardTitle>
+}
+
+const Desc = ({children}: {children: ReactNode}) => {
+    return <CardDesc>{children}</CardDesc>
+}
+
+type ImageProps = {
+    src: string
+    description?: string
+}
+
+const Image = ({src, description = ''}: ImageProps) => {
+    return (
+        <CardImage src={src}>
+            <CardImageTitle>{description}</CardImageTitle>
+            <IconBox>
+                <CloseIcon size={26} />
+            </IconBox>
+        </CardImage>
     )
 }
 
@@ -30,16 +49,6 @@ const IconBox = styled.span`
     top: 18px;
     right: 18px;
     cursor: pointer;
-`
-
-const Overlay = styled.div`
-    background: #000000;
-    opacity: 0.2;
-    position: fixed;
-    top: 0;
-    height: 100vh;
-    width: 480px;
-    margin: 0 auto;
 `
 
 const Button = styled.button`
@@ -82,7 +91,7 @@ const CardContent = styled(Flex).attrs({
 })`
     padding: 20px;
     width: calc(100% - 40px);
-    height: 205px;
+    height: 165px;
     position: relative;
 `
 
@@ -98,14 +107,14 @@ const CardImageTitle = styled.div`
     padding: 10px 20px;
 `
 
-const CardImage = styled.div`
+const CardImage = styled.div<{src: string}>`
     background: rgba(27, 27, 30, 0.07);
     position: relative;
     height: 197px;
     width: 100%;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    background: url(${require('$assets/image/example-result-card.png')});
+    background: url(http://localhost:3000/${extractProp('src')});
 `
 
 const CardWrapper = styled(Flex).attrs({
@@ -115,10 +124,16 @@ const CardWrapper = styled(Flex).attrs({
 })`
     background: #fff;
     width: 335px;
-    height: 402px;
     color: #1b1b1e;
     border-radius: 20px;
     z-index: 1;
+    position: relative;
 `
+
+Card.Image = Image
+Card.Button = Button
+Card.Content = Content
+Card.Title = Title
+Card.Desc = Desc
 
 export default Card
