@@ -1,48 +1,47 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
+import React, {useEffect, useState} from 'react'
+import styled from 'styled-components'
 
-import EventWrapper from '$components/event/EventWrapper';
+import EventWrapper from '$components/event/EventWrapper'
 
-import { useInterval } from '$hooks/useInterval';
-import { Event } from '$types/Event';
+import {useInterval} from '$hooks/useInterval'
+import {Event} from '$types/Event'
 import {changeSecondsHHMMSS} from '$util/time'
 
 const Timer = styled.div`
-  font-family: "Pretendard";
-  font-style: bold;
-  font-weight: 800;
-  font-size: 59px;
-  line-height: 26px;
-  height: 45px;
-  color: #ffffff;
-`;
+    font-family: 'Pretendard';
+    font-style: bold;
+    font-weight: 800;
+    font-size: 59px;
+    line-height: 26px;
+    height: 45px;
+    color: #ffffff;
+`
 
 const Instruction = styled.div`
-  margin-top: 28;
-  font-family: "Pretendard";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 26px;
-  /* or 162% */
+    margin-top: 28;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
 
-  text-align: center;
-  letter-spacing: -0.333333px;
+    text-align: center;
+    letter-spacing: -0.333333px;
 
-  color: #ffffff;
-`;
+    color: #ffffff;
+`
 
 type Props = {
-  event: Event
+    event: Event
 }
 
-const Waiting: React.FC<Props> = ({ event }) => {
+const Waiting: React.FC<Props> = ({event}) => {
     const [leftSeconds, setLeftSeconds] = useState<number>(0)
     useEffect(() => {
         setLeftSeconds(60 * 60 * 3)
     }, [event])
 
-    useInterval(()=>{
+    useInterval(() => {
         setLeftSeconds((before) => before - 1)
     }, 1000)
 
@@ -56,6 +55,6 @@ const Waiting: React.FC<Props> = ({ event }) => {
             </Instruction>
         </EventWrapper>
     )
-};
+}
 
-export default Waiting;
+export default Waiting

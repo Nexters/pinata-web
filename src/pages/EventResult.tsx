@@ -4,21 +4,42 @@ import EventWrapper from '$components/event/EventWrapper'
 import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
+import ROUTE from '$constants/route'
 import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
 const ParticipatedNotice = () => {
+    const navigate = useNavigate()
     return (
         <Flex direction="row" justifyContent="center" alignItems="center">
             <Container>
-                이미 참여한
-                <br />
-                이벤트입니다.
+                <Box>
+                    이미 참여한
+                    <br />
+                    이벤트입니다.
+                </Box>
+                <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
             </Container>
             <Overlay />
         </Flex>
     )
 }
+
+const Button = styled.button`
+    width: 180px;
+    height: 50px;
+    background: #ffffff;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    margin-top: 30px;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    color: #1b1b1e;
+    cursor: pointer;
+`
 
 const Container = styled(Box)`
     text-align: center;
@@ -31,7 +52,7 @@ const Container = styled(Box)`
 `
 
 const EventResult = () => {
-    const [isParticipated, participate] = useState(false)
+    const [isParticipated, participate] = useState(true)
     return (
         <EventWrapper>
             {isParticipated ? (
