@@ -9,6 +9,7 @@ import ROUTE from '../constants/route'
 import Authenticated from '$components/auth/Authenticated'
 import Login from '$pages/Login'
 import ErrorPage from '$pages/ErrorPage'
+import EventResult from '$pages/EventResult'
 
 export const Router = () => {
     return (
@@ -19,6 +20,7 @@ export const Router = () => {
                     <Route path={ROUTE.EVENT.DETAIL} element={<Event />} />
                     <Route path={ROUTE.EVENT.LIST} element={<EventLists />} />
                     <Route path={ROUTE.EVENT.CREATE} element={<CreateEvent />} />
+                    <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
                     <Route path={ROUTE.GIFTS} element={<Gifts />} />
                 </Route>
                 <Route path={ROUTE.LOGIN} element={<Login />} />

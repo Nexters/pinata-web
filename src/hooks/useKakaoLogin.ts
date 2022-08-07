@@ -3,6 +3,7 @@ import {useCookies} from 'react-cookie'
 import {useLogin} from '$api/login'
 
 const ONE_DAY = 24 * 60 * 60
+const TWO_HOURS = 2 * 60 * 60
 
 const useKakaoLogin = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['pln'])
@@ -14,7 +15,7 @@ const useKakaoLogin = () => {
             const currentTime = new Date()
             setCookie('pln', data.accessToken, {
                 path: '/',
-                expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + ONE_DAY)),
+                expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + TWO_HOURS)),
             })
         }
     }, [data])
@@ -31,6 +32,7 @@ const useKakaoLogin = () => {
                     success: async function (profile: any) {
                         // const currentTime = new Date()
                         await callLogin({
+                            providerId: profile.id,
                             email: profile.kakao_account.email,
                             nickname: profile.kakao_account.profile.nickname,
                             profileImageUrl: profile.kakao_account.profile.thumbnail_image_url,

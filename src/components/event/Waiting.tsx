@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 import EventWrapper from '$components/event/EventWrapper'
@@ -24,7 +24,6 @@ const Instruction = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 26px;
-    /* or 162% */
 
     text-align: center;
     letter-spacing: -0.333333px;

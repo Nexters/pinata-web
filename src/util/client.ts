@@ -11,7 +11,7 @@ const responseInterceptor = <T>(res: AxiosResponse<ApiResponse<T>>) => {
     if (res.data.result === RESULT_CODE.FAIL) {
         throw new FetchError()
     }
-    return res.data.data
+    return res.data
 }
 
 const client = axios.create({
