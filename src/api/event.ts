@@ -9,3 +9,10 @@ export const getEventList = async () => {
     } = await client.get<ApiResponse<EventListResponse>>('/api/v1/events/make/me')
     return data
 }
+
+export const participateEvent = async (eventCode: string) => {
+    const {
+        data: {data},
+    } = await client.get<ApiResponse<any>>(`/api/v1/events/participate/${eventCode}`)
+    return data
+}

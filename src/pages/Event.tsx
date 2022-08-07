@@ -8,24 +8,26 @@ import Participation from '$components/event/Participation'
 import {getEvent} from '$fetchs/getEvent'
 
 import {Event} from '$types/Event'
+import useKakaoLogin from '$hooks/useKakaoLogin'
+import {participateEvent} from '$api/event'
 
 const EventPage: React.FC = () => {
     const [event, setEvent] = useState<Event>()
+    const {login, logout, isLogined, isLoading} = useKakaoLogin()
 
-    const isLoggined = true
-    const isClosed = false
+    const isClosed = event && event.status !== 'wait'
     const isWaiting = event && event.status === 'wait'
     const isParticipation = event && true
 
     // 여기서 이벤트 정보 호출후 상태 만듬
     useEffect(() => {
-        getEvent('123').then((event: Event) => {
+        participateEvent('123').then((event) => {
             console.log(event)
-            setEvent(event)
+            // setEvent(event)
         })
     }, [])
 
-    if (!isLoggined) {
+    if (!isLogined) {
         return <NeedLogin />
     }
 

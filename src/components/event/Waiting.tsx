@@ -38,11 +38,22 @@ type Props = {
 const Waiting: React.FC<Props> = ({event}) => {
     const [leftSeconds, setLeftSeconds] = useState<number>(0)
     useEffect(() => {
-        setLeftSeconds(60 * 60 * 3)
+        if (!event?.closeAt) return
+
+        const diff = new Date(event.closeAt).getTime() - new Date().getTime()
+        const leftSeconds = Math.floor(diff / 10)
+
+        if (leftSeconds < 0) {
+            setLeftSeconds(0)
+        } else {
+            setLeftSeconds(leftSeconds)
+        }
     }, [event])
 
     useInterval(() => {
-        setLeftSeconds((before) => before - 1)
+        if (leftSeconds > 0) {
+            setLeftSeconds((before) => before - 1)
+        }
     }, 1000)
 
     return (
