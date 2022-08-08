@@ -2,7 +2,7 @@ import {useEffect, useMemo} from 'react'
 import {useCookies} from 'react-cookie'
 import {useLogin} from '$api/login'
 
-const ONE_DAY = 24 * 60 * 60
+// const ONE_DAY = 24 * 60 * 60
 const TWO_HOURS = 2 * 60 * 60
 
 const useKakaoLogin = () => {
@@ -18,7 +18,7 @@ const useKakaoLogin = () => {
                 expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + TWO_HOURS)),
             })
         }
-    }, [data])
+    }, [data, isLoading, setCookie])
 
     const login = () => {
         if (!isInitialized) {
