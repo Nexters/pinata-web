@@ -114,7 +114,7 @@ const CardImage = styled.div<{src: string}>`
     width: 100%;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    background: url(http://localhost:3000/${extractProp('src')});
+    background: url(${window.location.origin}/${extractProp('src')});
 `
 
 const CardWrapper = styled(Flex).attrs({

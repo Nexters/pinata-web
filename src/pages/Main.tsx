@@ -50,7 +50,7 @@ const IntroTitle = styled.div`
 
 const EventCreateIntro = styled.div`
     background-color: #32AAFF;
-    background-image: url(http://localhost:3000/${'/images/gift-image.png'});
+    background-image: url(${window.location.origin}/${'/images/gift-image.png'});
     background-position: right -3rem;
     background-repeat: no-repeat;
     border-radius: 20px;
