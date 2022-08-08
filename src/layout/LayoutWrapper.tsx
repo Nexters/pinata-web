@@ -11,14 +11,15 @@ const InnerWrapper = styled.div`
 type Props = {
     children: React.ReactNode
     isWhite: boolean
+    withBorderBottom?: boolean
 }
 
-const LayoutWrapper: React.FC<Props> = ({children, isWhite}) => {
+const LayoutWrapper: React.FC<Props> = ({children, isWhite, withBorderBottom = false}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     return (
         <>
-            <Header isWhite={isWhite && !isOpen} setIsOpen={setIsOpen} />
+            <Header isWhite={isWhite && !isOpen} setIsOpen={setIsOpen} withBorderBottom={withBorderBottom && !isOpen} />
             <Menu isOpen={isOpen} />
             <InnerWrapper>{children}</InnerWrapper>
         </>

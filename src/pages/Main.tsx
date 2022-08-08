@@ -4,6 +4,7 @@ import EventList from '$components/eventList/EventList'
 import JoinedEventList from '$components/eventList/JoinedEventList'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
+import { typos } from '$styles/typos'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -14,7 +15,7 @@ const Main: React.FC = () => {
         return <div>로그인 중...</div>
     }
     return (
-        <LayoutWrapper isWhite={false}>
+        <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
                 <EventCreateIntro>
                     <IntroTitle>이벤트 개설하기</IntroTitle>
@@ -28,7 +29,7 @@ const Main: React.FC = () => {
                     <SectionTitle>개설한 이벤트</SectionTitle>
                     <EventList />
                 </Section>
-                <Section marginTop={54}>
+                <Section marginTop={40}>
                     <SectionTitle>참여한 이벤트</SectionTitle>
                     <JoinedEventList />
                 </Section>
@@ -38,23 +39,19 @@ const Main: React.FC = () => {
 }
 
 const IntroDesc = styled.div`
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
     opacity: 0.67;
     margin-top: 6px;
+    ${typos.pretendard['12.18.400']}
 `
 
 const IntroTitle = styled.div`
-    font-style: normal;
-    font-weight: 700;
-    font-size: 22px;
+    ${typos.pretendard['22.18.700']};
 `
 
 const EventCreateIntro = styled.div`
     background-color: #32AAFF;
     background-image: url(http://localhost:3000/${'/images/gift-image.png'});
-    background-position: right bottom;
+    background-position: 15px -2.8rem;
     background-repeat: no-repeat;
     border-radius: 20px;
     color: #fff;

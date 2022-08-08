@@ -1,9 +1,11 @@
 import MenuIcon from '$assets/icons/MenuIcon'
 import Logo from '$assets/image/Logo'
 import React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{
+    withBorderBottom: boolean
+}>`
     position: absolute;
     width: calc(100% - 40px);
     height: 60px;
@@ -18,6 +20,7 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    ${({withBorderBottom}) => withBorderBottom && css`border-bottom: 1px solid #EFF1F3`};
 `
 
 const MenuButton = styled.button`
@@ -30,9 +33,10 @@ const MenuButton = styled.button`
 type Props = {
     isWhite?: boolean
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+    withBorderBottom?: boolean
 }
 
-const Header: React.FC<Props> = ({isWhite = false, setIsOpen}) => {
+const Header: React.FC<Props> = ({isWhite = false, setIsOpen, withBorderBottom = false}) => {
     const toggleMenu = () => {
         setIsOpen((open) => !open)
     }
@@ -40,7 +44,7 @@ const Header: React.FC<Props> = ({isWhite = false, setIsOpen}) => {
     const color = isWhite ? '#fff' : '#1B1B1E'
 
     return (
-        <Wrapper>
+        <Wrapper withBorderBottom={withBorderBottom}>
             <Logo size={87} color={color} />
             <MenuButton onClick={toggleMenu}>
                 <MenuIcon size={20} color={color} />
