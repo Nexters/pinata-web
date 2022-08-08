@@ -71,17 +71,40 @@ const EventList = () => {
 
     return (
         <Suspense fallback={<>Loading...</>}>
-            <>
-        {
-            eventList.map((event) => (
-                <EventCard key={event.id} {...event} />
-            ))
-        }
-        </>
+            <EventListContainer>
+            {
+                eventList.map((event) => (
+                    <EventItemCard>
+                    <EventCard key={event.id} {...event} />
+                    </EventItemCard>
+                ))
+            }
+            </EventListContainer>
         </Suspense>
     )
 }
 
+const EventItemCard = styled.div``
 
+const EventListContainer = styled(Flex).attrs({
+    direction: 'row',
+})`
+    overflow-x: auto;
+
+    margin: 0 -20px;
+    padding: 20px 0;
+
+    ${EventItemCard} {
+        margin: 0 20px;
+
+        &:nth-child(n+2) {
+            margin-left: 0;
+        }
+    }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`
 
 export default EventList

@@ -24,8 +24,12 @@ const Main: React.FC = () => {
                     </IntroDesc>
                 </EventCreateIntro>
                 <Section marginTop={40}>
-                <SectionTitle marginBottom={10}>개설한 이벤트</SectionTitle>
-                <EventList />
+                    <SectionTitle>개설한 이벤트</SectionTitle>
+                    <EventList />
+                </Section>
+                <Section marginTop={54}>
+                    <SectionTitle>참여한 이벤트</SectionTitle>
+                    <EventList />
                 </Section>
             </Container>
         </LayoutWrapper>

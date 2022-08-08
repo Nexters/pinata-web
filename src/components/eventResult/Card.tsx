@@ -122,12 +122,12 @@ const CardWrapper = styled(Flex).attrs({
     alignItems: 'center',
 })`
     background: #fff;
-    width: 335px;
+    min-width: 335px;
     color: #1b1b1e;
     border-radius: 20px;
     z-index: 1;
     position: relative;
-    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 14px rgb(0 0 0 / 10%)
 `
 
 Card.Image = Image

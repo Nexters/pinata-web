@@ -2,8 +2,8 @@ import styled, {CSSProperties} from 'styled-components'
 
 type FlexProps = {
     direction: CSSProperties['flexDirection']
-    justifyContent: CSSProperties['justifyContent']
-    alignItems: CSSProperties['alignItems']
+    justifyContent?: CSSProperties['justifyContent']
+    alignItems?: CSSProperties['alignItems']
 }
 
 const Flex = styled.div<FlexProps>`

@@ -37,6 +37,17 @@ export const useMyQuery = <T extends EventListResponse>(url: string, params?: Re
             limitCount: 10,
             hitCount: 0,
             participantCount: 0
+        },
+        {
+            id: 11112,
+            code: 'example-event-2',
+            title: '점심 밥값 내기🍣',
+            openAt: '2022-07-01 13:00',
+            closeAt: '2022-07-03 12:00',
+            type: EventType.PROCESS,
+            limitCount: 10,
+            hitCount: 0,
+            participantCount: 0
         }
     ] as EventListResponse
      : client.get<T, T>(url, {

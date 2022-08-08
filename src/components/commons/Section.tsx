@@ -1,3 +1,4 @@
+import { typos } from '$styles/typos';
 import styled from 'styled-components';
 
 export const Section = styled.div<{
@@ -13,9 +14,7 @@ export const SectionTitle = styled.div<{
     marginBottom?: number
 }>`
     color: #121212;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 26px;
+    ${typos.pretendard['16.26.700']};
     margin-top: ${({marginTop}) => marginTop || 0}px;
     margin-bottom: ${({marginBottom}) => marginBottom || 0}px;
 `
