@@ -32,15 +32,16 @@ const Desc = ({children, size = 'md'}: {children: ReactNode, size?: 'lg' | 'md'}
 type ImageProps = {
     src: string
     description?: string
+    withClose?: boolean
 }
 
-const Image = ({src, description = ''}: ImageProps) => {
+const Image = ({src, description = '', withClose = false}: ImageProps) => {
     return (
         <CardImage src={src}>
             <CardImageTitle>{description}</CardImageTitle>
-            <IconBox>
+            {withClose && <IconBox>
                 <CloseIcon size={26} />
-            </IconBox>
+            </IconBox>}
         </CardImage>
     )
 }

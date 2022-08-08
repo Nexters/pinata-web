@@ -59,7 +59,7 @@ const EventResult = () => {
                 <ParticipatedNotice />
             ) : (
                 <Card>
-                    <Card.Image src={'/images/example-result-card.png'} description={'Image 설명'} />
+                    <Card.Image src={'/images/example-result-card.png'} description={'Image 설명'} withClose />
                     <Card.Content>
                         <Badge text={'탈락'} type="default" marginBottom={6} />
                         <Card.Title>카드 제목</Card.Title>

@@ -1,6 +1,7 @@
 
 import { Section, SectionTitle } from '$components/commons/Section'
 import EventList from '$components/eventList/EventList'
+import JoinedEventList from '$components/eventList/JoinedEventList'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import React from 'react'
@@ -29,7 +30,7 @@ const Main: React.FC = () => {
                 </Section>
                 <Section marginTop={54}>
                     <SectionTitle>참여한 이벤트</SectionTitle>
-                    <EventList />
+                    <JoinedEventList />
                 </Section>
             </Container>
         </LayoutWrapper>
