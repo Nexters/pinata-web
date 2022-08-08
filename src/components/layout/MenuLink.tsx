@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import {Link} from 'react-router-dom'
+import PinataIcon from '$assets/icons/PinataIcon'
 
 const Option = styled.div`
     width: 100%;
@@ -12,13 +13,6 @@ const Option = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-`
-
-const Icon = styled.div`
-    width: 40px;
-    height: 40px;
-
-    margin-right: 12px;
 `
 
 const Text = styled.p`
@@ -42,7 +36,9 @@ const MenuLink: React.FC<Props> = ({text, link}) => {
     return (
         <Link to={link}>
             <Option>
-                <Icon />
+                <PinataIcon size={40} style={{
+                    marginRight: 12
+                }} />
                 <Text>{text}</Text>
             </Option>
         </Link>
