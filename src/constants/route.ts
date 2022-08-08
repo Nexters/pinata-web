@@ -3,7 +3,8 @@ const ROUTE = {
     LOGIN: '/login',
     GIFTS: '/gifts',
     EVENT: {
-        CREATE: '/create_event',
+        CREATE: '/event/create',
+        UPDATE: '/event/:id',
         LIST: '/events',
         DETAIL: '/event',
         RESULT: '/event/result',

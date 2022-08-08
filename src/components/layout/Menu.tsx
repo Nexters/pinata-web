@@ -1,3 +1,4 @@
+import ROUTE from '$constants/route'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import { typos } from '$styles/typos'
@@ -44,7 +45,7 @@ const KakaoLogin = styled.div`
 export const Menu: React.FC<Props> = ({isOpen}) => {
     const menus = [
         {text: '피나타 소개', link: ''},
-        {text: '이벤트 개설하기', link: ''},
+        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE},
         {text: '개설한 이벤트', link: ''},
         {text: '참여한 이벤트', link: ''},
     ]
