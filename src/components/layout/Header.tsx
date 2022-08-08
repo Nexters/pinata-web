@@ -1,6 +1,8 @@
 import MenuIcon from '$assets/icons/MenuIcon'
 import Logo from '$assets/image/Logo'
+import ROUTE from '$constants/route'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 const Wrapper = styled.div<{
@@ -37,6 +39,7 @@ type Props = {
 }
 
 const Header: React.FC<Props> = ({isWhite = false, setIsOpen, withBorderBottom = false}) => {
+    const navigate = useNavigate()
     const toggleMenu = () => {
         setIsOpen((open) => !open)
     }
@@ -45,12 +48,16 @@ const Header: React.FC<Props> = ({isWhite = false, setIsOpen, withBorderBottom =
 
     return (
         <Wrapper withBorderBottom={withBorderBottom}>
-            <Logo size={87} color={color} />
+            <Clickable onClick={() => navigate(ROUTE.MAIN)}><Logo size={87} color={color} /></Clickable>
             <MenuButton onClick={toggleMenu}>
                 <MenuIcon size={20} color={color} />
             </MenuButton>
         </Wrapper>
     )
 }
+
+const Clickable = styled.span`
+    cursor: pointer;
+`
 
 export default Header
