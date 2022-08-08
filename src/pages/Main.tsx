@@ -1,13 +1,13 @@
 
-import ROUTE from '$constants/route'
+import { Section, SectionTitle } from '$components/commons/Section'
+import EventList from '$components/eventList/EventList'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import React from 'react'
-import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 const Main: React.FC = () => {
-    const {login, logout, isLogined, isLoading} = useKakaoLogin()
+    const {isLoading} = useKakaoLogin()
 
     if (isLoading) {
         return <div>로그인 중...</div>
@@ -23,9 +23,10 @@ const Main: React.FC = () => {
                     직접 만들러 가볼까요?
                     </IntroDesc>
                 </EventCreateIntro>
-                <Link to={ROUTE.GIFTS}>Gift</Link>
-                <Link to={ROUTE.EVENT.LIST}>Event List</Link>
-                <button onClick={isLogined ? logout : login}>{isLogined ? '로그아웃' : '카카오 로그인'}</button>
+                <Section marginTop={40}>
+                <SectionTitle marginBottom={10}>개설한 이벤트</SectionTitle>
+                <EventList />
+                </Section>
             </Container>
         </LayoutWrapper>
     )

@@ -52,7 +52,7 @@ const Container = styled(Box)`
 `
 
 const EventResult = () => {
-    const [isParticipated, participate] = useState(true)
+    const [isParticipated] = useState(false)
     return (
         <EventWrapper>
             {isParticipated ? (

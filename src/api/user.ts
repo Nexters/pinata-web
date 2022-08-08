@@ -1,4 +1,4 @@
-import {useMyQuery} from '$hooks/useRequest'
+// import {useMyQuery} from '$hooks/useRequest'
 
 export type UserResponse = {
     email: string
@@ -7,8 +7,10 @@ export type UserResponse = {
     state: string
 }
 
-export const useUser = () => {
-    const {data, isLoading} = useMyQuery('/api/v1/me')
+// export const useUser = () => {
+//     const {data, isLoading} = useMyQuery<UserResponse>('/api/v1/me')
 
-    return {data, isLoading}
-}
+//     console.log(data)
+
+//     return {data, isLoading}
+// }

@@ -1,5 +1,5 @@
 import {ApiResponse} from '$types/ApiResponse'
-import axios, {AxiosResponse} from 'axios'
+import axios, {AxiosError, AxiosResponse} from 'axios'
 import {AuthorizationError, FetchError} from './FetchError'
 
 const RESULT_CODE = {
@@ -28,10 +28,14 @@ const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T
     return res.data
 }
 
+const rejectInterceptor = (error: AxiosError) => {
+    return Promise.reject(error)
+}
+
 const client = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
 })
 
-client.interceptors.response.use(responseInterceptor)
+client.interceptors.response.use(responseInterceptor, rejectInterceptor)
 
 export default client
