@@ -1,5 +1,5 @@
 export function changeHHMMSS(hour:number, minute:number, second:number){
-    return `${hour < 10 && '0'}${hour}}` + `${minute < 10 && '0'}${minute}` + `${second < 10 && '0'}${second}`
+    return `${hour < 10 && '0'}${hour}}${minute < 10 && '0'}${minute}${second < 10 && '0'}${second}`
 }
 
 export function changeSecondsHHMMSS(leftSeconds: number) {
