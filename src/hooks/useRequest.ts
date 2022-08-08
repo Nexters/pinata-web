@@ -20,11 +20,11 @@ export const useRequest = <Request, Response>(api: (req: Request) => Promise<Res
     return {mutate, mutateAsync, data, error, isLoading, ...rest}
 }
 
-export const useMyQuery = (url: string, params?: Record<string, string | number>) => {
+export const useMyQuery = <T>(url: string, params?: Record<string, string | number>) => {    
     const [cookies] = useCookies(['pln'])
 
     const {isLoading, data, error} = useQuery([url], () =>
-        client.get(url, {
+        client.get<T, T>(url, {
             params,
             headers: {
                 Authorization: `Bearer ${cookies.pln}`,

@@ -1,7 +1,7 @@
 import {extractProp} from '$util/common'
 import styled from 'styled-components'
 
-type BadgeProps = {
+export type BadgeProps = {
     text: string
     type: 'danger' | 'default'
     marginBottom?: number

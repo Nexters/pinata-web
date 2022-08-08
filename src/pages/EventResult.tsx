@@ -52,14 +52,14 @@ const Container = styled(Box)`
 `
 
 const EventResult = () => {
-    const [isParticipated, participate] = useState(true)
+    const [isParticipated] = useState(false)
     return (
         <EventWrapper>
             {isParticipated ? (
                 <ParticipatedNotice />
             ) : (
                 <Card>
-                    <Card.Image src={'/images/example-result-card.png'} description={'Image 설명'} />
+                    <Card.Image src={'/images/example-result-card.png'} description={'Image 설명'} withClose />
                     <Card.Content>
                         <Badge text={'탈락'} type="default" marginBottom={6} />
                         <Card.Title>카드 제목</Card.Title>

@@ -5,15 +5,13 @@ import Waiting from '$components/event/Waiting'
 import Closed from '$components/event/Closed'
 import Participation from '$components/event/Participation'
 
-import {getEvent} from '$fetchs/getEvent'
-
 import {Event} from '$types/Event'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {participateEvent} from '$api/event'
 
 const EventPage: React.FC = () => {
-    const [event, setEvent] = useState<Event>()
-    const {login, logout, isLogined, isLoading} = useKakaoLogin()
+    const [event] = useState<Event>()
+    const {isLogined} = useKakaoLogin()
 
     const isClosed = event && event.status !== 'wait'
     const isWaiting = event && event.status === 'wait'

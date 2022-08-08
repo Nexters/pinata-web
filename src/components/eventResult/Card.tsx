@@ -3,15 +3,16 @@ import Flex from '$components/commons/Flex'
 import {extractProp} from '$util/common'
 import {ReactNode} from 'react'
 import styled from 'styled-components'
+import { Typo, typos } from '$styles/typos'
 import Overlay from './Overlay'
 
-const Card = ({children}: {children: ReactNode}) => {
+const Card = ({children, withOverlay = true}: {children: ReactNode; withOverlay?: boolean}) => {
     return (
         <>
             <CardWrapper direction={'row'} justifyContent={'center'} alignItems="center">
                 {children}
             </CardWrapper>
-            <Overlay />
+            {withOverlay && <Overlay />}
         </>
     )
 }
@@ -20,26 +21,27 @@ const Content = ({children}: {children: ReactNode}) => {
     return <CardContent>{children}</CardContent>
 }
 
-const Title = ({children}: {children: ReactNode}) => {
-    return <CardTitle>{children}</CardTitle>
+const Title = ({children, typo = typos.pretendard['22.32.700']}: {children: ReactNode; typo?: Typo}) => {
+    return <CardTitle typo={typo}>{children}</CardTitle>
 }
 
-const Desc = ({children}: {children: ReactNode}) => {
-    return <CardDesc>{children}</CardDesc>
+const Desc = ({children, size = 'md'}: {children: ReactNode, size?: 'lg' | 'md'}) => {
+    return <CardDesc size={size}>{children}</CardDesc>
 }
 
 type ImageProps = {
     src: string
     description?: string
+    withClose?: boolean
 }
 
-const Image = ({src, description = ''}: ImageProps) => {
+const Image = ({src, description = '', withClose = false}: ImageProps) => {
     return (
         <CardImage src={src}>
             <CardImageTitle>{description}</CardImageTitle>
-            <IconBox>
+            {withClose && <IconBox>
                 <CloseIcon size={26} />
-            </IconBox>
+            </IconBox>}
         </CardImage>
     )
 }
@@ -60,28 +62,27 @@ const Button = styled.button`
     outline: none;
     cursor: pointer;
     height: 40px;
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    width: calc(100% - 40px);
+    margin-bottom: 20px;
 `
 
-const CardDesc = styled.div`
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
+const CardDesc = styled.div<{
+    size: 'lg' | 'md'
+}>`
+   ${({size}) => size === 'md' ? typos.pretendard['12.18.400'] : typos.pretendard['14.19.400']};
     color: #1b1b1e;
     opacity: 0.5;
     overflow: auto;
     max-height: 75px;
 `
 
-const CardTitle = styled.div`
+const CardTitle = styled.div<{
+    typo: Typo
+}>`
     font-style: normal;
-    font-weight: 700;
-    font-size: 22px;
     color: #1b1b1e;
     margin-bottom: 6px;
+    ${extractProp('typo')};
 `
 
 const CardContent = styled(Flex).attrs({
@@ -91,7 +92,6 @@ const CardContent = styled(Flex).attrs({
 })`
     padding: 20px;
     width: calc(100% - 40px);
-    height: 165px;
     position: relative;
 `
 
@@ -123,11 +123,12 @@ const CardWrapper = styled(Flex).attrs({
     alignItems: 'center',
 })`
     background: #fff;
-    width: 335px;
+    min-width: 335px;
     color: #1b1b1e;
     border-radius: 20px;
     z-index: 1;
     position: relative;
+    box-shadow: 0px 0px 14px rgb(0 0 0 / 10%)
 `
 
 Card.Image = Image

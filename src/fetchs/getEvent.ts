@@ -1,5 +1,4 @@
 import { Event } from 'types/Event';
-import { Item } from 'types/Items';
 
 const dummyEvent: Event = {
     id: 1,
