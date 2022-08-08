@@ -1,3 +1,6 @@
+import useBodyScrollLock from '$hooks/useBodyScrollLock'
+import useKakaoLogin from '$hooks/useKakaoLogin'
+import { typos } from '$styles/typos'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -10,7 +13,7 @@ type Props = {
 const Wrapper = styled.div<{isOpen: boolean}>`
     position: absolute;
     width: 100%;
-    height: calc(100% - 60px);
+    height: 100vh;
     background-color: white;
 
     padding-top: 60px;
@@ -31,12 +34,11 @@ const Select = styled.section`
 
 const KakaoLogin = styled.div`
     position: absolute;
-    bottom: 0;
-    left: 0;
-
-    width: 100px;
-    height: 60px;
-    background-color: red;
+    bottom: 85px;
+    left: 25px;
+    cursor: pointer;
+    user-select: none;
+    ${typos.pretendard['16.19.700']};
 `
 
 export const Menu: React.FC<Props> = ({isOpen}) => {
@@ -47,6 +49,10 @@ export const Menu: React.FC<Props> = ({isOpen}) => {
         {text: '참여한 이벤트', link: ''},
     ]
 
+    const {isLogined, login, logout} = useKakaoLogin()
+
+    useBodyScrollLock(isOpen)
+
     return (
         <Wrapper isOpen={isOpen}>
             <Select>
@@ -54,7 +60,12 @@ export const Menu: React.FC<Props> = ({isOpen}) => {
                     <MenuLink link={menu.link} text={menu.text} />
                 ))}
             </Select>
-            <KakaoLogin />
+            {
+                isLogined
+                ?<KakaoLogin onClick={logout}>로그아웃</KakaoLogin>
+                :<KakaoLogin onClick={login}>카카오로 로그인</KakaoLogin>
+            }
+            
         </Wrapper>
     )
 }
