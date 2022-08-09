@@ -1,3 +1,4 @@
+import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import styled from 'styled-components'
 
@@ -28,9 +29,8 @@ const BadgeContainer = styled.span<{
     border-radius: 20px;
     color: ${({type}) => BADGE_COLOR[type]};
     padding: 2px 12px;
-    font-weight: 500;
-    font-size: 12px;
     margin-bottom: ${extractProp('marginBottom')}px;
+    ${typos.pretendard['12.20.500']};
 `
 
 export default Badge

@@ -3,7 +3,7 @@ import Flex from '$components/commons/Flex'
 import {extractProp} from '$util/common'
 import {ReactNode} from 'react'
 import styled from 'styled-components'
-import { Typo, typos } from '$styles/typos'
+import {Typo, typos} from '$styles/typos'
 import Overlay from './Overlay'
 
 const Card = ({children, withOverlay = true}: {children: ReactNode; withOverlay?: boolean}) => {
@@ -25,7 +25,7 @@ const Title = ({children, typo = typos.pretendard['22.32.700']}: {children: Reac
     return <CardTitle typo={typo}>{children}</CardTitle>
 }
 
-const Desc = ({children, size = 'md'}: {children: ReactNode, size?: 'lg' | 'md'}) => {
+const Desc = ({children, size = 'md'}: {children: ReactNode; size?: 'lg' | 'md'}) => {
     return <CardDesc size={size}>{children}</CardDesc>
 }
 
@@ -39,9 +39,11 @@ const Image = ({src, description = '', withClose = false}: ImageProps) => {
     return (
         <CardImage src={src}>
             <CardImageTitle>{description}</CardImageTitle>
-            {withClose && <IconBox>
-                <CloseIcon size={26} />
-            </IconBox>}
+            {withClose && (
+                <IconBox>
+                    <CloseIcon size={26} />
+                </IconBox>
+            )}
         </CardImage>
     )
 }
@@ -64,12 +66,13 @@ const Button = styled.button`
     height: 40px;
     width: calc(100% - 40px);
     margin-bottom: 20px;
+    ${typos.pretendard['14.32.500']};
 `
 
 const CardDesc = styled.div<{
     size: 'lg' | 'md'
 }>`
-   ${({size}) => size === 'md' ? typos.pretendard['12.18.400'] : typos.pretendard['14.19.400']};
+    ${({size}) => (size === 'md' ? typos.pretendard['12.18.400'] : typos.pretendard['14.19.400'])};
     color: #1b1b1e;
     opacity: 0.5;
     overflow: auto;
@@ -100,11 +103,9 @@ const CardImageTitle = styled.div`
     bottom: 0;
     background: rgba(122, 122, 131, 0.3);
     color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
     width: calc(100% - 40px);
     padding: 10px 20px;
+    ${typos.pretendard['14.20.600']};
 `
 
 const CardImage = styled.div<{src: string}>`
@@ -128,7 +129,7 @@ const CardWrapper = styled(Flex).attrs({
     border-radius: 20px;
     z-index: 1;
     position: relative;
-    box-shadow: 0px 0px 14px rgb(0 0 0 / 10%)
+    box-shadow: 0px 0px 14px rgb(0 0 0 / 10%);
 `
 
 Card.Image = Image

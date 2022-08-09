@@ -24,6 +24,7 @@ export const typos = {
         '13.19.400': createTypo(pretendardBase, 13, 19, 400),
         '13.26.500': createTypo(pretendardBase, 13, 26, 500),
         '14.19.400': createTypo(pretendardBase, 14, 19, 400),
+        '14.20.600': createTypo(pretendardBase, 14, 20, 600),
         '14.32.500': createTypo(pretendardBase, 14, 32, 500),
         '15.32.500': createTypo(pretendardBase, 15, 32, 500),
         '16.19.700': createTypo(pretendardBase, 16, 19, 700),

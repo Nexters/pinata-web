@@ -5,6 +5,7 @@ import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
 import ROUTE from '$constants/route'
+import {typos} from '$styles/typos'
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
@@ -34,11 +35,10 @@ const Button = styled.button`
     border: none;
     outline: none;
     margin-top: 30px;
-    font-weight: 600;
-    font-size: 16px;
     text-align: center;
     color: #1b1b1e;
     cursor: pointer;
+    ${typos.pretendard['14.32.500']};
 `
 
 const Container = styled(Box)`

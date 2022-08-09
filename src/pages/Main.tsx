@@ -1,14 +1,16 @@
-
-import { Section, SectionTitle } from '$components/commons/Section'
+import {Section, SectionTitle} from '$components/commons/Section'
 import EventList from '$components/eventList/EventList'
 import JoinedEventList from '$components/eventList/JoinedEventList'
+import ROUTE from '$constants/route'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
-import { typos } from '$styles/typos'
+import {typos} from '$styles/typos'
 import React from 'react'
+import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
 const Main: React.FC = () => {
+    const navigate = useNavigate()
     const {isLoading} = useKakaoLogin()
 
     if (isLoading) {
@@ -17,12 +19,12 @@ const Main: React.FC = () => {
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
-                <EventCreateIntro>
+                <EventCreateIntro onClick={() => navigate(ROUTE.EVENT.CREATE)}>
                     <IntroTitle>이벤트 개설하기</IntroTitle>
                     <IntroDesc>
-                    누구나 쉽게 이벤트를 만들 수 있어요!
-                    <br />
-                    직접 만들러 가볼까요?
+                        누구나 쉽게 이벤트를 만들 수 있어요!
+                        <br />
+                        직접 만들러 가볼까요?
                     </IntroDesc>
                 </EventCreateIntro>
                 <Section marginTop={40}>
@@ -49,17 +51,18 @@ const IntroTitle = styled.div`
 `
 
 const EventCreateIntro = styled.div`
-    background-color: #32AAFF;
+    background-color: #32aaff;
     background-image: url(${window.location.origin}/${'/images/gift-image.png'});
     background-position: right -3rem;
     background-repeat: no-repeat;
     border-radius: 20px;
     color: #fff;
     padding: 20px 20px 130px;
+    cursor: pointer;
 `
 
 const Container = styled.div`
-    padding: 30px 20px
+    padding: 30px 20px;
 `
 
 export default Main
