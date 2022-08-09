@@ -17,6 +17,7 @@
             "$assets/*": ["assets/*"],
             "$api/*": ["api/*"],
             "$styles/*": ["styles/*"],
+            "$contexts/*": ["contexts/*"],
             "src/*": ["./src/*"]
         }
     }
