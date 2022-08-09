@@ -11,8 +11,8 @@ type BoxProps = {
 export const Box = styled.div<BoxProps>`
     ${({backgroundColor, width, height, padding}) => css`
         background-color: ${backgroundColor};
-        width: ${width !== undefined ? width + 'px' : undefined};
-        height: ${height !== undefined ? height + 'px' : undefined};
+        width: ${width !== undefined ? (typeof width === 'number' ? width + 'px' : width) : undefined};
+        height: ${height !== undefined ? (typeof height === 'number' ? height + 'px' : height) : undefined};
         padding: ${padding};
     `}
 `
