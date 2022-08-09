@@ -2,6 +2,7 @@ import InfoCircleIcon from '$assets/icons/InfoCircleIcon'
 import Flex from '$components/commons/Flex'
 import {Section, SectionTitle} from '$components/commons/Section'
 import Input from '$components/eventForm/Input'
+import RadioForm from '$components/eventForm/RadioForm'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import React from 'react'
 import {useState} from 'react'
@@ -30,7 +31,41 @@ const CreateEvent: React.FC = () => {
                     <Input value={title} onChange={(e) => setTitle(e.target.value)} label={'종료'} />
                 </Section>
                 <Section marginTop={40}>
-                    <SectionTitle>이벤트 모드를 선택하세요</SectionTitle>
+                    <SectionTitle marginBottom={16}>이벤트 모드를 선택하세요</SectionTitle>
+                    <RadioForm values={[1, 2]}>
+                        <RadioForm.Item
+                            width={162}
+                            height={100}
+                            value={1}
+                            selectedStyle={{
+                                background: '#32AAFF',
+                                borderRadius: 15,
+                                color: '#fff',
+                            }}
+                            defaultStyle={{
+                                background: '#E8E8E8',
+                                borderRadius: 15,
+                                color: '#1B1B1E',
+                            }}>
+                            랜덤 모드
+                        </RadioForm.Item>
+                        <RadioForm.Item
+                            width={162}
+                            height={100}
+                            value={2}
+                            selectedStyle={{
+                                background: '#32AAFF',
+                                borderRadius: 15,
+                                color: '#fff',
+                            }}
+                            defaultStyle={{
+                                background: '#E8E8E8',
+                                borderRadius: 15,
+                                color: '#1B1B1E',
+                            }}>
+                            선착순 모드
+                        </RadioForm.Item>
+                    </RadioForm>
                 </Section>
                 <Section marginTop={40}>
                     <SectionTitle>당첨 상품을 등록하세요</SectionTitle>

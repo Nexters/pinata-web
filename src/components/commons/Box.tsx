@@ -5,6 +5,7 @@ type BoxProps = {
     width?: number | string
     height?: number | string
     padding?: CSSProperties['padding']
+    style?: CSSProperties
 }
 
 export const Box = styled.div<BoxProps>`

@@ -1,4 +1,5 @@
 import styled, {CSSProperties} from 'styled-components'
+import {Box} from './Box'
 
 type FlexProps = {
     direction: CSSProperties['flexDirection']
@@ -6,7 +7,7 @@ type FlexProps = {
     alignItems?: CSSProperties['alignItems']
 }
 
-const Flex = styled.div<FlexProps>`
+const Flex = styled(Box)<FlexProps>`
     display: flex;
     flex-direction: ${({direction = 'column'}) => direction};
     justify-content: ${({justifyContent = 'flex-start'}) => justifyContent};
