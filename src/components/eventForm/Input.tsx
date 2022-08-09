@@ -3,7 +3,7 @@ import {typos} from '$styles/typos'
 import {ChangeEvent, InputHTMLAttributes} from 'react'
 import styled, {css} from 'styled-components'
 
-type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
     value: string
     onChange(e: ChangeEvent<HTMLInputElement>): void
     variant?: 'default' | 'fill'
