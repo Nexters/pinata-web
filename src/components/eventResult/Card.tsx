@@ -12,7 +12,7 @@ const Card = ({children, withOverlay = true}: {children: ReactNode; withOverlay?
             <CardWrapper direction={'row'} justifyContent={'center'} alignItems="center">
                 {children}
             </CardWrapper>
-            {withOverlay && <Overlay />}
+            {withOverlay && <Overlay onClick={() => {}} />}
         </>
     )
 }

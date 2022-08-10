@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-const Overlay = styled.div`
+const Overlay = ({onClick}: {onClick: () => void}) => {
+    return <OverlayBox onClickCapture={onClick} />
+}
+
+const OverlayBox = styled.div`
     background: #000000;
     opacity: 0.2;
     position: fixed;

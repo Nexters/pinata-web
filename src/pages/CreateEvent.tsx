@@ -1,13 +1,17 @@
 import InfoCircleIcon from '$assets/icons/InfoCircleIcon'
 import PlusIcon from '$assets/icons/PlusIcon'
+import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import {Section, SectionTitle} from '$components/commons/Section'
+import Dialog from '$components/dialog/Dialog'
 import CardListForm from '$components/eventForm/CardListForm'
+import GiftDialog from '$components/eventForm/GiftDialog'
 import GiftList from '$components/eventForm/GiftList'
 import Input from '$components/eventForm/Input'
 import RadioForm from '$components/eventForm/RadioForm'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import {typos} from '$styles/typos'
+import {extractProp} from '$util/common'
 import React from 'react'
 import {useState} from 'react'
 import styled, {css} from 'styled-components'
@@ -86,9 +90,7 @@ const CreateEvent: React.FC = () => {
                 <Section marginTop={40}>
                     <SectionTitle marginBottom={16}>당첨 상품을 등록하세요</SectionTitle>
                     <Flex direction="column">
-                        <Button color={'default'}>
-                            <PlusIcon size={19} color={'#1B1B1E'} />
-                        </Button>
+                        <GiftDialog />
                         <GiftList items={DEMO_GIFTS} />
                         <Totals>
                             총 상품 수령 인원
@@ -131,12 +133,25 @@ const CreateEvent: React.FC = () => {
                     />
                 </Section>
                 <Section marginTop={30}>
-                    <Button color={'dark'}>이벤트 개설하기</Button>
+                    <Button color={'dark'} height={52}>
+                        이벤트 개설하기
+                    </Button>
                 </Section>
             </Container>
         </LayoutWrapper>
     )
 }
+
+const Divider = styled.hr`
+    border: 0.5px solid rgba(27, 27, 30, 0.1);
+    margin: 20px 0;
+`
+
+const DialogSubTitle = styled.div`
+    ${typos.pretendard['14.26.500']};
+    color: #121212;
+    margin-bottom: 10px;
+`
 
 const NumberHighlight = styled.span`
     ${typos.pretendard['16.26.700']};
@@ -154,8 +169,10 @@ const Totals = styled(Flex).attrs({
 
 const Button = styled.button<{
     color: 'default' | 'dark'
+    height: number
 }>`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -165,14 +182,14 @@ const Button = styled.button<{
         color === 'default'
             ? css`
                   background: rgba(27, 27, 30, 0.07);
-                  color: #121212;
+                  color: #848486;
               `
             : css`
                   background: #1b1b1e;
                   color: #fff;
               `}
     border-radius: 15px;
-    height: 52px;
+    height: ${extractProp('height')}px;
     width: 100%;
     ${typos.pretendard['14.32.500']}
 

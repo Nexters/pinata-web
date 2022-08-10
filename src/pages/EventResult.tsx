@@ -22,7 +22,7 @@ const ParticipatedNotice = () => {
                 </Box>
                 <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
             </Container>
-            <Overlay />
+            <Overlay onClick={() => {}} />
         </Flex>
     )
 }
