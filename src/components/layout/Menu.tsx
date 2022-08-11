@@ -1,7 +1,7 @@
 import ROUTE from '$constants/route'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import useKakaoLogin from '$hooks/useKakaoLogin'
-import { typos } from '$styles/typos'
+import {typos} from '$styles/typos'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -46,7 +46,7 @@ export const Menu: React.FC<Props> = ({isOpen}) => {
     const menus = [
         {text: '피나타 소개', link: ''},
         {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE},
-        {text: '개설한 이벤트', link: ''},
+        {text: '개설한 이벤트', link: ROUTE.EVENT.LIST},
         {text: '참여한 이벤트', link: ''},
     ]
 
@@ -61,12 +61,11 @@ export const Menu: React.FC<Props> = ({isOpen}) => {
                     <MenuLink link={menu.link} text={menu.text} />
                 ))}
             </Select>
-            {
-                isLogined
-                ?<KakaoLogin onClick={logout}>로그아웃</KakaoLogin>
-                :<KakaoLogin onClick={login}>카카오로 로그인</KakaoLogin>
-            }
-            
+            {isLogined ? (
+                <KakaoLogin onClick={logout}>로그아웃</KakaoLogin>
+            ) : (
+                <KakaoLogin onClick={login}>카카오로 로그인</KakaoLogin>
+            )}
         </Wrapper>
     )
 }
