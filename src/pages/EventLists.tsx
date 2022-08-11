@@ -12,8 +12,8 @@ const EventLists: React.FC = () => {
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
                 {eventList.map((event) => (
-                    <EventCardItem>
-                        <EventCard key={event.id} {...event} />
+                    <EventCardItem key={event.id}>
+                        <EventCard {...event} />
                     </EventCardItem>
                 ))}
             </Container>

@@ -47,7 +47,7 @@ export const Menu: React.FC<Props> = ({isOpen}) => {
         {text: '피나타 소개', link: ''},
         {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE},
         {text: '개설한 이벤트', link: ROUTE.EVENT.LIST},
-        {text: '참여한 이벤트', link: ''},
+        {text: '참여한 이벤트', link: ROUTE.GIFTS},
     ]
 
     const {isLogined, login, logout} = useKakaoLogin()
