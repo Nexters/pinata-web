@@ -3,14 +3,18 @@ import Flex from '$components/commons/Flex'
 import RadioContextProvider, {useRadioContext} from '$contexts/RadioContext'
 import {ValueList} from '$types/common'
 import {extractProp} from '$util/common'
-import {forwardRef, ReactNode} from 'react'
+import {forwardRef, ReactNode, useEffect} from 'react'
 import styled, {css, CSSProperties, FlattenSimpleInterpolation} from 'styled-components'
 
-type RadioProps = {children: ReactNode; values: ValueList<unknown>}
+type RadioProps = {
+    children: ReactNode
+    values: ValueList<unknown>
+    defaultValue?: unknown
+}
 
-const RadioForm = ({children, values}: RadioProps) => {
+const RadioForm = ({children, values, defaultValue}: RadioProps) => {
     return (
-        <RadioContextProvider values={values}>
+        <RadioContextProvider values={values} defaultSelected={defaultValue}>
             <Wrapper>{children}</Wrapper>
         </RadioContextProvider>
     )
@@ -30,6 +34,11 @@ type RadioItemProps = {
 const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(({onSelect: onSelectInProps,  value, children, width, height, selectedStyle, unselectedStyle, style = css``}, ref) => {
     const {onSelect, selected} = useRadioContext()
 
+    useEffect(() => {
+        onSelectInProps(selected)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selected])
+
     const isSelected = selected === value
 
     return (
@@ -41,7 +50,6 @@ const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(({onSelect: onSel
             height={height}
             onClick={() => {
                 onSelect(value)
-                onSelectInProps(value)
             }}
             defaultStyle={style}>
             <Box>{children}</Box>

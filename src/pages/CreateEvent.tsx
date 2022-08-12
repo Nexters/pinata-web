@@ -37,13 +37,18 @@ const DEMO_GIFTS = [
     },
 ]
 
+enum EventMode {
+    RANDOM = 1,
+    FIFO
+}
+
 export interface EventForm {
     title: string
     startDate: Date
     endDate: Date
     hitDesc: string
     failDesc: string
-    eventMode: number
+    eventMode: EventMode
 }
 
 const required = true
@@ -81,7 +86,7 @@ const CreateEvent: React.FC = () => {
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 모드를 선택하세요</SectionTitle>
-                        <RadioForm values={[1, 2]}>
+                        <RadioForm values={[EventMode.RANDOM, EventMode.FIFO]} defaultValue={EventMode.RANDOM}>
                             <RadioForm.Item
                                 onSelect={onSelect}
                                 width={162}
