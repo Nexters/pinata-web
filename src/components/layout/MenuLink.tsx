@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import {Link} from 'react-router-dom'
-import PinataIcon from '$assets/icons/PinataIcon'
+import { typos } from '$styles/typos'
 
 const Option = styled.div`
     width: 100%;
@@ -16,29 +16,28 @@ const Option = styled.div`
 `
 
 const Text = styled.p`
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 23px;
-    line-height: 26px;
+    ${typos.pretendard['23.26.700']};
+    line-height: 0;
+    color: #fff;
+`
 
-    letter-spacing: -0.333333px;
-
-    color: #1b1b1e;
+const MenuImage = styled.img`
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
 `
 
 type Props = {
     text: string
     link: string
+    imageUrl: string
 }
 
-const MenuLink: React.FC<Props> = ({text, link}) => {
+const MenuLink: React.FC<Props> = ({text, link, imageUrl}) => {
     return (
         <Link to={link}>
             <Option>
-                <PinataIcon size={40} style={{
-                    marginRight: 12
-                }} />
+                <MenuImage src={imageUrl} />
                 <Text>{text}</Text>
             </Option>
         </Link>

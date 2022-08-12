@@ -73,7 +73,7 @@ const CardDesc = styled.div<{
     size: 'lg' | 'md'
 }>`
     ${({size}) => (size === 'md' ? typos.pretendard['12.18.400'] : typos.pretendard['14.19.400'])};
-    color: #1b1b1e;
+    color: rgba(255, 255, 255, .5);
     opacity: 0.5;
     overflow: auto;
     max-height: 75px;
@@ -83,7 +83,7 @@ const CardTitle = styled.div<{
     typo: Typo
 }>`
     font-style: normal;
-    color: #1b1b1e;
+    color: #fff;
     margin-bottom: 6px;
     ${extractProp('typo')};
 `
@@ -125,13 +125,12 @@ const CardWrapper = styled(Flex).attrs({
     justifyContent: 'flex-start',
     alignItems: 'center',
 })`
-    background: #fff;
+    background: #2C2C30;
     min-width: 335px;
-    color: #1b1b1e;
+    color: #fff;
     border-radius: 20px;
     z-index: 1;
     position: relative;
-    box-shadow: 0px 0px 14px rgb(0 0 0 / 10%);
 `
 
 Card.Image = Image

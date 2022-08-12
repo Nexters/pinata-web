@@ -20,7 +20,7 @@ const Main: React.FC = () => {
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
                 <EventCreateIntro onClick={() => navigate(ROUTE.EVENT.CREATE)}>
-                    <IntroTitle>이벤트 개설하기</IntroTitle>
+                    <IntroTitle>이벤트<br />개설하기</IntroTitle>
                     <IntroDesc>
                         누구나 쉽게 이벤트를 만들 수 있어요!
                         <br />
@@ -41,24 +41,26 @@ const Main: React.FC = () => {
 }
 
 const IntroDesc = styled.div`
-    opacity: 0.67;
-    margin-top: 6px;
-    ${typos.pretendard['12.18.400']}
+    color: #FFFFFF;
+    ${typos.pretendard['15.21.500']};
+    position: absolute;
+    bottom: 20px;
 `
 
 const IntroTitle = styled.div`
-    ${typos.pretendard['22.18.700']};
+    ${typos.pretendard['27.37.800']};
 `
 
 const EventCreateIntro = styled.div`
-    background-color: #32aaff;
-    background-image: url(${window.location.origin}/${'/images/gift-image.png'});
-    background-position: right -3rem;
+    background-color: #73BCFF;
+    background-image: url(${window.location.origin}/${'/images/intro-image.png'});
+    background-position: right bottom;
     background-repeat: no-repeat;
     border-radius: 20px;
-    color: #fff;
+    color: #1B1B1E;
     padding: 20px 20px 130px;
     cursor: pointer;
+    position: relative;
 `
 
 const Container = styled.div`

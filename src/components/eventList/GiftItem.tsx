@@ -19,7 +19,7 @@ const GiftItem = ({imageFileName, title, eventTitle, joinedDate, isHit}: GiftPro
           }
     return (
         <Card withOverlay={false}>
-            <Card.Image src={imageFileName || '/images/example-hit-image.png'} description={eventTitle} />
+            <Card.Image src={imageFileName || '/images/hit-image.png'} description={eventTitle} />
             <Card.Content>
                 <Badge marginBottom={6} {...badgeProps} />
                 <Card.Title>{title}</Card.Title>

@@ -6,8 +6,8 @@ import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
 import ROUTE from '$constants/route'
 import {typos} from '$styles/typos'
-import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useEffect, useState} from 'react'
+import {useLocation, useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
 const ParticipatedNotice = () => {
@@ -34,25 +34,30 @@ const Button = styled.button`
     border-radius: 50px;
     border: none;
     outline: none;
-    margin-top: 30px;
+    margin-top: 40px;
     text-align: center;
     color: #1b1b1e;
     cursor: pointer;
-    ${typos.pretendard['14.32.500']};
+    ${typos.pretendard['16.19.600']};
 `
 
 const Container = styled(Box)`
     text-align: center;
     font-style: normal;
-    font-weight: 800;
-    font-size: 30px;
-    line-height: 43px;
+    ${typos.pretendard['25.38.800']};
     color: #ffffff;
     z-index: 1;
 `
 
+interface LocationState {
+    closed?: boolean
+}
+
 const EventResult = () => {
-    const [isParticipated] = useState(false)
+    const location = useLocation()
+    const state = (location.state || {}) as LocationState
+    const [isParticipated] = useState(state?.closed || false)
+
     return (
         <EventWrapper>
             {isParticipated ? (

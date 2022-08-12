@@ -22,7 +22,7 @@ const EventCard = ({title, type, openAt, closeAt, code}: EventCardProps) => {
                 <EventLink>
                     <ShareIcon
                         size={20}
-                        color={'#1B1B1E'}
+                        color={'rgba(255,255,255,.5)'}
                         style={{
                             marginRight: 4,
                         }}
@@ -37,15 +37,15 @@ const EventCard = ({title, type, openAt, closeAt, code}: EventCardProps) => {
 const getColorByStatus = () => (props: {status: EventType}) => {
     switch (props.status) {
         case EventType.WAIT:
-            return '#1B1B1E'
+            return '#fff'
         case EventType.PROCESS:
-            return '#32AAFF'
+            return '#fff'
         case EventType.COMPLETE:
-            return '#1B1B1E'
+            return '#fff'
         case EventType.CANCEL:
-            return '#1B1B1E'
+            return '#fff'
         default:
-            return '#1B1B1E'
+            return '#fff'
     }
 }
 
@@ -63,8 +63,7 @@ const EventLink = styled(Flex).attrs({
     alignItems: 'center',
 })`
     margin-top: 20px;
-    color: #1b1b1e;
-    opacity: 0.8;
+    color: rgba(255, 255, 255, .5);
     cursor: pointer;
     ${typos.pretendard['13.19.400']};
 `

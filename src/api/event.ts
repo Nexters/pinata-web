@@ -1,4 +1,3 @@
-import {ApiResponse} from '$types/ApiResponse'
 import client from '$util/client'
 
 export enum EventType {
@@ -20,12 +19,34 @@ export type Event = {
     participantCount: number
 }
 
+export type Item = {
+    id: number;
+    title: string;
+    imageUrl: string;
+    rank: string;
+    isAccepted: string; // ?
+  };
+
+export type EventResponse = {
+    id: number;
+    title: string;
+    code: string;
+    type: string;
+    openAt: string;
+    closeAt: string;
+    status: string;
+    items: Item[];
+    hitMessage: string;
+    hitImageUrl: string;
+    missMessage: string;
+    missImageUrl: string;
+  };
+  
+
 export type EventListResponse = Event[]
 
 export const participateEvent = async (eventCode: string) => {
-    const {
-        data: {data},
-    } = await client.get<ApiResponse<any>>(`/api/v1/events/participate/${eventCode}`)
+    const data = await client.get<EventResponse, EventResponse>(`/api/v1/events/participate/${eventCode}`)
     return data
 }
 

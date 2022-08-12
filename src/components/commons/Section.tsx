@@ -13,7 +13,7 @@ export const SectionTitle = styled.div<{
     marginTop?: number
     marginBottom?: number
 }>`
-    color: #121212;
+    color: #fff;
     ${typos.pretendard['16.26.700']};
     margin-top: ${({marginTop}) => marginTop || 0}px;
     margin-bottom: ${({marginBottom}) => marginBottom || 0}px;

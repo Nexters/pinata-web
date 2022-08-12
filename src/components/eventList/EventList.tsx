@@ -11,8 +11,8 @@ const EventList = () => {
         <Suspense fallback={<>Loading...</>}>
             <EventListContainer>
                 {eventList.map((event: Event) => (
-                    <EventItemCard>
-                        <EventCard key={event.id} {...event} />
+                    <EventItemCard key={event.id}>
+                        <EventCard {...event} />
                     </EventItemCard>
                 ))}
             </EventListContainer>

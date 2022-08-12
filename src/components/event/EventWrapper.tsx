@@ -1,3 +1,5 @@
+import Background from '$assets/image/Background';
+import Logo from '$assets/image/Logo';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -10,8 +12,9 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background-color: #32aaff;
-  background-image: url(${require('$assets/image/need-login-background.png')});
+  position: relative;
+
+  background-color: #1B1B1E;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -22,6 +25,7 @@ const HeaderLogo = styled.div`
   top: 0;
   position:absolute;
   height:60px;
+  padding: 15px 0;
 
   display: flex;
   justify-content: center;
@@ -29,22 +33,9 @@ const HeaderLogo = styled.div`
   gap: 8px;
 `
 
-const LogoImage = styled.div`
-  width: 20px;
-  height: 20px;
-
-  background: #FFFFFF;
-  border-radius: 5px;
-`
-
-const LogoText = styled.div`
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 20px;
-  
-  color:#FFFFFF;
+const Content = styled.div`
+  z-index: 1;
+  text-align: center;
 `
 
 type Props = {
@@ -57,10 +48,10 @@ const EventWrapper: React.FC<Props> = ({children, hasLogo = true}) => {
         <Wrapper>
             {hasLogo && 
               (<HeaderLogo>
-                  <LogoImage/>
-                  <LogoText>pinata</LogoText>
+                  <Logo />
               </HeaderLogo>)}
-            {children}
+            <Content>{children}</Content>
+            <Background />
         </Wrapper>
     );
 };

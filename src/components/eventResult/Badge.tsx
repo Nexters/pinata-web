@@ -9,7 +9,7 @@ export type BadgeProps = {
 }
 
 const BADGE_COLOR = {
-    danger: '#FF0404',
+    danger: '#FF6060',
     default: 'rgba(27, 27, 30, .5)',
 }
 

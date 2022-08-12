@@ -1,3 +1,4 @@
+import CloseIcon from '$assets/icons/CloseIcon'
 import MenuIcon from '$assets/icons/MenuIcon'
 import Logo from '$assets/image/Logo'
 import ROUTE from '$constants/route'
@@ -22,7 +23,8 @@ const Wrapper = styled.div<{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    ${({withBorderBottom}) => withBorderBottom && css`border-bottom: 1px solid #EFF1F3`};
+    background: #1B1B1E;
+    ${({withBorderBottom}) => withBorderBottom && css`border-bottom: 1px solid #eff1f31a`};
 `
 
 const MenuButton = styled.button`
@@ -32,32 +34,33 @@ const MenuButton = styled.button`
     padding: 0;
 `
 
+const Clickable = styled.span`
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+`
+
 type Props = {
-    isWhite?: boolean
+    isOpen: boolean
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
     withBorderBottom?: boolean
 }
 
-const Header: React.FC<Props> = ({isWhite = false, setIsOpen, withBorderBottom = false}) => {
+const Header: React.FC<Props> = ({isOpen, setIsOpen, withBorderBottom = false}) => {
     const navigate = useNavigate()
     const toggleMenu = () => {
         setIsOpen((open) => !open)
     }
-
-    const color = isWhite ? '#fff' : '#1B1B1E'
+    const gotoHome = () => navigate(ROUTE.MAIN)
 
     return (
         <Wrapper withBorderBottom={withBorderBottom}>
-            <Clickable onClick={() => navigate(ROUTE.MAIN)}><Logo size={87} color={color} /></Clickable>
+            <Clickable onClick={gotoHome}><Logo /></Clickable>
             <MenuButton onClick={toggleMenu}>
-                <MenuIcon size={20} color={color} />
+                {isOpen ? <CloseIcon size={30} color={'#fff'} /> : <MenuIcon size={20} color={'#fff'} />}
             </MenuButton>
         </Wrapper>
     )
 }
-
-const Clickable = styled.span`
-    cursor: pointer;
-`
 
 export default Header

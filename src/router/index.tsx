@@ -17,13 +17,13 @@ export const Router = () => {
             <Routes>
                 <Route path={ROUTE.MAIN} element={<Authenticated />}>
                     <Route path={ROUTE.MAIN} element={<Main />} />
-                    <Route path={ROUTE.EVENT.DETAIL} element={<Event />} />
                     <Route path={ROUTE.EVENT.LIST} element={<EventLists />} />
                     <Route path={ROUTE.EVENT.CREATE} element={<CreateEvent />} />
                     <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
                     <Route path={ROUTE.GIFTS} element={<Gifts />} />
                 </Route>
                 <Route path={ROUTE.LOGIN} element={<Login />} />
+                <Route path={ROUTE.EVENT.DETAIL} element={<Event />} />
                 <Route path={ROUTE.ERROR} element={<ErrorPage />} />
             </Routes>
         </BrowserRouter>
