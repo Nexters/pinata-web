@@ -1,11 +1,32 @@
+import {useEventList} from '$api/event'
+import {Box} from '$components/commons/Box'
+import EventCard from '$components/eventList/EventCard'
+import LayoutWrapper from '$layout/LayoutWrapper'
 import React from 'react'
+import styled from 'styled-components'
 
 const EventLists: React.FC = () => {
+    const {data: eventList = []} = useEventList()
+
     return (
-        <div className="App">
-            <h1>EventLists Page</h1>
-        </div>
+        <LayoutWrapper isWhite={false} withBorderBottom>
+            <Container>
+                {eventList.map((event) => (
+                    <EventCardItem key={event.id}>
+                        <EventCard {...event} />
+                    </EventCardItem>
+                ))}
+            </Container>
+        </LayoutWrapper>
     )
 }
+
+const EventCardItem = styled(Box)`
+    margin-bottom: 16px;
+`
+
+const Container = styled.div`
+    padding: 30px 20px;
+`
 
 export default EventLists

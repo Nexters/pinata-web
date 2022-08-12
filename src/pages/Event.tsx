@@ -2,27 +2,36 @@ import React, {useEffect, useState} from 'react'
 
 import NeedLogin from '$components/event/NeedLogin'
 import Waiting from '$components/event/Waiting'
-import Closed from '$components/event/Closed'
 import Participation from '$components/event/Participation'
 
-import {Event} from '$types/Event'
 import useKakaoLogin from '$hooks/useKakaoLogin'
-import {participateEvent} from '$api/event'
+import {EventResponse, participateEvent} from '$api/event'
+import ROUTE from '$constants/route'
+import { Navigate } from 'react-router-dom'
+import useAsyncError from '$hooks/useAsyncError'
 
 const EventPage: React.FC = () => {
-    const [event] = useState<Event>()
+    const [event, setEvent] = useState<EventResponse>()
     const {isLogined} = useKakaoLogin()
 
     const isClosed = event && event.status !== 'wait'
     const isWaiting = event && event.status === 'wait'
     const isParticipation = event && true
 
+    const throwError = useAsyncError()
+
+    const callParticipageEvent = async () => {
+        try {
+            const event = await participateEvent('123')
+            setEvent(event)
+        } catch (e: unknown) {
+            throwError(e)
+        }
+    }
+
     // 여기서 이벤트 정보 호출후 상태 만듬
     useEffect(() => {
-        participateEvent('123').then((event) => {
-            console.log(event)
-            // setEvent(event)
-        })
+        callParticipageEvent()
     }, [])
 
     if (!isLogined) {
@@ -30,7 +39,9 @@ const EventPage: React.FC = () => {
     }
 
     if (isClosed) {
-        return <Closed />
+        return <Navigate to={ROUTE.EVENT.RESULT} state={{
+            closed: true
+        }} />
     }
 
     if (isWaiting && event) {

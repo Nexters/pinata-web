@@ -19,7 +19,7 @@ const MobileScreen = styled.div`
     width: 480px;
     min-height: 100vh;
 
-    background: #fff;
+    background: #1B1B1E;
 
     overflow: hidden;
 `

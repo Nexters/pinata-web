@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import {Link} from 'react-router-dom'
+import { typos } from '$styles/typos'
 
 const Option = styled.div`
     width: 100%;
@@ -14,35 +15,29 @@ const Option = styled.div`
     align-items: center;
 `
 
-const Icon = styled.div`
-    width: 40px;
-    height: 40px;
-
-    margin-right: 12px;
+const Text = styled.p`
+    ${typos.pretendard['23.26.700']};
+    line-height: 0;
+    color: #fff;
 `
 
-const Text = styled.p`
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 23px;
-    line-height: 26px;
-
-    letter-spacing: -0.333333px;
-
-    color: #1b1b1e;
+const MenuImage = styled.img`
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
 `
 
 type Props = {
     text: string
     link: string
+    imageUrl: string
 }
 
-const MenuLink: React.FC<Props> = ({text, link}) => {
+const MenuLink: React.FC<Props> = ({text, link, imageUrl}) => {
     return (
         <Link to={link}>
             <Option>
-                <Icon />
+                <MenuImage src={imageUrl} />
                 <Text>{text}</Text>
             </Option>
         </Link>

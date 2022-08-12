@@ -46,6 +46,8 @@
     ]
   },
   "devDependencies": {
+    "@radix-ui/react-icons": "^1.1.1",
+    "@radix-ui/react-select": "^1.0.0",
     "@types/styled-components": "^5.1.25",
     "customize-cra": "^1.0.0",
     "date-fns": "^2.29.1",

@@ -6,28 +6,18 @@ import EventWrapper from '$components/event/EventWrapper'
 import {useInterval} from '$hooks/useInterval'
 import {Event} from '$types/Event'
 import {changeSecondsHHMMSS} from '$util/time'
+import { typos } from '$styles/typos'
 
 const Timer = styled.div`
-    font-family: 'Pretendard';
-    font-style: bold;
-    font-weight: 800;
-    font-size: 59px;
-    line-height: 26px;
     height: 45px;
     color: #ffffff;
+    ${typos.pretendard['60.43.800']};
 `
 
 const Instruction = styled.div`
-    margin-top: 28;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 26px;
-
+    margin-top: 30px;
     text-align: center;
-    letter-spacing: -0.333333px;
-
+    ${typos.pretendard['16.26.500']};
     color: #ffffff;
 `
 

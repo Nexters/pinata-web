@@ -1,9 +1,9 @@
-import PinataImage from '$assets/image/PinataImage'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import ROUTE from '$constants/route'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
+import { typos } from '$styles/typos'
 import {Navigate} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -15,13 +15,8 @@ const Login = () => {
     return (
         <LoginWrapper>
             <LayoutWrapper isWhite>
-                <PinataImage
-                    size={330}
-                    style={{
-                        marginTop: '-60px',
-                    }}
-                />
                 <Container>
+                    <PinataImage />
                     <Box>
                         누구나 쉽게 이벤트 만들고
                         <br />
@@ -33,6 +28,13 @@ const Login = () => {
         </LoginWrapper>
     )
 }
+
+const PinataImage = styled.div`
+    background: url(${window.location.origin}/images/pinata-image.png);
+    width: 181px;
+    height: 129px;
+    margin-bottom: 120px;
+`
 
 const Button = styled.button`
     width: 180px;
@@ -51,26 +53,28 @@ const Button = styled.button`
 
 const LoginWrapper = styled(Flex).attrs({
     direction: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
 })`
     height: 100%;
     width: 100%;
-    background-color: #32aaff;
-    background-image: url(${require('$assets/image/need-login-background.png')});
+    background-color: #1B1B1E;
+    position: relative;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 `
 
-const Container = styled(Box)`
+const Container = styled(Flex).attrs({
+    direction: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+})`
     text-align: center;
     font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 35px;
     color: #ffffff;
     z-index: 1;
+    ${typos.pretendard['24.35.700']};
 `
 
 export default Login

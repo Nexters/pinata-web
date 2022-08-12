@@ -1,3 +1,4 @@
+import {Typo} from '$styles/typos'
 import styled, {css, CSSProperties} from 'styled-components'
 
 type BoxProps = {
@@ -5,13 +6,16 @@ type BoxProps = {
     width?: number | string
     height?: number | string
     padding?: CSSProperties['padding']
+    style?: CSSProperties
+    typo?: Typo
 }
 
 export const Box = styled.div<BoxProps>`
-    ${({backgroundColor, width, height, padding}) => css`
+    ${({backgroundColor, width, height, padding, typo}) => css`
         background-color: ${backgroundColor};
-        width: ${width !== undefined ? width + 'px' : undefined};
-        height: ${height !== undefined ? height + 'px' : undefined};
+        width: ${width !== undefined ? (typeof width === 'number' ? width + 'px' : width) : undefined};
+        height: ${height !== undefined ? (typeof height === 'number' ? height + 'px' : height) : undefined};
         padding: ${padding};
+        ${typo};
     `}
 `

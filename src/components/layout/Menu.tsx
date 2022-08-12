@@ -1,3 +1,8 @@
+import Flex from '$components/commons/Flex'
+import ROUTE from '$constants/route'
+import useBodyScrollLock from '$hooks/useBodyScrollLock'
+import useKakaoLogin from '$hooks/useKakaoLogin'
+import {typos} from '$styles/typos'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -9,9 +14,13 @@ type Props = {
 
 const Wrapper = styled.div<{isOpen: boolean}>`
     position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
     width: 100%;
-    height: calc(100% - 60px);
-    background-color: white;
+    height: 100%;
+    background-color: #1B1B1E;
+    color: #fff;
 
     padding-top: 60px;
 
@@ -29,32 +38,47 @@ const Select = styled.section`
     margin: 18px;
 `
 
-const KakaoLogin = styled.div`
+const KakaoLogin = styled(Flex).attrs({
+    direction: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+})`
     position: absolute;
-    bottom: 0;
-    left: 0;
+    top: calc(100vh - 50px);
+    padding: 0 25px;
+    user-select: none;
+    ${typos.pretendard['16.19.700']};
+    color: #fff;
+`
 
-    width: 100px;
-    height: 60px;
-    background-color: red;
+const Button = styled.span`
+    cursor: pointer;
 `
 
 export const Menu: React.FC<Props> = ({isOpen}) => {
     const menus = [
-        {text: '피나타 소개', link: ''},
-        {text: '이벤트 개설하기', link: ''},
-        {text: '개설한 이벤트', link: ''},
-        {text: '참여한 이벤트', link: ''},
+        {text: '피나타 소개', link: '', imageUrl: `${window.location.origin}/images/horse_icon.png`},
+        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE, imageUrl: `${window.location.origin}/images/pinata_icon.png`},
+        {text: '개설한 이벤트', link: ROUTE.EVENT.LIST, imageUrl: `${window.location.origin}/images/horse_icon.png`},
+        {text: '참여한 이벤트', link: ROUTE.GIFTS, imageUrl: `${window.location.origin}/images/pinata_icon.png`},
     ]
+
+    const {isLogined, login, logout} = useKakaoLogin()
+
+    useBodyScrollLock(isOpen)
 
     return (
         <Wrapper isOpen={isOpen}>
             <Select>
                 {menus.map((menu) => (
-                    <MenuLink link={menu.link} text={menu.text} />
+                    <MenuLink key={menu.text} link={menu.link} text={menu.text} imageUrl={menu.imageUrl} />
                 ))}
             </Select>
-            <KakaoLogin />
+            {isLogined ? (
+                <KakaoLogin><Button onClick={logout}>로그아웃</Button></KakaoLogin>
+            ) : (
+                <KakaoLogin><Button onClick={login}>카카오로 로그인</Button></KakaoLogin>
+            )}
         </Wrapper>
     )
 }

@@ -6,6 +6,7 @@ import Menu from '$components/layout/Menu'
 
 const InnerWrapper = styled.div`
     margin-top: 60px;
+    z-index: 1;
 `
 
 type Props = {
@@ -19,7 +20,7 @@ const LayoutWrapper: React.FC<Props> = ({children, isWhite, withBorderBottom = f
 
     return (
         <>
-            <Header isWhite={isWhite && !isOpen} setIsOpen={setIsOpen} withBorderBottom={withBorderBottom && !isOpen} />
+            <Header isOpen={isOpen} setIsOpen={setIsOpen} withBorderBottom={withBorderBottom && !isOpen} />
             <Menu isOpen={isOpen} />
             <InnerWrapper>{children}</InnerWrapper>
         </>

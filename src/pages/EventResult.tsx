@@ -5,8 +5,9 @@ import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
 import ROUTE from '$constants/route'
-import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {typos} from '$styles/typos'
+import {useEffect, useState} from 'react'
+import {useLocation, useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
 const ParticipatedNotice = () => {
@@ -21,7 +22,7 @@ const ParticipatedNotice = () => {
                 </Box>
                 <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
             </Container>
-            <Overlay />
+            <Overlay onClick={() => {}} />
         </Flex>
     )
 }
@@ -33,26 +34,30 @@ const Button = styled.button`
     border-radius: 50px;
     border: none;
     outline: none;
-    margin-top: 30px;
-    font-weight: 600;
-    font-size: 16px;
+    margin-top: 40px;
     text-align: center;
     color: #1b1b1e;
     cursor: pointer;
+    ${typos.pretendard['16.19.600']};
 `
 
 const Container = styled(Box)`
     text-align: center;
     font-style: normal;
-    font-weight: 800;
-    font-size: 30px;
-    line-height: 43px;
+    ${typos.pretendard['25.38.800']};
     color: #ffffff;
     z-index: 1;
 `
 
+interface LocationState {
+    closed?: boolean
+}
+
 const EventResult = () => {
-    const [isParticipated] = useState(false)
+    const location = useLocation()
+    const state = (location.state || {}) as LocationState
+    const [isParticipated] = useState(state?.closed || false)
+
     return (
         <EventWrapper>
             {isParticipated ? (
