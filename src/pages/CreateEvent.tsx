@@ -139,17 +139,6 @@ const CreateEvent: React.FC = () => {
     )
 }
 
-const Divider = styled.hr`
-    border: 0.5px solid rgba(27, 27, 30, 0.1);
-    margin: 20px 0;
-`
-
-const DialogSubTitle = styled.div`
-    ${typos.pretendard['14.26.500']};
-    color: #121212;
-    margin-bottom: 10px;
-`
-
 const NumberHighlight = styled.span`
     ${typos.pretendard['16.26.700']};
 `
