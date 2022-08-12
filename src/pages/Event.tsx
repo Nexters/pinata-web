@@ -32,6 +32,7 @@ const EventPage: React.FC = () => {
     // 여기서 이벤트 정보 호출후 상태 만듬
     useEffect(() => {
         callParticipageEvent()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (!isLogined) {

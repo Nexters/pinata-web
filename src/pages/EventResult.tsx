@@ -6,7 +6,7 @@ import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
 import ROUTE from '$constants/route'
 import {typos} from '$styles/typos'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 

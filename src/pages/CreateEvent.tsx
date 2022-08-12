@@ -1,9 +1,6 @@
 import InfoCircleIcon from '$assets/icons/InfoCircleIcon'
-import PlusIcon from '$assets/icons/PlusIcon'
-import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import {Section, SectionTitle} from '$components/commons/Section'
-import Dialog from '$components/dialog/Dialog'
 import CardListForm from '$components/eventForm/CardListForm'
 import GiftDialog from '$components/eventForm/GiftDialog'
 import GiftList from '$components/eventForm/GiftList'
@@ -141,17 +138,6 @@ const CreateEvent: React.FC = () => {
         </LayoutWrapper>
     )
 }
-
-const Divider = styled.hr`
-    border: 0.5px solid rgba(27, 27, 30, 0.1);
-    margin: 20px 0;
-`
-
-const DialogSubTitle = styled.div`
-    ${typos.pretendard['14.26.500']};
-    color: #121212;
-    margin-bottom: 10px;
-`
 
 const NumberHighlight = styled.span`
     ${typos.pretendard['16.26.700']};
