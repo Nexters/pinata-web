@@ -1,26 +1,25 @@
 import Flex from '$components/commons/Flex'
 import {typos} from '$styles/typos'
-import {ChangeEvent, InputHTMLAttributes} from 'react'
+import {ChangeEvent, forwardRef, InputHTMLAttributes} from 'react'
 import styled, {css} from 'styled-components'
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-    value: string
+export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value'> & {
     onChange(e: ChangeEvent<HTMLInputElement>): void
     variant?: 'default' | 'fill'
     label?: string
 }
 
-const Input = ({value, onChange, variant = 'default', label, ...inputProps}: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(({onChange, variant = 'default', label, ...inputProps}, ref) => {
     return (
         <Flex direction="row">
             {label && <Label>{label}</Label>}
-            <InputBox type="text" value={value} onChange={onChange} variant={variant} {...inputProps} />
+            <InputBox ref={ref} onChange={onChange} variant={variant} {...inputProps} />
         </Flex>
     )
-}
+})
 
 const Label = styled.span`
-    color: #121212;
+    color: #fff;
     display: inline-flex;
     min-width: 25px;
     margin-right: 15px;

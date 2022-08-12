@@ -3,10 +3,12 @@ import Flex from '$components/commons/Flex'
 import RadioContextProvider, {useRadioContext} from '$contexts/RadioContext'
 import {ValueList} from '$types/common'
 import {extractProp} from '$util/common'
-import {ReactNode} from 'react'
+import {forwardRef, ReactNode} from 'react'
 import styled, {css, CSSProperties, FlattenSimpleInterpolation} from 'styled-components'
 
-const RadioForm = ({children, values}: {children: ReactNode; values: ValueList<unknown>}) => {
+type RadioProps = {children: ReactNode; values: ValueList<unknown>}
+
+const RadioForm = ({children, values}: RadioProps) => {
     return (
         <RadioContextProvider values={values}>
             <Wrapper>{children}</Wrapper>
@@ -22,9 +24,10 @@ type RadioItemProps = {
     selectedStyle: FlattenSimpleInterpolation
     unselectedStyle: FlattenSimpleInterpolation
     style?: FlattenSimpleInterpolation
+    onSelect(value: unknown): void
 }
 
-const RadioItem = ({value, children, width, height, selectedStyle, unselectedStyle, style = css``}: RadioItemProps) => {
+const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(({onSelect: onSelectInProps,  value, children, width, height, selectedStyle, unselectedStyle, style = css``}, ref) => {
     const {onSelect, selected} = useRadioContext()
 
     const isSelected = selected === value
@@ -38,12 +41,13 @@ const RadioItem = ({value, children, width, height, selectedStyle, unselectedSty
             height={height}
             onClick={() => {
                 onSelect(value)
+                onSelectInProps(value)
             }}
             defaultStyle={style}>
             <Box>{children}</Box>
         </ItemBox>
     )
-}
+})
 
 const ItemBox = styled(Flex).attrs({
     direction: 'column',

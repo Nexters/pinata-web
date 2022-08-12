@@ -52,6 +52,7 @@
     "customize-cra": "^1.0.0",
     "date-fns": "^2.29.1",
     "prettier": "^2.7.1",
+    "react-hook-form": "^7.34.0",
     "styled-components": "^5.3.5"
   }
 }

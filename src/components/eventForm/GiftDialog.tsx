@@ -31,7 +31,7 @@ const GiftDialog = () => {
                 </Button>
                 <Divider />
                 <DialogSubTitle>선물하실 상품 이름을 적어주세요</DialogSubTitle>
-                <Input
+                {/* <Input
                     variant="fill"
                     placeholder="최대 20글자"
                     value={giftName}
@@ -39,7 +39,7 @@ const GiftDialog = () => {
                     style={{
                         marginBottom: 36,
                     }}
-                />
+                /> */}
                 <Button color="dark" height={52}>
                     등록하기
                 </Button>
