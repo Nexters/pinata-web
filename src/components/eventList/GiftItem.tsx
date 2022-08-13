@@ -1,30 +1,74 @@
 import {EventItem} from '$api/event'
-import Badge, {BadgeProps} from '$components/eventResult/Badge'
+import DownloadIcon from '$assets/icons/DownloadIcon'
+import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
+import useItemStatus from '$hooks/useItemStatus'
+import { colors } from '$styles/colors'
+import { typos } from '$styles/typos'
 import {format} from 'date-fns'
+import styled from 'styled-components'
 
 type GiftProps = EventItem
 
-const formatDateTime = (dateTime: string) => format(new Date(dateTime), 'yyyy.MM.dd')
+const formatDateTime = (dateTime: string, to = 'yyyy.MM.dd') => format(new Date(dateTime), to)
 
-const GiftItem = ({imageFileName, title, eventTitle, joinedDate, isHit}: GiftProps) => {
-    const badgeProps: Pick<BadgeProps, 'text' | 'type'> = isHit
-        ? {
-              text: '당첨',
-              type: 'danger',
-          }
-        : {
-              text: '탈락',
-              type: 'default',
-          }
+const GiftItem = (props: GiftProps) => {
+    const {resultImageUrl, eventTitle, participateAt} = props
+    const {badgeProps, cardTitle} = useItemStatus(props)
+
     return (
         <Card withOverlay={false}>
-            <Card.Image src={imageFileName || 'hit-image.png'} description={eventTitle} />
+            <Card.Image src={resultImageUrl} description={eventTitle} />
             <Card.Content>
                 <Badge marginBottom={6} {...badgeProps} />
-                <Card.Title>{title}</Card.Title>
-                <Card.Desc size={'lg'}>{formatDateTime(joinedDate)} 참여</Card.Desc>
+                <Card.Title>{cardTitle}</Card.Title>
+                <Card.Desc size={'lg'}>{formatDateTime(participateAt)} 참여</Card.Desc>
             </Card.Content>
+        </Card>
+    )
+}
+
+const CustomBadge = ({participateAt}: {participateAt: string}) => {
+    return (
+        <ParticipateDateLabel>{formatDateTime(participateAt, 'yy.MM.dd')}</ParticipateDateLabel>
+    )
+}
+
+const ParticipateDateLabel = styled.span`
+    background: #7a7a834d;
+    color: ${colors.white};
+    border-radius: 24px;
+    ${typos.pretendard['11.18.400']};
+    padding: 3px 10px;
+    cursor: default;
+`
+
+export const DetailGiftItem = (props: GiftProps) => {
+    const {resultImageUrl, eventTitle, participateAt, result, resultMessage, itemImageUrl} = props
+    const {badgeProps, cardTitle} = useItemStatus(props)
+
+    const downloadImageUrl = () => {
+        console.log(itemImageUrl)
+    }
+
+    return (
+        <Card withOverlay={false}>
+            <Card.Image src={resultImageUrl} description={eventTitle} replaceIcon={() => <CustomBadge participateAt={participateAt} />} />
+            <Card.Content>
+                <Badge marginBottom={6} {...badgeProps} />
+                <Card.Title>{cardTitle}</Card.Title>
+                <Card.Desc size={'lg'}>{
+                    result
+                    ? resultMessage
+                    : ''
+                }</Card.Desc>
+            </Card.Content>
+            {result && <Card.Button onClick={downloadImageUrl}>
+                <DownloadIcon size={16} color={colors.white} style={{
+                    marginRight: 6
+                }} />
+                선물 받기
+                </Card.Button>}
         </Card>
     )
 }

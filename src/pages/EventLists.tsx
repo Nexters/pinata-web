@@ -6,12 +6,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 const EventLists: React.FC = () => {
-    const {data: eventList = []} = useEventList()
+    const {data} = useEventList()
+
+    if (!data) {
+        return null
+    }
 
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
-                {eventList.map((event) => (
+                {data.data.map((event) => (
                     <EventCardItem key={event.id}>
                         <EventCard {...event} />
                     </EventCardItem>

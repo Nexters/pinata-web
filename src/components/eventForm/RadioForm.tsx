@@ -1,61 +1,81 @@
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
-import RadioContextProvider, {useRadioContext} from '$contexts/RadioContext'
-import {ValueList} from '$types/common'
+import { EventForm } from '$types/Event'
 import {extractProp} from '$util/common'
-import {forwardRef, ReactNode, useEffect} from 'react'
+import {PropsWithChildren, ReactNode, useEffect, useState} from 'react'
+import { useFormContext } from 'react-hook-form'
 import styled, {css, CSSProperties, FlattenSimpleInterpolation} from 'styled-components'
 
 type RadioProps = {
     children: ReactNode
-    values: ValueList<unknown>
-    defaultValue?: unknown
 }
 
-const RadioForm = ({children, values, defaultValue}: RadioProps) => {
+const RadioForm = ({children}: RadioProps) => {
     return (
-        <RadioContextProvider values={values} defaultSelected={defaultValue}>
-            <Wrapper>{children}</Wrapper>
-        </RadioContextProvider>
+        <Wrapper>{children}</Wrapper>
     )
 }
 
-type RadioItemProps = {
-    value: unknown
-    children: ReactNode
-    width: CSSProperties['width']
-    height: CSSProperties['height']
+type RadioItemProps = PropsWithChildren<{
+    name: keyof EventForm
+    value: string
     selectedStyle: FlattenSimpleInterpolation
     unselectedStyle: FlattenSimpleInterpolation
     style?: FlattenSimpleInterpolation
-    onSelect(value: unknown): void
-}
+    width: CSSProperties['width']
+    height: CSSProperties['height']
+}>
 
-const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(({onSelect: onSelectInProps,  value, children, width, height, selectedStyle, unselectedStyle, style = css``}, ref) => {
-    const {onSelect, selected} = useRadioContext()
+const RadioItem = ({
+    name, 
+    value, 
+    selectedStyle, 
+    unselectedStyle,
+    style = css``,
+    children,
+    width,
+    height,
+    }: RadioItemProps) => {
+    const [selected, setSelected] = useState(false)
+    const {register, setValue, watch} = useFormContext()
+
+    const currentValue = watch(name)
 
     useEffect(() => {
-        onSelectInProps(selected)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selected])
-
-    const isSelected = selected === value
-
+        setSelected(currentValue === value)
+    }, [currentValue, value])
+    
     return (
-        <ItemBox
-            isSelected={isSelected}
-            selectedStyle={selectedStyle}
-            unselectedStyle={unselectedStyle}
-            width={width}
-            height={height}
-            onClick={() => {
-                onSelect(value)
-            }}
-            defaultStyle={style}>
-            <Box>{children}</Box>
-        </ItemBox>
+        <>
+        <label htmlFor={`${name}-${value}`}>
+            <ItemBox
+                isSelected={selected}
+                selectedStyle={selectedStyle}
+                unselectedStyle={unselectedStyle}
+                width={width}
+                height={height}
+                onClick={() => {
+                    setValue(name, value)
+                }}
+                defaultStyle={style}>
+                <Box>{children}</Box>
+            </ItemBox>
+        </label>
+            <HiddenRadioInput {...register(name, {required: true})} name={name} value={value} id={`${name}-${value}`} />
+        </>
     )
-})
+}
+
+const HiddenRadioInput = styled.input.attrs({
+    type: 'radio'
+})`
+    width: 0;
+    height: 0;
+    position: absolute;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+`
 
 const ItemBox = styled(Flex).attrs({
     direction: 'column',
@@ -74,7 +94,9 @@ const ItemBox = styled(Flex).attrs({
 const Wrapper = styled(Flex).attrs({
     direction: 'row',
     justifyContent: 'space-around',
-})``
+})`
+    position: relative;
+`
 
 RadioForm.Item = RadioItem
 

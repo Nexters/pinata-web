@@ -5,18 +5,20 @@ import CardListForm from '$components/eventForm/CardListForm'
 import GiftDialog from '$components/eventForm/GiftDialog'
 import GiftList from '$components/eventForm/GiftList'
 import Input from '$components/eventForm/Input'
-import RadioForm from '$components/eventForm/RadioForm'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import React, { useState } from 'react'
 import styled, {css} from 'styled-components'
-import {useForm} from 'react-hook-form'
-import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
+import {useFormContext} from 'react-hook-form'
+import { EVENT_TYPE, useCreateEvent } from '$api/event'
 import { format, parseISO } from 'date-fns'
 import useAsyncError from '$hooks/useAsyncError'
 import { colors } from '$styles/colors'
-import { getImageSource } from '$util/imageHelper'
+import { EventForm, ImageUrls } from '$types/Event'
+import RadioForm from '$components/eventForm/RadioForm'
+import { useNavigate } from 'react-router-dom'
+import ROUTE from '$constants/route'
+import { useEffect, useState } from 'react'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -42,36 +44,32 @@ const DEMO_GIFTS = [
     },
 ]
 
-export interface EventForm {
-    title: string
-    openAt: string
-    closeAt: string
-    hitMessage: string
-    missMessage: string
-    type: EventType
-    hitImageUrl: string
-    missImageUrl: string
-}
-
 const required = true
 
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
-const CreateEvent: React.FC = () => {
-    const [hitImageUrls, addHitImageUrls] = useState<string[]>([getImageSource('hit-image.png')])
-    const [missImageUrls, addMissImageUrls] = useState<string[]>([])
-
-    const {register, handleSubmit, setValue} = useForm<EventForm>()
+const CreateEvent = () => {
+    const {register, handleSubmit, setValue, formState: {isSubmitted}} = useFormContext<EventForm & ImageUrls>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
+    const navigate = useNavigate()
+
+    const [completeEventCode, setEventCode] = useState<string | null>(null)
     
 
-    const onSubmit = async (data: EventForm) => {
+    const onSubmit = async (data: EventForm & ImageUrls) => {
         try {
             const openAt = formatDateToString(data.openAt)
             const closeAt = formatDateToString(data.closeAt)
-            const {code} = await createEvent({
-                ...data,
+            const eventFormData = Object.entries(data)
+                                            .filter(([key]) => key !== 'hitImageUrls' && key !== 'missImageUrls')
+                                                .reduce((obj, [key, value]) => {
+                                                    obj[key] = value
+                                                    return obj
+                                                }, {} as Record<string, any>) as EventForm
+
+            const {eventCode} = await createEvent({
+                ...eventFormData,
                 openAt,
                 closeAt,
                 isPeriod: true,
@@ -80,23 +78,27 @@ const CreateEvent: React.FC = () => {
                     { 'title' : '논픽션 핸드크림', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/item-image-02.jpeg', 'rank' : 2 }
                 ],
             })
-    
-            console.log(code)
+            setEventCode(eventCode)
         } catch (e) {
             throwError(e)
         }
     }
 
-    const onSelect = (value: EventType) => {
-        setValue('type', value)
-    }
+    useEffect(() => {
+        if (isSubmitted) {
+            navigate(ROUTE.EVENT.CREATE_COMPLETE, {
+                state: {eventCode: completeEventCode}
+            })
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSubmitted, completeEventCode])
 
-    const onSelectHitImage = (value: string) => {
-        setValue('hitImageUrl', value)
-    }
-
-    const onSelectMissImage = (value: string) => {
-        setValue('missImageUrl', value)
+    const defaultTypeProps = {
+        width: 162,
+        height: 100,
+        selectedStyle: radioSelectStyle,
+        unselectedStyle: radioDefaultStyle,
+        style: radioCommonStyle,
     }
 
     return (
@@ -121,26 +123,18 @@ const CreateEvent: React.FC = () => {
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 모드를 선택하세요</SectionTitle>
-                        <RadioForm values={[EVENT_TYPE.RANDOM, EVENT_TYPE.FCFS]} defaultValue={EVENT_TYPE.RANDOM}>
-                            <RadioForm.Item
-                                onSelect={onSelect}
-                                width={162}
-                                height={100}
-                                value={EVENT_TYPE.RANDOM}
-                                selectedStyle={radioSelectStyle}
-                                unselectedStyle={radioDefaultStyle}
-                                style={radioCommonStyle}>
-                                랜덤 모드
+                        <RadioForm>
+                            <RadioForm.Item 
+                                name="type" 
+                                value={EVENT_TYPE.RANDOM} 
+                                {...defaultTypeProps}>
+                            랜덤 모드
                             </RadioForm.Item>
-                            <RadioForm.Item
-                                onSelect={onSelect}
-                                width={162}
-                                height={100}
-                                value={EVENT_TYPE.FCFS}
-                                selectedStyle={radioSelectStyle}
-                                unselectedStyle={radioDefaultStyle}
-                                style={radioCommonStyle}>
-                                선착순 모드
+                            <RadioForm.Item 
+                            name="type" 
+                            value={EVENT_TYPE.FCFS}
+                            {...defaultTypeProps}>
+                            선착순 모드
                             </RadioForm.Item>
                         </RadioForm>
                     </Section>
@@ -163,7 +157,7 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={hitImageUrls}
+                            imagesName='hitImageUrls'
                             inputProps={{
                                 ...register('hitMessage', {required}),
                                 type: 'text',
@@ -172,10 +166,8 @@ const CreateEvent: React.FC = () => {
                             label={'당첨'}
                             onUpload={(urls: string[]) => {
                                 setValue('hitImageUrl', urls[0])
-                                addHitImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
                             }}
-                            onSelect={onSelectHitImage}
-
+                            radioName={'hitImageUrl'}
                         />
                     </Section>
                     <Section marginTop={40}>
@@ -186,7 +178,7 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={missImageUrls}
+                            imagesName='missImageUrls'
                             inputProps={{
                                 ...register('missMessage', {required}),
                                 type: 'text',
@@ -195,9 +187,8 @@ const CreateEvent: React.FC = () => {
                             label={'탈락'}
                             onUpload={(urls: string[]) => {
                                 setValue('missImageUrl', urls[0])
-                                addMissImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
                             }}
-                            onSelect={onSelectMissImage}
+                            radioName={'missImageUrl'}
                         />
                     </Section>
                     <Section marginTop={30}>

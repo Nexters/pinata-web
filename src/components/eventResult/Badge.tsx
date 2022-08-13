@@ -1,3 +1,4 @@
+import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import styled from 'styled-components'
@@ -9,8 +10,8 @@ export type BadgeProps = {
 }
 
 const BADGE_COLOR = {
-    danger: '#FF6060',
-    default: 'rgba(27, 27, 30, .5)',
+    danger: colors.red[100],
+    default: colors.black[100],
 }
 
 const Badge = ({text, type, marginBottom = 0}: BadgeProps) => {

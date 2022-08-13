@@ -5,7 +5,6 @@ import {ReactNode} from 'react'
 import styled, { css } from 'styled-components'
 import {Typo, typos} from '$styles/typos'
 import Overlay from './Overlay'
-import {getImageSource} from '$util/imageHelper'
 import { colors } from '$styles/colors'
 
 type CardProps = {
@@ -41,9 +40,11 @@ type ImageProps = {
     src: string
     description?: string
     withClose?: boolean
+    replaceIcon?(): JSX.Element
 }
 
-const Image = ({src, description = '', withClose = false}: ImageProps) => {
+const Image = ({src, description = '', withClose = false, replaceIcon}: ImageProps) => {
+    const ReplaceIcon = replaceIcon
     return (
         <CardImage src={src}>
             <CardImageTitle>{description}</CardImageTitle>
@@ -52,6 +53,11 @@ const Image = ({src, description = '', withClose = false}: ImageProps) => {
                     <CloseIcon size={26} />
                 </IconBox>
             )}
+            {
+                <IconBox>
+                    {ReplaceIcon && <ReplaceIcon />}
+                </IconBox>
+            }
         </CardImage>
     )
 }
@@ -125,7 +131,7 @@ const CardImage = styled.div<{src: string}>`
     width: 100%;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    background: url(${({src}) => getImageSource(src)});
+    background: url(${extractProp('src')});
     background-repeat: no-repeat;
     background-size: 100%;
 `

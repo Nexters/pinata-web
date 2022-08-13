@@ -1,19 +1,23 @@
 import {useJoinedEventList} from '$api/event'
 import {Box} from '$components/commons/Box'
-import GiftItem from '$components/eventList/GiftItem'
+import { DetailGiftItem } from '$components/eventList/GiftItem'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import React from 'react'
 import styled from 'styled-components'
 
 const Gifts: React.FC = () => {
-    const {data: giftList = []} = useJoinedEventList()
+    const {data} = useJoinedEventList()
+
+    if (!data) {
+        return null
+    }
 
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
-                {giftList.map((gift) => (
-                    <GiftCardItem key={gift.id}>
-                        <GiftItem {...gift} />
+                {data.data.map((gift) => (
+                    <GiftCardItem key={gift.itemId}>
+                        <DetailGiftItem {...gift} />
                     </GiftCardItem>
                 ))}
             </Container>

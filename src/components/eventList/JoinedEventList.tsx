@@ -5,14 +5,18 @@ import {EventItem, useJoinedEventList} from '$api/event'
 import GiftItem from './GiftItem'
 
 const JoinedEventList = () => {
-    const {data: giftList = []} = useJoinedEventList()
+    const {data} = useJoinedEventList()
+
+    if (!data) {
+        return null
+    }
 
     return (
         <Suspense fallback={<>Loading...</>}>
             <EventListContainer>
-                {giftList.map((gift: EventItem) => (
-                    <GiftBox>
-                        <GiftItem key={gift.id} {...gift} />
+                {data.data.map((gift: EventItem) => (
+                    <GiftBox key={gift.itemId}>
+                        <GiftItem  {...gift} />
                     </GiftBox>
                 ))}
             </EventListContainer>
