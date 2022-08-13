@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 const Wrapper = styled.div`
     width: 100vw;
-    height: 100vh;
 
     display: flex;
     justify-content: center;
@@ -16,11 +15,9 @@ const Wrapper = styled.div`
 
 const MWrapper = styled.div`
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
 
     background: #1b1b1e;
-
-    overflow: hidden;
 `
 
 const MobileScreen = styled.div`
