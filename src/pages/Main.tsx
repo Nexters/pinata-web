@@ -54,7 +54,7 @@ const IntroTitle = styled.div`
 
 const EventCreateIntro = styled.div`
     background-color: #73BCFF;
-    background-image: url(${getImageSource('images/intro-image.png')});
+    background-image: url(${getImageSource('intro-image.png')});
     background-position: right bottom;
     background-repeat: no-repeat;
     border-radius: 20px;

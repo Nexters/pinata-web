@@ -9,12 +9,14 @@ import RadioForm from '$components/eventForm/RadioForm'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import React from 'react'
+import React, { useState } from 'react'
 import styled, {css} from 'styled-components'
 import {useForm} from 'react-hook-form'
 import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
 import { format, parseISO } from 'date-fns'
 import useAsyncError from '$hooks/useAsyncError'
+import { colors } from '$styles/colors'
+import { getImageSource } from '$util/imageHelper'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -22,13 +24,13 @@ const radioCommonStyle = css`
 `
 
 const radioSelectStyle = css`
-    background: #32aaff;
-    color: #fff;
+    background: ${colors.blue[100]};
+    color: ${colors.white};
 `
 
 const radioDefaultStyle = css`
-    background: #e8e8e8;
-    color: #1b1b1e;
+    background: ${colors.black[300]};
+    color: ${colors.white};
 `
 
 const DEMO_GIFTS = [
@@ -56,6 +58,9 @@ const required = true
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent: React.FC = () => {
+    const [hitImageUrls, addHitImageUrls] = useState<string[]>([getImageSource('hit-image.png')])
+    const [missImageUrls, addMissImageUrls] = useState<string[]>([])
+
     const {register, handleSubmit, setValue} = useForm<EventForm>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
@@ -84,6 +89,14 @@ const CreateEvent: React.FC = () => {
 
     const onSelect = (value: EventType) => {
         setValue('type', value)
+    }
+
+    const onSelectHitImage = (value: string) => {
+        setValue('hitImageUrl', value)
+    }
+
+    const onSelectMissImage = (value: string) => {
+        setValue('missImageUrl', value)
     }
 
     return (
@@ -150,14 +163,19 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={[]}
+                            images={hitImageUrls}
                             inputProps={{
                                 ...register('hitMessage', {required}),
                                 type: 'text',
                                 placeholder: '이벤트 당첨 안내 및 축하 메시지를 적어주세요',
                             }}
                             label={'당첨'}
-                            onUpload={(urls: string[]) => setValue('hitImageUrl', urls[0])}
+                            onUpload={(urls: string[]) => {
+                                setValue('hitImageUrl', urls[0])
+                                addHitImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
+                            }}
+                            onSelect={onSelectHitImage}
+
                         />
                     </Section>
                     <Section marginTop={40}>
@@ -168,18 +186,22 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={[]}
+                            images={missImageUrls}
                             inputProps={{
                                 ...register('missMessage', {required}),
                                 type: 'text',
                                 placeholder: '이벤트 탈락 안내 및 위로 메시지를 적어주세요',
                             }}
                             label={'탈락'}
-                            onUpload={(urls: string[]) => setValue('missImageUrl', urls[0])}
+                            onUpload={(urls: string[]) => {
+                                setValue('missImageUrl', urls[0])
+                                addMissImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
+                            }}
+                            onSelect={onSelectMissImage}
                         />
                     </Section>
                     <Section marginTop={30}>
-                        <Button type="submit" color={'dark'} height={52}>
+                        <Button type="submit" color={'blue'} height={52}>
                             이벤트 개설하기
                         </Button>
                     </Section>
@@ -199,12 +221,12 @@ const Totals = styled(Flex).attrs({
     width: '100%',
 })`
     ${typos.pretendard['16.26.500']};
-    color: #121212;
+    color: ${colors.white};
     margin-top: 20px;
 `
 
 const Button = styled.button<{
-    color: 'default' | 'dark'
+    color: 'default' | 'blue'
     height: number
 }>`
     display: flex;
@@ -217,12 +239,12 @@ const Button = styled.button<{
     ${({color}) =>
         color === 'default'
             ? css`
-                  background: rgba(27, 27, 30, 0.07);
-                  color: #848486;
+                  background: ${colors.black[700]};
+                  color: ${colors.white};
               `
             : css`
-                  background: #1b1b1e;
-                  color: #fff;
+                  background: ${colors.blue[100]};
+                  color: ${colors.white};
               `}
     border-radius: 15px;
     height: ${extractProp('height')}px;

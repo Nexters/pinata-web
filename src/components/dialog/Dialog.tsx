@@ -4,6 +4,7 @@ import Flex from '$components/commons/Flex'
 import Overlay from '$components/eventResult/Overlay'
 import {DialogProvider, useDialogContext} from '$contexts/DialogContext'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
+import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import {PropsWithChildren} from 'react'
@@ -44,7 +45,7 @@ const DialogTitle = ({children}: Props<{}>) => {
         <Title>
             {children}
             <IconBox onClick={toggle}>
-                <CloseIcon size={26} color={'#121212'} />
+                <CloseIcon size={26} color={colors.white} />
             </IconBox>
         </Title>
     )
@@ -57,12 +58,12 @@ const Title = styled(Flex).attrs({
     justifyContent: 'space-between',
 })`
     ${typos.pretendard['14.26.700']};
-    color: #121212;
+    color: ${colors.white};
     margin-bottom: 20px;
 `
 
 const DialogBox = styled(Box)`
-    background: #ffffff;
+    background: ${colors.black[300]};
     box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     z-index: 2;
