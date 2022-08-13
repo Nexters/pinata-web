@@ -1,5 +1,5 @@
 import { useRequest } from '$hooks/useRequest';
-import client, { postAuthorized } from '$util/client'
+import { postAuthorized } from '$util/client'
 
 export type ImageRequest = {
     files: FileList
