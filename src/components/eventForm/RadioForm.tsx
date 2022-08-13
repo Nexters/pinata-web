@@ -73,7 +73,7 @@ const ItemBox = styled(Flex).attrs({
 
 const Wrapper = styled(Flex).attrs({
     direction: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
 })``
 
 RadioForm.Item = RadioItem

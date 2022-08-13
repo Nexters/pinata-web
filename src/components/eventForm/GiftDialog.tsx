@@ -27,7 +27,7 @@ const GiftDialog = () => {
             <Dialog.Content width={335}>
                 <Dialog.Title>당첨 상품 이미지 및 이름 등록</Dialog.Title>
                 <DialogSubTitle>선물하실 상품 이미지를 등록하세요</DialogSubTitle>
-                <Button color={'default'} height={90}>
+                <Button color={'dark'} height={90}>
                     <PlusIcon size={19} color={colors.white} />
                     <Box
                         typo={typos.pretendard['12.20.500']}
@@ -58,13 +58,13 @@ const GiftDialog = () => {
 }
 
 const Divider = styled.hr`
-    border: 0.5px solid rgba(27, 27, 30, 0.1);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
     margin: 20px 0;
 `
 
 const DialogSubTitle = styled.div`
     ${typos.pretendard['14.26.500']};
-    color: #121212;
+    color: ${colors.white};
     margin-bottom: 10px;
 `
 const Button = styled.button<{
@@ -85,8 +85,8 @@ const Button = styled.button<{
                   color: ${colors.white};
               `
             : css`
-                  background: #1b1b1e;
-                  color: #fff;
+                  background: ${colors.black[700]};
+                  color: ${colors.white};
               `}
     border-radius: 15px;
     height: ${extractProp('height')}px;
