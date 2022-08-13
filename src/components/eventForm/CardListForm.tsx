@@ -19,8 +19,18 @@ type CardListFormProps = {
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
-    return <Box></Box>
+    return <CardImageWrapper imageUrl={imageUrl} />
 }
+
+const CardImageWrapper = styled(Box).attrs({
+    width: 150,
+    height: 90
+})<{imageUrl: string}>`
+    background: ${({imageUrl}) => `url(${imageUrl})`};
+    background-size: cover;
+    border-radius: 10px;
+
+`
 
 const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) => {
     const imageUploaderRef = useRef<HTMLInputElement>(null)

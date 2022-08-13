@@ -31,7 +31,7 @@ const Login = () => {
 }
 
 const PinataImage = styled.div`
-    background: url(${getImageSource('images/pinata-image.png')});
+    background: url(${getImageSource('pinata-image.png')});
     width: 181px;
     height: 129px;
     margin-bottom: 120px;

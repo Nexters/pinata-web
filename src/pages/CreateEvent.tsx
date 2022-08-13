@@ -16,6 +16,7 @@ import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
 import { format, parseISO } from 'date-fns'
 import useAsyncError from '$hooks/useAsyncError'
 import { colors } from '$styles/colors'
+import { getImageSource } from '$util/imageHelper'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -151,7 +152,7 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={[]}
+                            images={[getImageSource('hit-image.png')]}
                             inputProps={{
                                 ...register('hitMessage', {required}),
                                 type: 'text',
