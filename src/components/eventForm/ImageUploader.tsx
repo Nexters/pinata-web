@@ -1,18 +1,34 @@
-import { forwardRef, SyntheticEvent } from 'react'
+import { useUploadImage } from '$api/image'
+import { forwardRef, SyntheticEvent, useEffect } from 'react'
 import styled from 'styled-components'
 
 type ImageUploaderProps = {
     multiple?: boolean
+    cameraMode?: boolean
+    onUpload(imageUrls: string[]): void
 }
 
-const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(({multiple = false}, ref) => {
+const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(({multiple = false, cameraMode = false, onUpload}, ref) => {
+    const {uploadImage, data} = useUploadImage()
+
+    useEffect(() => {
+        if (data?.imageUrls) {
+            console.log(data.imageUrls)
+            onUpload(data.imageUrls)
+        }
+    }, [data, onUpload])
+
+    const triggerUpload = async (files: FileList) => {
+        await uploadImage({files})
+    }
+
     const getFile = (e: SyntheticEvent<HTMLInputElement>) => {
         const target = e.target as HTMLInputElement;
         if (target.files && target.files[0]) {
 
             const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-            Array.from(target.files).every((file) => {
+            const checkImageSizes = Array.from(target.files).every((file) => {
                 const fileSize = file.size
                 const fileName = file.name
     
@@ -22,9 +38,13 @@ const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(({multipl
                 }
                 return true
             })
+
+            if (checkImageSizes) {
+                triggerUpload(target.files)
+            }
         }
     }
-    return <HiddenInput ref={ref} type="file" accept="image/*" capture onChange={getFile} multiple={multiple} />
+    return <HiddenInput ref={ref} type="file" accept="image/*" capture={cameraMode} onChange={getFile} multiple={multiple} />
 })
 
 const HiddenInput = styled.input`

@@ -1,6 +1,6 @@
 import client from '$util/client'
 import {FetchError} from '$util/FetchError'
-import {useMutation, useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
 import useAuthToken from './useAuthToken'
 
 /**
@@ -8,9 +8,11 @@ import useAuthToken from './useAuthToken'
  */
 export const useRequest = <Request, Response>(api: (req: Request, token?: string) => Promise<Response>) => {
     const accessToken = useAuthToken()
-    
+    const queryClient = useQueryClient()
+
     const {mutate, mutateAsync, data, error, isLoading, ...rest} = useMutation((req: Request) => api(req, accessToken), {
         onSuccess: async (response) => {
+            queryClient.invalidateQueries([api]);
             return response
         },
     })

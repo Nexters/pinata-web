@@ -14,13 +14,14 @@ type CardListFormProps = {
     images: Image[]
     inputProps: InputProps
     label: string
+    onUpload(imageUrls: string[]): void
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
     return <Box></Box>
 }
 
-const CardListForm = ({images, inputProps, label}: CardListFormProps) => {
+const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) => {
     const imageUploaderRef = useRef<HTMLInputElement>(null)
     const uploadImage: MouseEventHandler<HTMLDivElement> = (e) => {
         e.preventDefault()
@@ -35,7 +36,7 @@ const CardListForm = ({images, inputProps, label}: CardListFormProps) => {
                         나만의 카드 만들기
                     </CardButton>
                 </CardImageItem>
-                <ImageUploader ref={imageUploaderRef} />
+                <ImageUploader onUpload={onUpload} ref={imageUploaderRef} />
                 {images.map((imageUrl) => (
                     <CardImageItem key={imageUrl}>
                         <CardImage imageUrl={imageUrl} />
