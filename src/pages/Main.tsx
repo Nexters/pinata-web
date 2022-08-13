@@ -5,6 +5,7 @@ import ROUTE from '$constants/route'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import {typos} from '$styles/typos'
+import { getImageSource } from '$util/imageHelper'
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
@@ -53,7 +54,7 @@ const IntroTitle = styled.div`
 
 const EventCreateIntro = styled.div`
     background-color: #73BCFF;
-    background-image: url(${window.location.origin}/${'/images/intro-image.png'});
+    background-image: url(${getImageSource('images/intro-image.png')});
     background-position: right bottom;
     background-repeat: no-repeat;
     border-radius: 20px;
