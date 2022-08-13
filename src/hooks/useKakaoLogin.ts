@@ -52,20 +52,13 @@ const useKakaoLogin = () => {
 
     const logout = () => {
         if (window.Kakao.Auth.getAccessToken()) {
-            window.Kakao.API.request({
-                url: '/v1/user/unlink',
-                success: function (response: any) {
-                    console.log(response)
-                    removeCookie('pln')
-                },
-                fail: function (error: Error) {
-                    console.error(error)
-                },
+            window.Kakao.Auth.logout(function() {
+                window.Kakao.Auth.setAccessToken(undefined)
             })
+            
             window.Kakao.Auth.setAccessToken(undefined)
-        } else {
-            removeCookie('pln')
         }
+        removeCookie('pln')
     }
 
     const isLogined = useMemo(() => !!cookies.pln, [cookies])
