@@ -1,6 +1,6 @@
 import {useJoinedEventList} from '$api/event'
 import {Box} from '$components/commons/Box'
-import GiftItem, { DetailGiftItem } from '$components/eventList/GiftItem'
+import { DetailGiftItem } from '$components/eventList/GiftItem'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import React from 'react'
 import styled from 'styled-components'

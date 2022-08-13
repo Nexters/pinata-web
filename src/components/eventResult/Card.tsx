@@ -5,7 +5,6 @@ import {ReactNode} from 'react'
 import styled, { css } from 'styled-components'
 import {Typo, typos} from '$styles/typos'
 import Overlay from './Overlay'
-import {getImageSource} from '$util/imageHelper'
 import { colors } from '$styles/colors'
 
 type CardProps = {
