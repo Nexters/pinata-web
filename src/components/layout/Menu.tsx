@@ -60,9 +60,9 @@ const Button = styled.span`
 export const Menu: React.FC<Props> = ({isOpen}) => {
     const menus = [
         {text: '피나타 소개', link: '', imageUrl: getImageSource('horse_icon.png')},
-        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE, imageUrl: getImageSource('pinata_icon.png')},
+        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE, imageUrl: getImageSource('present_icon.png')},
         {text: '개설한 이벤트', link: ROUTE.EVENT.LIST, imageUrl: getImageSource('horse_icon.png')},
-        {text: '참여한 이벤트', link: ROUTE.GIFTS, imageUrl: getImageSource('pinata_icon.png')},
+        {text: '참여한 이벤트', link: ROUTE.GIFTS, imageUrl: getImageSource('present_icon.png')},
     ]
 
     const {isLogined, login, logout} = useKakaoLogin()
