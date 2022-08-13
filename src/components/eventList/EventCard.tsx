@@ -1,4 +1,4 @@
-import {EventType, Event} from '$api/event'
+import {EventStatus, Event} from '$api/event'
 import ShareIcon from '$assets/icons/ShareIcon'
 import Flex from '$components/commons/Flex'
 import Card from '$components/eventResult/Card'
@@ -14,7 +14,7 @@ const EventCard = ({title, type, openAt, closeAt, code}: EventCardProps) => {
     return (
         <Card withOverlay={false}>
             <Card.Content>
-                <EventStatus status={type}>진행중인 이벤트</EventStatus>
+                <EventStatusComponent status={type}>진행중인 이벤트</EventStatusComponent>
                 <Card.Title typo={typos.pretendard['18.19.700']}>{title}</Card.Title>
                 <Card.Desc size="lg">
                     {formatDateTime(openAt)} - {formatDateTime(closeAt)}
@@ -34,23 +34,23 @@ const EventCard = ({title, type, openAt, closeAt, code}: EventCardProps) => {
     )
 }
 
-const getColorByStatus = () => (props: {status: EventType}) => {
+const getColorByStatus = () => (props: {status: EventStatus}) => {
     switch (props.status) {
-        case EventType.WAIT:
+        case EventStatus.WAIT:
             return '#fff'
-        case EventType.PROCESS:
+        case EventStatus.PROCESS:
             return '#fff'
-        case EventType.COMPLETE:
+        case EventStatus.COMPLETE:
             return '#fff'
-        case EventType.CANCEL:
+        case EventStatus.CANCEL:
             return '#fff'
         default:
             return '#fff'
     }
 }
 
-const EventStatus = styled.div<{
-    status: EventType
+const EventStatusComponent = styled.div<{
+    status: EventStatus
 }>`
     color: ${getColorByStatus()};
     margin-bottom: 16px;
