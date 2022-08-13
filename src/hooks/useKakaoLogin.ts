@@ -1,6 +1,6 @@
-import {useEffect, useMemo} from 'react'
+import {useCallback, useEffect, useMemo} from 'react'
 import {useCookies} from 'react-cookie'
-import {useLogin} from '$api/login'
+import {LoginResponse, useLogin} from '$api/login'
 
 // const ONE_DAY = 24 * 60 * 60
 const TWO_HOURS = 2 * 60 * 60
@@ -10,15 +10,19 @@ const useKakaoLogin = () => {
     const {callLogin, data, isLoading} = useLogin()
     const isInitialized = window.Kakao.isInitialized()
 
+    const setTokenToCookie = useCallback((data: LoginResponse) => {
+        const currentTime = new Date()
+        setCookie('pln', data.accessToken, {
+            path: '/',
+            expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + TWO_HOURS)),
+        })
+    }, [setCookie])
+
     useEffect(() => {
-        if (!isLoading && !!data) {
-            const currentTime = new Date()
-            setCookie('pln', data.accessToken, {
-                path: '/',
-                expires: new Date(currentTime.setSeconds(currentTime.getSeconds() + TWO_HOURS)),
-            })
+        if (!isLoading && !!data?.accessToken) {
+            setTokenToCookie(data)
         }
-    }, [data, isLoading, setCookie])
+    }, [setTokenToCookie, data, isLoading])
 
     const login = () => {
         if (!isInitialized) {
@@ -30,13 +34,14 @@ const useKakaoLogin = () => {
                 window.Kakao.API.request({
                     url: '/v2/user/me',
                     success: async function (profile: any) {
-                        // const currentTime = new Date()
-                        await callLogin({
+                        const {accessToken} = await callLogin({
                             providerId: profile.id,
                             email: profile.kakao_account.email,
                             nickname: profile.kakao_account.profile.nickname,
                             profileImageUrl: profile.kakao_account.profile.thumbnail_image_url,
                         })
+
+                        console.log(accessToken)
                     },
                     fail: function (error: Error) {
                         console.log(error)

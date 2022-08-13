@@ -16,6 +16,7 @@ export const useRequest = <Request, Response>(api: (req: Request, token?: string
             queryClient.invalidateQueries([api]);
             return response
         },
+        cacheTime: 0,
     })
 
     if (error) {

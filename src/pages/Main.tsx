@@ -4,9 +4,10 @@ import JoinedEventList from '$components/eventList/JoinedEventList'
 import ROUTE from '$constants/route'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
+import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { getImageSource } from '$util/imageHelper'
-import React from 'react'
+import React, { Suspense } from 'react'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -30,19 +31,28 @@ const Main: React.FC = () => {
                 </EventCreateIntro>
                 <Section marginTop={40}>
                     <SectionTitle>개설한 이벤트</SectionTitle>
-                    <EventList />
+                    <Suspense fallback={<Loading />}>
+                        <EventList />
+                    </Suspense>
                 </Section>
                 <Section marginTop={40}>
                     <SectionTitle>참여한 이벤트</SectionTitle>
-                    <JoinedEventList />
+                    <Suspense fallback={<Loading />}>
+                        <JoinedEventList />
+                    </Suspense>
                 </Section>
             </Container>
         </LayoutWrapper>
     )
 }
 
+const Loading = styled.div`
+    color: ${colors.white};
+    ${typos.pretendard['12.18.400']};
+`
+
 const IntroDesc = styled.div`
-    color: #FFFFFF;
+    color: ${colors.white};
     ${typos.pretendard['15.21.500']};
     position: absolute;
     bottom: 20px;
