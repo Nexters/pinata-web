@@ -3,12 +3,19 @@ import {Box} from '$components/commons/Box'
 import Dialog from '$components/dialog/Dialog'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import {useState} from 'react'
+import { useForm } from 'react-hook-form'
 import styled, {css} from 'styled-components'
 import Input from './Input'
 
+interface GiftForm {
+    name: string
+}
+
 const GiftDialog = () => {
-    const [giftName, setGiftName] = useState('')
+    const {register, handleSubmit} = useForm<GiftForm>()
+    const onSubmit = (data: GiftForm) => {
+        console.log(data)
+    }
     return (
         <Dialog>
             <Dialog.Button width={'100%'}>
@@ -31,18 +38,20 @@ const GiftDialog = () => {
                 </Button>
                 <Divider />
                 <DialogSubTitle>선물하실 상품 이름을 적어주세요</DialogSubTitle>
-                {/* <Input
+                <form onSubmit={handleSubmit(onSubmit)}>
+                <Input
+                    {...register('name', {required: true})}
+                    type='text'
                     variant="fill"
                     placeholder="최대 20글자"
-                    value={giftName}
-                    onChange={(e) => setGiftName(e.target.value)}
                     style={{
                         marginBottom: 36,
                     }}
-                /> */}
-                <Button color="dark" height={52}>
+                />
+                <Button type='submit' color="dark" height={52}>
                     등록하기
                 </Button>
+                </form>
             </Dialog.Content>
         </Dialog>
     )
