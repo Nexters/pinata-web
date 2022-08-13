@@ -1,4 +1,4 @@
-import { useMyQuery, useRequest } from '$hooks/useRequest';
+import { useGetQuery, useRequest } from '$hooks/useRequest';
 import client from '$util/client'
 import { GiftItem } from './gift'
 
@@ -87,7 +87,7 @@ export type Event = {
 export type EventListResponse = Event[]
 
 export const useEventList = () => {
-    const  {data, isLoading} = useMyQuery<EventListResponse>('/api/v1/events')
+    const  {data, isLoading} = useGetQuery<EventListResponse>('/api/v1/events')
     return {data, isLoading}
 }
 
@@ -107,6 +107,6 @@ export type EventItem = {
 export type JoinedEventListResponse = EventItem[]
 
 export const useJoinedEventList = () => {
-    const {data} = useMyQuery<JoinedEventListResponse>('/api/v1/events/participate/me')
+    const {data} = useGetQuery<JoinedEventListResponse>('/api/v1/events/participate/me')
     return {data}
 }
