@@ -3,7 +3,7 @@ import ROUTE from '$constants/route'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {typos} from '$styles/typos'
-import { getImageSource } from '$util/imageHelper'
+import {getImageSource} from '$util/imageHelper'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -19,8 +19,8 @@ const Wrapper = styled.div<{isOpen: boolean}>`
     right: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: #1B1B1E;
+    height: 100vh;
+    background-color: #1b1b1e;
     color: #fff;
 
     padding-top: 60px;
@@ -37,6 +37,7 @@ const Wrapper = styled.div<{isOpen: boolean}>`
 
 const Select = styled.section`
     margin: 18px;
+    height: 100%;
 `
 
 const KakaoLogin = styled(Flex).attrs({
@@ -45,7 +46,7 @@ const KakaoLogin = styled(Flex).attrs({
     justifyContent: 'flex-start',
 })`
     position: absolute;
-    top: calc(100vh - 50px);
+    bottom: 100px;
     padding: 0 25px;
     user-select: none;
     ${typos.pretendard['16.19.700']};
@@ -75,11 +76,13 @@ export const Menu: React.FC<Props> = ({isOpen}) => {
                     <MenuLink key={menu.text} link={menu.link} text={menu.text} imageUrl={menu.imageUrl} />
                 ))}
             </Select>
-            {isLogined ? (
-                <KakaoLogin><Button onClick={logout}>로그아웃</Button></KakaoLogin>
-            ) : (
-                <KakaoLogin><Button onClick={login}>카카오로 로그인</Button></KakaoLogin>
-            )}
+            <KakaoLogin>
+                {isLogined ? (
+                    <Button onClick={logout}>로그아웃</Button>
+                ) : (
+                    <Button onClick={login}>카카오로 로그인</Button>
+                )}
+            </KakaoLogin>
         </Wrapper>
     )
 }

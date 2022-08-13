@@ -4,6 +4,7 @@ import {detectIsMobile} from '$util/common'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
+    position: relative;
     width: 100vw;
 
     display: flex;
@@ -18,16 +19,19 @@ const MWrapper = styled.div`
     min-height: 100vh;
 
     background: #1b1b1e;
+
+    position: absolute;
+    overflow-x: hidden;
 `
 
 const MobileScreen = styled.div`
-    position: relative;
     width: 480px;
     min-height: 100vh;
 
     background: #1b1b1e;
 
-    overflow: hidden;
+    position: absolute;
+    overflow-x: hidden;
 `
 
 type Props = {
