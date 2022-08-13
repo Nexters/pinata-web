@@ -47,6 +47,8 @@ export interface EventForm {
     hitMessage: string
     missMessage: string
     type: EventType
+    hitImageUrl: string
+    missImageUrl: string
 }
 
 const required = true
@@ -72,8 +74,6 @@ const CreateEvent: React.FC = () => {
                     { 'title' : '스타벅스 아메리카노 톨사이즈', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/product-image.jpeg', 'rank' : 1 },
                     { 'title' : '논픽션 핸드크림', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/item-image-02.jpeg', 'rank' : 2 }
                 ],
-                'hitImageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/hit-image.jpeg',
-                'missImageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/miss-image.jpeg'
             })
     
             console.log(code)
@@ -157,6 +157,7 @@ const CreateEvent: React.FC = () => {
                                 placeholder: '이벤트 당첨 안내 및 축하 메시지를 적어주세요',
                             }}
                             label={'당첨'}
+                            onUpload={(urls: string[]) => setValue('hitImageUrl', urls[0])}
                         />
                     </Section>
                     <Section marginTop={40}>
@@ -174,6 +175,7 @@ const CreateEvent: React.FC = () => {
                                 placeholder: '이벤트 탈락 안내 및 위로 메시지를 적어주세요',
                             }}
                             label={'탈락'}
+                            onUpload={(urls: string[]) => setValue('missImageUrl', urls[0])}
                         />
                     </Section>
                     <Section marginTop={30}>
