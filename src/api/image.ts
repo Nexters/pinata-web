@@ -21,8 +21,9 @@ const getFormData = ({files}: ImageRequest) => {
 
 
 export const uploadImage = async (req: ImageRequest, token?: string) => {
-    console.log(token)
-    const {data} = await postAuthorized<FormData, ImageResponse>('/api/v1/images', getFormData(req), token)
+    const {data} = await postAuthorized<FormData, ImageResponse>('/api/v1/images', getFormData(req), token, {
+        'Content-Type': 'multipart/form-data',
+    })
 
     return data
 }

@@ -1,5 +1,6 @@
 import CloseIcon from '$assets/icons/CloseIcon'
 import Flex from '$components/commons/Flex'
+import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import styled from 'styled-components'
 
@@ -18,7 +19,7 @@ const GiftList = ({items}: GiftListProps) => {
             {items.map(({title}, index) => (
                 <GiftItem key={index}>
                     {title}
-                    <CloseIcon size={18} color={'#1b1b1e4d'} />
+                    <CloseIcon size={18} color={colors.white} />
                 </GiftItem>
             ))}
         </Flex>
@@ -31,11 +32,11 @@ const GiftItem = styled(Flex).attrs({
     alignItems: 'center',
     width: 'calc(100% - 36px)',
     height: 30,
-    backgroundColor: '#fff',
+    backgroundColor: colors.black[700],
 })`
-    border: 1px solid rgba(27, 27, 30, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
-    color: #1b1b1e;
+    color: ${colors.white};
     padding: 10px 18px;
     margin-top: 20px;
     ${typos.pretendard['15.32.500']};

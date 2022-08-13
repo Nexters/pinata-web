@@ -1,5 +1,7 @@
-export const getImageSource = (src: string) => {
+export const getImageSource = (imageName: string) => {
     const originUrl = window.location.origin
 
-    return originUrl.endsWith('/') ? `${originUrl}${src}` : `${originUrl}/${src}`
+    const srcWithPrefix = `images/${imageName}`
+
+    return originUrl.endsWith('/') ? `${originUrl}${srcWithPrefix}` : `${originUrl}/${srcWithPrefix}`
 }

@@ -1,5 +1,5 @@
 import {ApiResponse} from '$types/ApiResponse'
-import axios, {AxiosError, AxiosResponse} from 'axios'
+import axios, {AxiosError, AxiosRequestHeaders, AxiosResponse} from 'axios'
 import {AuthorizationError, FetchError} from './FetchError'
 
 const RESULT_CODE = {
@@ -38,9 +38,10 @@ const client = axios.create({
 
 client.interceptors.response.use(responseInterceptor, rejectInterceptor)
 
-export const postAuthorized = <T, U>(url: string, req: T, token?: string) => client.post<U>(url, req, {
+export const postAuthorized = <T, U>(url: string, req: T, token?: string, headers?: AxiosRequestHeaders) => client.post<U>(url, req, {
     headers: {
         Authorization: `Bearer ${token}`,
+        ...headers,
     },
 })
 

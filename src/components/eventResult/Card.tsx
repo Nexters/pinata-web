@@ -2,15 +2,22 @@ import CloseIcon from '$assets/icons/CloseIcon'
 import Flex from '$components/commons/Flex'
 import {extractProp} from '$util/common'
 import {ReactNode} from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import {Typo, typos} from '$styles/typos'
 import Overlay from './Overlay'
 import {getImageSource} from '$util/imageHelper'
+import { colors } from '$styles/colors'
 
-const Card = ({children, withOverlay = true}: {children: ReactNode; withOverlay?: boolean}) => {
+type CardProps = {
+    children: ReactNode; 
+    withOverlay?: boolean
+    bgWhite?: boolean
+}
+
+const Card = ({children, withOverlay = true, bgWhite = false}: CardProps) => {
     return (
         <>
-            <CardWrapper direction={'row'} justifyContent={'center'} alignItems="center">
+            <CardWrapper bgWhite={bgWhite} direction={'row'} justifyContent={'center'} alignItems="center">
                 {children}
             </CardWrapper>
             {withOverlay && <Overlay onClick={() => {}} />}
@@ -59,12 +66,12 @@ const IconBox = styled.span`
 const Button = styled.button`
     border-radius: 10px;
     padding: 7px 0;
-    color: #1b1b1e;
-    background-color: rgba(27, 27, 30, 0.07);
+    color: ${colors.white};
+    background-color: ${colors.black[700]};
     border: none;
     outline: none;
     cursor: pointer;
-    height: 40px;
+    height: 45px;
     width: calc(100% - 40px);
     margin-bottom: 20px;
     ${typos.pretendard['14.32.500']};
@@ -74,17 +81,18 @@ const CardDesc = styled.div<{
     size: 'lg' | 'md'
 }>`
     ${({size}) => (size === 'md' ? typos.pretendard['12.18.400'] : typos.pretendard['14.19.400'])};
-    color: rgba(255, 255, 255, .5);
+    color: inherit;
     opacity: 0.5;
     overflow: auto;
     max-height: 75px;
+    text-align: left;
 `
 
 const CardTitle = styled.div<{
     typo: Typo
 }>`
     font-style: normal;
-    color: #fff;
+    color: inherit;
     margin-bottom: 6px;
     ${extractProp('typo')};
 `
@@ -106,6 +114,7 @@ const CardImageTitle = styled.div`
     color: #fff;
     width: calc(100% - 40px);
     padding: 10px 20px;
+    text-align: left;
     ${typos.pretendard['14.20.600']};
 `
 
@@ -125,10 +134,18 @@ const CardWrapper = styled(Flex).attrs({
     direction: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-})`
-    background: #2C2C30;
+})<{bgWhite: boolean}>`
+    ${({bgWhite}) => bgWhite
+    ? css`
+        background: ${colors.white};
+        color: ${colors.black[700]};
+    `
+    : css`
+        background: ${colors.black[300]};
+        color: ${colors.white};
+    `
+    }
     min-width: 335px;
-    color: #fff;
     border-radius: 20px;
     z-index: 1;
     position: relative;

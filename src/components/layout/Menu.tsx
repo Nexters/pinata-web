@@ -3,7 +3,7 @@ import ROUTE from '$constants/route'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {typos} from '$styles/typos'
-import { getImageSource } from '$util/imageHelper'
+import {getImageSource} from '$util/imageHelper'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -19,8 +19,8 @@ const Wrapper = styled.div<{isOpen: boolean}>`
     right: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: #1B1B1E;
+    height: calc(100% - 60px);
+    background-color: #1b1b1e;
     color: #fff;
 
     padding-top: 60px;
@@ -45,7 +45,7 @@ const KakaoLogin = styled(Flex).attrs({
     justifyContent: 'flex-start',
 })`
     position: absolute;
-    top: calc(100vh - 50px);
+    top: calc(100vh - 60px);
     padding: 0 25px;
     user-select: none;
     ${typos.pretendard['16.19.700']};
@@ -58,10 +58,10 @@ const Button = styled.span`
 
 export const Menu: React.FC<Props> = ({isOpen}) => {
     const menus = [
-        {text: '피나타 소개', link: '', imageUrl: getImageSource('images/horse_icon.png')},
-        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE, imageUrl: getImageSource('images/pinata_icon.png')},
-        {text: '개설한 이벤트', link: ROUTE.EVENT.LIST, imageUrl: getImageSource('images/horse_icon.png')},
-        {text: '참여한 이벤트', link: ROUTE.GIFTS, imageUrl: getImageSource('images/pinata_icon.png')},
+        {text: '피나타 소개', link: '', imageUrl: getImageSource('horse_icon.png')},
+        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE, imageUrl: getImageSource('present_icon.png')},
+        {text: '개설한 이벤트', link: ROUTE.EVENT.LIST, imageUrl: getImageSource('horse_icon.png')},
+        {text: '참여한 이벤트', link: ROUTE.GIFTS, imageUrl: getImageSource('present_icon.png')},
     ]
 
     const {isLogined, login, logout} = useKakaoLogin()
@@ -75,11 +75,13 @@ export const Menu: React.FC<Props> = ({isOpen}) => {
                     <MenuLink key={menu.text} link={menu.link} text={menu.text} imageUrl={menu.imageUrl} />
                 ))}
             </Select>
-            {isLogined ? (
-                <KakaoLogin><Button onClick={logout}>로그아웃</Button></KakaoLogin>
-            ) : (
-                <KakaoLogin><Button onClick={login}>카카오로 로그인</Button></KakaoLogin>
-            )}
+            <KakaoLogin>
+                {isLogined ? (
+                    <Button onClick={logout}>로그아웃</Button>
+                ) : (
+                    <Button onClick={login}>카카오로 로그인</Button>
+                )}
+            </KakaoLogin>
         </Wrapper>
     )
 }

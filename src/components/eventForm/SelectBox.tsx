@@ -3,6 +3,7 @@ import styled, {css} from 'styled-components'
 import {CheckIcon, ChevronDownIcon, ChevronUpIcon} from '@radix-ui/react-icons'
 import {ReactNode} from 'react'
 import {typos} from '$styles/typos'
+import { colors } from '$styles/colors'
 
 const StyledTrigger = styled(SelectPrimitive.SelectTrigger)`
     display: inline-flex;
@@ -10,9 +11,9 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger)`
     justify-content: space-between;
     padding: 4px 15px;
     height: 40px;
-    background-color: #fff;
-    color: #1b1b1e;
-    border: 1px solid rgba(27, 27, 30, 0.1);
+    background-color: ${colors.black[700]};
+    color: ${colors.white};
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 15px;
     margin-bottom: 10px;
     width: 100%;
@@ -22,7 +23,7 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger)`
 
 const StyledIcon = styled(SelectPrimitive.SelectIcon)`
     padding-top: 4px;
-    color: #5152524d;
+    color: ${colors.white};
 `
 
 const StyledContent = styled(SelectPrimitive.Content)`
