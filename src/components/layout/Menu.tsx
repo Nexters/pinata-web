@@ -19,7 +19,7 @@ const Wrapper = styled.div<{isOpen: boolean}>`
     right: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: calc(100% - 60px);
     background-color: #1b1b1e;
     color: #fff;
 
@@ -37,7 +37,6 @@ const Wrapper = styled.div<{isOpen: boolean}>`
 
 const Select = styled.section`
     margin: 18px;
-    height: 100%;
 `
 
 const KakaoLogin = styled(Flex).attrs({
@@ -46,7 +45,7 @@ const KakaoLogin = styled(Flex).attrs({
     justifyContent: 'flex-start',
 })`
     position: absolute;
-    bottom: 100px;
+    top: calc(100vh - 60px);
     padding: 0 25px;
     user-select: none;
     ${typos.pretendard['16.19.700']};
