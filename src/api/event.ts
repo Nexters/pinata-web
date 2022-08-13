@@ -76,8 +76,12 @@ export type CreateEventResponse = {
     code: string
 }
 
-const createEvent = async (newEvent: CreateEventRequest) => {
-    const {data} = await client.post<CreateEventResponse>('/api/v1/events', {...newEvent})
+const createEvent = async (newEvent: CreateEventRequest, token?: string) => {
+    const {data} = await client.post<CreateEventResponse>('/api/v1/events', {...newEvent}, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
     return data
 }
 
