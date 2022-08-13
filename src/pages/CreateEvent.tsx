@@ -11,12 +11,13 @@ import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import React, { useState } from 'react'
 import styled, {css} from 'styled-components'
-import {useForm} from 'react-hook-form'
+import {useFormContext} from 'react-hook-form'
 import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
 import { format, parseISO } from 'date-fns'
 import useAsyncError from '$hooks/useAsyncError'
 import { colors } from '$styles/colors'
 import { getImageSource } from '$util/imageHelper'
+import { EventForm } from '$types/Event'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -42,26 +43,15 @@ const DEMO_GIFTS = [
     },
 ]
 
-export interface EventForm {
-    title: string
-    openAt: string
-    closeAt: string
-    hitMessage: string
-    missMessage: string
-    type: EventType
-    hitImageUrl: string
-    missImageUrl: string
-}
-
 const required = true
 
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent: React.FC = () => {
-    const [hitImageUrls, addHitImageUrls] = useState<string[]>([getImageSource('hit-image.png')])
-    const [missImageUrls, addMissImageUrls] = useState<string[]>([])
+    const [hitImageUrls, addHitImageUrls] = useState<string[]>([getImageSource('example-hit-image.png')])
+    const [missImageUrls, addMissImageUrls] = useState<string[]>([getImageSource('example-result-card.png')])
 
-    const {register, handleSubmit, setValue} = useForm<EventForm>()
+    const {register, handleSubmit, setValue} = useFormContext<EventForm>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
     
@@ -171,11 +161,10 @@ const CreateEvent: React.FC = () => {
                             }}
                             label={'당첨'}
                             onUpload={(urls: string[]) => {
-                                setValue('hitImageUrl', urls[0])
                                 addHitImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
+                                setValue('hitImageUrl', urls[0])
                             }}
                             onSelect={onSelectHitImage}
-
                         />
                     </Section>
                     <Section marginTop={40}>

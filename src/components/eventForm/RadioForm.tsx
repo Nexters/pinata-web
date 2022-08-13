@@ -3,7 +3,7 @@ import Flex from '$components/commons/Flex'
 import RadioContextProvider, {useRadioContext} from '$contexts/RadioContext'
 import {ValueList} from '$types/common'
 import {extractProp} from '$util/common'
-import {forwardRef, ReactNode, useEffect} from 'react'
+import {ReactNode, useEffect} from 'react'
 import styled, {css, CSSProperties, FlattenSimpleInterpolation} from 'styled-components'
 
 type RadioProps = {
@@ -31,7 +31,7 @@ type RadioItemProps = {
     onSelect(value: unknown): void
 }
 
-const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(({onSelect: onSelectInProps,  value, children, width, height, selectedStyle, unselectedStyle, style = css``}, ref) => {
+const RadioItem = ({onSelect: onSelectInProps,  value, children, width, height, selectedStyle, unselectedStyle, style = css``}: RadioItemProps) => {
     const {onSelect, selected} = useRadioContext()
 
     useEffect(() => {
@@ -55,7 +55,7 @@ const RadioItem = forwardRef<HTMLInputElement, RadioItemProps>(({onSelect: onSel
             <Box>{children}</Box>
         </ItemBox>
     )
-})
+}
 
 const ItemBox = styled(Flex).attrs({
     direction: 'column',
