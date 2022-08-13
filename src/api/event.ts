@@ -1,11 +1,20 @@
+import { useRequest } from '$hooks/useRequest';
 import client from '$util/client'
+import { GiftItem } from './gift'
 
-export enum EventType {
+export enum EventStatus {
     WAIT,
     PROCESS,
     COMPLETE,
     CANCEL
 }
+
+export const EVENT_TYPE = {
+    RANDOM: 'RANDOM',
+    FCFS: 'FCFS',
+} as const
+
+export type EventType = typeof EVENT_TYPE[keyof typeof EVENT_TYPE]
 
 export type Event = {
     id: number
@@ -13,7 +22,7 @@ export type Event = {
     title: string
     openAt: string
     closeAt: string
-    type: EventType
+    type: EventStatus
     limitCount: number
     hitCount: number
     participantCount: number
@@ -40,7 +49,7 @@ export type EventResponse = {
     hitImageUrl: string;
     missMessage: string;
     missImageUrl: string;
-  };
+};
   
 
 export type EventListResponse = Event[]
@@ -50,6 +59,36 @@ export const participateEvent = async (eventCode: string) => {
     return data
 }
 
+export type CreateEventRequest = {
+    title: string
+    type: EventType
+    isPeriod: boolean
+    openAt: string
+    closeAt: string
+    items: GiftItem[]
+    hitMessage: string
+    hitImageUrl: string
+    missMessage: string
+    missImageUrl: string
+}
+
+export type CreateEventResponse = {
+    code: string
+}
+
+const createEvent = async (newEvent: CreateEventRequest, token?: string) => {
+    const {data} = await client.post<CreateEventResponse>('/api/v1/events', {...newEvent}, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+    return data
+}
+
+export const useCreateEvent = () => {
+    const {mutateAsync, data, error, isLoading} = useRequest<CreateEventRequest, CreateEventResponse>(createEvent)
+    return {createEvent: mutateAsync, data, error, isLoading}
+}
 
 export const useEventList = () => {
     return {
@@ -60,7 +99,7 @@ export const useEventList = () => {
             title: '넥스터즈 깜짝 선물 드립니다!',
             openAt: '2022-07-01 13:00',
             closeAt: '2022-07-03 12:00',
-            type: EventType.PROCESS,
+            type: EventStatus.PROCESS,
             limitCount: 10,
             hitCount: 0,
             participantCount: 0
@@ -71,7 +110,7 @@ export const useEventList = () => {
             title: '점심 밥값 내기🍣',
             openAt: '2022-07-01 13:00',
             closeAt: '2022-07-03 12:00',
-            type: EventType.PROCESS,
+            type: EventStatus.PROCESS,
             limitCount: 10,
             hitCount: 0,
             participantCount: 0

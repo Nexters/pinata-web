@@ -12,6 +12,9 @@ import {extractProp} from '$util/common'
 import React from 'react'
 import styled, {css} from 'styled-components'
 import {useForm} from 'react-hook-form'
+import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
+import { format, parseISO } from 'date-fns'
+import useAsyncError from '$hooks/useAsyncError'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -37,31 +40,50 @@ const DEMO_GIFTS = [
     },
 ]
 
-enum EventMode {
-    RANDOM = 1,
-    FIFO
-}
-
 export interface EventForm {
     title: string
-    startDate: Date
-    endDate: Date
-    hitDesc: string
-    failDesc: string
-    eventMode: EventMode
+    openAt: string
+    closeAt: string
+    hitMessage: string
+    missMessage: string
+    type: EventType
 }
 
 const required = true
 
+const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
+
 const CreateEvent: React.FC = () => {
     const {register, handleSubmit, setValue} = useForm<EventForm>()
+    const {createEvent} = useCreateEvent()
+    const throwError = useAsyncError()
+    
 
-    const onSubmit = (data: EventForm) => {
-        console.log(data)
+    const onSubmit = async (data: EventForm) => {
+        try {
+            const openAt = formatDateToString(data.openAt)
+            const closeAt = formatDateToString(data.closeAt)
+            const {code} = await createEvent({
+                ...data,
+                openAt,
+                closeAt,
+                isPeriod: true,
+                'items' : [    
+                    { 'title' : '스타벅스 아메리카노 톨사이즈', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/product-image.jpeg', 'rank' : 1 },
+                    { 'title' : '논픽션 핸드크림', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/item-image-02.jpeg', 'rank' : 2 }
+                ],
+                'hitImageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/hit-image.jpeg',
+                'missImageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/miss-image.jpeg'
+            })
+    
+            console.log(code)
+        } catch (e) {
+            throwError(e)
+        }
     }
 
-    const onSelect = (value: number) => {
-        setValue('eventMode', value)
+    const onSelect = (value: EventType) => {
+        setValue('type', value)
     }
 
     return (
@@ -75,23 +97,23 @@ const CreateEvent: React.FC = () => {
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 진행 날짜 및 시간을 정해보세요</SectionTitle>
                         <Input
-                            {...register('startDate', {required})}
+                            {...register('openAt', {required})}
                             label={'시작'}
                             style={{
                                 marginBottom: 12,
                             }}
-                            type="date"
+                            type="datetime-local"
                         />
-                        <Input {...register('endDate', {required})} label={'종료'} type="date" />
+                        <Input {...register('closeAt', {required})} label={'종료'} type="datetime-local" />
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 모드를 선택하세요</SectionTitle>
-                        <RadioForm values={[EventMode.RANDOM, EventMode.FIFO]} defaultValue={EventMode.RANDOM}>
+                        <RadioForm values={[EVENT_TYPE.RANDOM, EVENT_TYPE.FCFS]} defaultValue={EVENT_TYPE.RANDOM}>
                             <RadioForm.Item
                                 onSelect={onSelect}
                                 width={162}
                                 height={100}
-                                value={1}
+                                value={EVENT_TYPE.RANDOM}
                                 selectedStyle={radioSelectStyle}
                                 unselectedStyle={radioDefaultStyle}
                                 style={radioCommonStyle}>
@@ -101,7 +123,7 @@ const CreateEvent: React.FC = () => {
                                 onSelect={onSelect}
                                 width={162}
                                 height={100}
-                                value={2}
+                                value={EVENT_TYPE.FCFS}
                                 selectedStyle={radioSelectStyle}
                                 unselectedStyle={radioDefaultStyle}
                                 style={radioCommonStyle}>
@@ -130,7 +152,7 @@ const CreateEvent: React.FC = () => {
                         <CardListForm
                             images={[]}
                             inputProps={{
-                                ...register('hitDesc', {required}),
+                                ...register('hitMessage', {required}),
                                 type: 'text',
                                 placeholder: '이벤트 당첨 안내 및 축하 메시지를 적어주세요',
                             }}
@@ -147,7 +169,7 @@ const CreateEvent: React.FC = () => {
                         <CardListForm
                             images={[]}
                             inputProps={{
-                                ...register('failDesc', {required}),
+                                ...register('missMessage', {required}),
                                 type: 'text',
                                 placeholder: '이벤트 탈락 안내 및 위로 메시지를 적어주세요',
                             }}
