@@ -1,23 +1,34 @@
+import { EVENT_TYPE } from '$api/event'
 import {Section, SectionTitle} from '$components/commons/Section'
 import EventList from '$components/eventList/EventList'
 import JoinedEventList from '$components/eventList/JoinedEventList'
+import { DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES } from '$constants/formData'
 import ROUTE from '$constants/route'
-import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { getImageSource } from '$util/imageHelper'
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
+import { useFormContext } from 'react-hook-form'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
 const Main: React.FC = () => {
     const navigate = useNavigate()
-    const {isLoading} = useKakaoLogin()
 
-    if (isLoading) {
-        return <div>로그인 중...</div>
-    }
+    const {formState: {isDirty}, reset} = useFormContext()
+
+    useEffect(() => {
+        isDirty && reset({
+            type: EVENT_TYPE.RANDOM,
+            hitImageUrls: DEFAULT_HIT_IMAGES,
+            missImageUrls: DEFAULT_MISS_IMAGES
+        }, {
+            keepValues: false
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isDirty])
+    
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>

@@ -16,6 +16,9 @@ import useAsyncError from '$hooks/useAsyncError'
 import { colors } from '$styles/colors'
 import { EventForm, ImageUrls } from '$types/Event'
 import RadioForm from '$components/eventForm/RadioForm'
+import { useNavigate } from 'react-router-dom'
+import ROUTE from '$constants/route'
+import { useEffect, useState } from 'react'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -46,9 +49,12 @@ const required = true
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent = () => {
-    const {register, handleSubmit, setValue} = useFormContext<EventForm & ImageUrls>()
+    const {register, handleSubmit, setValue, formState: {isSubmitted}} = useFormContext<EventForm & ImageUrls>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
+    const navigate = useNavigate()
+
+    const [completeEventCode, setEventCode] = useState<string | null>(null)
     
 
     const onSubmit = async (data: EventForm & ImageUrls) => {
@@ -72,12 +78,20 @@ const CreateEvent = () => {
                     { 'title' : '논픽션 핸드크림', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/item-image-02.jpeg', 'rank' : 2 }
                 ],
             })
-    
-            console.log(eventCode)
+            setEventCode(eventCode)
         } catch (e) {
             throwError(e)
         }
     }
+
+    useEffect(() => {
+        if (isSubmitted) {
+            navigate(ROUTE.EVENT.CREATE_COMPLETE, {
+                state: {eventCode: completeEventCode}
+            })
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSubmitted, completeEventCode])
 
     const defaultTypeProps = {
         width: 162,

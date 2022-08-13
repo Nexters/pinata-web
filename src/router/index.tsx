@@ -5,11 +5,10 @@ import Authenticated from '$components/auth/Authenticated'
 import { FormProvider, useForm } from 'react-hook-form'
 import { EventForm, ImageUrls } from '$types/Event'
 import { EVENT_TYPE } from '$api/event'
-import { getImageSource } from '$util/imageHelper'
 import { lazy, Suspense } from 'react'
+import FormGuard from '$components/auth/FormGuard'
+import { DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES } from '$constants/formData'
 
-const DEFAULT_HIT_IMAGES = [getImageSource('example-hit-image.png')]
-const DEFAULT_MISS_IMAGES = [getImageSource('example-result-card.png')]
 
 const Main = lazy(() => import('$pages/Main'))
 const EventLists = lazy(() => import('$pages/EventLists'))
@@ -20,6 +19,7 @@ const Login = lazy(() => import('$pages/Login'))
 const Event = lazy(() => import('$pages/Event'))
 const ErrorPage = lazy(() => import('$pages/ErrorPage'))
 const NotFoundPage = lazy(() => import('$pages/NotFoundPage'))
+const CreateComplete = lazy(() => import('$pages/CreateComplete'))
 
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({
@@ -40,6 +40,9 @@ export const Router = () => {
                             <Route path={ROUTE.MAIN} element={<Main />} />
                             <Route path={ROUTE.EVENT.LIST} element={<EventLists />} />
                             <Route path={ROUTE.EVENT.CREATE} element={<CreateEvent />} />
+                            <Route path={ROUTE.EVENT.CREATE_COMPLETE} element={<FormGuard />}>
+                                <Route path={ROUTE.EVENT.CREATE_COMPLETE} element={<CreateComplete />} />
+                            </Route>
                             <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
                             <Route path={ROUTE.GIFTS} element={<Gifts />} />
                         </Route>

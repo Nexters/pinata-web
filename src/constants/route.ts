@@ -4,6 +4,7 @@ const ROUTE = {
     GIFTS: '/gifts',
     EVENT: {
         CREATE: '/event/create',
+        CREATE_COMPLETE: '/event/create/complete',
         UPDATE: '/event/:id',
         LIST: '/events',
         DETAIL: '/event',
