@@ -33,6 +33,7 @@ const rejectInterceptor = (error: AxiosError) => {
 }
 
 const client = axios.create({
+    withCredentials: true,
     baseURL: process.env.REACT_APP_ENV === 'production' ?  process.env.REACT_APP_API_URL : ''
 })
 
