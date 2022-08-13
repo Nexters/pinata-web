@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import EventWrapper from '$components/event/EventWrapper'
 import {typos} from '$styles/typos'
-import { GiftBox } from './GiftBox'
+import {GiftBox} from './GiftBox'
 
 const H1 = styled.div`
     width: 288px;
@@ -44,14 +44,22 @@ const Section = styled.section`
 `
 
 const Participation: React.FC = () => {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    const handleOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        e.preventDefault()
+
+        setIsOpen(true)
+    }
+
     return (
         <EventWrapper>
             <H1>
                 넥스터즈 21기 깜작 선물 <br />
                 3분께 드립니다.
             </H1>
-            <Section>
-                <GiftBox />
+            <Section onClick={handleOpen}>
+                <GiftBox isOpen={isOpen} />
             </Section>
             <Text>
                 지금 바로 이벤트에 참여하려면

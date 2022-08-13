@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
-    svg.giftbox-top g {
+    svg.giftbox-top-move g {
         transform-origin: center center;
         animation-name: giftbox-move-top;
         animation-duration: 1s;
@@ -10,13 +10,33 @@ const Wrapper = styled.div`
         animation-iteration-count: infinite;
     }
 
-    svg.giftbox-bottom g {
+    svg.giftbox-bottom-move g {
         transform-origin: center center;
         animation-name: giftbox-move-bottom;
         animation-duration: 1s;
         animation-timing-function: linear;
         /* animation-direction: alternate; */
         animation-iteration-count: infinite;
+    }
+
+    svg.giftbox-top-open g {
+        transform-origin: center center;
+        animation-name: giftbox-open-top;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+        animation-direction: alternate;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+    }
+
+    svg.giftbox-bottom-open g {
+        transform-origin: center center;
+        animation-name: giftbox-open-bottom;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-direction: alternate;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
     }
 
     @keyframes giftbox-move-top {
@@ -48,15 +68,30 @@ const Wrapper = styled.div`
             transform: translate(0%, 0%);
         }
     }
+
+    @keyframes giftbox-open-top {
+        100% {
+            transform: translate(calc(0% + 40px), calc(0% - 20px)) rotate(30deg);
+        }
+    }
+    @keyframes giftbox-open-bottom {
+        100% {
+            transform: translate(0%, calc(0% + 10px));
+        }
+    }
 `
 
-export const GiftBox = () => {
+type Props = {
+    isOpen: boolean
+}
+
+export const GiftBox: React.FC<Props> = ({isOpen}) => {
     // const color = '#FF6AB2'
     return (
         <Wrapper>
             <svg overflow="visible" width="123" height="110" viewBox="0 0 123 110">
                 <svg
-                    className="giftbox-bottom"
+                    className={`giftbox-bottom-${isOpen ? 'open' : 'move'}`}
                     y={30}
                     overflow="visible"
                     width="123"
@@ -76,7 +111,7 @@ export const GiftBox = () => {
                 <svg
                     y={-10}
                     overflow="visible"
-                    className="giftbox-top"
+                    className={`giftbox-top-${isOpen ? 'open' : 'move'}`}
                     width="123"
                     height="42"
                     viewBox="0 0 123 42"
