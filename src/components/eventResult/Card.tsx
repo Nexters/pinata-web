@@ -5,6 +5,7 @@ import {ReactNode} from 'react'
 import styled from 'styled-components'
 import {Typo, typos} from '$styles/typos'
 import Overlay from './Overlay'
+import {getImageSource} from '$util/imageHelper'
 
 const Card = ({children, withOverlay = true}: {children: ReactNode; withOverlay?: boolean}) => {
     return (
@@ -115,7 +116,7 @@ const CardImage = styled.div<{src: string}>`
     width: 100%;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    background: url(${window.location.origin}/${extractProp('src')});
+    background: url(${({src}) => getImageSource(src)});
     background-repeat: no-repeat;
     background-size: 100%;
 `

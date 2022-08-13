@@ -3,6 +3,7 @@ import ROUTE from '$constants/route'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {typos} from '$styles/typos'
+import { getImageSource } from '$util/imageHelper'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -57,10 +58,10 @@ const Button = styled.span`
 
 export const Menu: React.FC<Props> = ({isOpen}) => {
     const menus = [
-        {text: '피나타 소개', link: '', imageUrl: `${window.location.origin}/images/horse_icon.png`},
-        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE, imageUrl: `${window.location.origin}/images/pinata_icon.png`},
-        {text: '개설한 이벤트', link: ROUTE.EVENT.LIST, imageUrl: `${window.location.origin}/images/horse_icon.png`},
-        {text: '참여한 이벤트', link: ROUTE.GIFTS, imageUrl: `${window.location.origin}/images/pinata_icon.png`},
+        {text: '피나타 소개', link: '', imageUrl: getImageSource('/images/horse_icon.png')},
+        {text: '이벤트 개설하기', link: ROUTE.EVENT.CREATE, imageUrl: getImageSource('/images/pinata_icon.png')},
+        {text: '개설한 이벤트', link: ROUTE.EVENT.LIST, imageUrl: getImageSource('/images/horse_icon.png')},
+        {text: '참여한 이벤트', link: ROUTE.GIFTS, imageUrl: getImageSource('/images/pinata_icon.png')},
     ]
 
     const {isLogined, login, logout} = useKakaoLogin()

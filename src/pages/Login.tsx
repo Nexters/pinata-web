@@ -4,6 +4,7 @@ import ROUTE from '$constants/route'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import { typos } from '$styles/typos'
+import { getImageSource } from '$util/imageHelper'
 import {Navigate} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -30,7 +31,7 @@ const Login = () => {
 }
 
 const PinataImage = styled.div`
-    background: url(${window.location.origin}/images/pinata-image.png);
+    background: url(${getImageSource('/images/pinata-image.png')});
     width: 181px;
     height: 129px;
     margin-bottom: 120px;
