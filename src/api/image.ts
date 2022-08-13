@@ -1,5 +1,5 @@
 import { useRequest } from '$hooks/useRequest';
-import client from '$util/client'
+import client, { postAuthorized } from '$util/client'
 
 export type ImageRequest = {
     files: FileList
@@ -21,12 +21,8 @@ const getFormData = ({files}: ImageRequest) => {
 
 
 export const uploadImage = async (req: ImageRequest, token?: string) => {
-    const {data} = await client.post<ImageResponse>('/api/v1/images', getFormData(req), {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-        },
-    })
+    console.log(token)
+    const {data} = await postAuthorized<FormData, ImageResponse>('/api/v1/images', getFormData(req), token)
 
     return data
 }

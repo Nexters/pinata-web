@@ -39,4 +39,10 @@ const client = axios.create({
 
 client.interceptors.response.use(responseInterceptor, rejectInterceptor)
 
+export const postAuthorized = <T, U>(url: string, req: T, token?: string) => client.post<U>(url, req, {
+    headers: {
+        Authorization: `Bearer ${token}`,
+    },
+})
+
 export default client
