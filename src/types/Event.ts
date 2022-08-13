@@ -27,3 +27,8 @@ export interface EventForm {
   hitImageUrl: string
   missImageUrl: string
 }
+
+export interface ImageUrls {
+  hitImageUrls: string[]
+  missImageUrls: string[]
+}

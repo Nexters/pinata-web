@@ -11,14 +11,20 @@ import Login from '$pages/Login'
 import ErrorPage from '$pages/ErrorPage'
 import EventResult from '$pages/EventResult'
 import { FormProvider, useForm } from 'react-hook-form'
-import { EventForm } from '$types/Event'
+import { EventForm, ImageUrls } from '$types/Event'
 import { EVENT_TYPE } from '$api/event'
+import { getImageSource } from '$util/imageHelper'
+
+const DEFAULT_HIT_IMAGES = [getImageSource('example-hit-image.png')]
+const DEFAULT_MISS_IMAGES = [getImageSource('example-result-card.png')]
 
 export const Router = () => {
-    const method = useForm<EventForm>({
+    const method = useForm<EventForm & ImageUrls>({
         mode: 'onSubmit',
         defaultValues: {
-            type: EVENT_TYPE.RANDOM
+            type: EVENT_TYPE.RANDOM,
+            hitImageUrls: DEFAULT_HIT_IMAGES,
+            missImageUrls: DEFAULT_MISS_IMAGES
         }
     })
 

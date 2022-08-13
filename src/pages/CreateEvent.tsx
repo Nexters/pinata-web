@@ -8,15 +8,13 @@ import Input from '$components/eventForm/Input'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import React, { useState } from 'react'
 import styled, {css} from 'styled-components'
 import {useFormContext} from 'react-hook-form'
 import { EVENT_TYPE, useCreateEvent } from '$api/event'
 import { format, parseISO } from 'date-fns'
 import useAsyncError from '$hooks/useAsyncError'
 import { colors } from '$styles/colors'
-import { getImageSource } from '$util/imageHelper'
-import { EventForm } from '$types/Event'
+import { EventForm, ImageUrls } from '$types/Event'
 import RadioForm from '$components/eventForm/RadioForm'
 
 const radioCommonStyle = css`
@@ -47,21 +45,25 @@ const required = true
 
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
-const CreateEvent: React.FC = () => {
-    const [hitImageUrls, addHitImageUrls] = useState<string[]>([getImageSource('example-hit-image.png')])
-    const [missImageUrls, addMissImageUrls] = useState<string[]>([getImageSource('example-result-card.png')])
-
-    const {register, handleSubmit, setValue} = useFormContext<EventForm>()
+const CreateEvent = () => {
+    const {register, handleSubmit, setValue} = useFormContext<EventForm & ImageUrls>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
     
 
-    const onSubmit = async (data: EventForm) => {
+    const onSubmit = async (data: EventForm & ImageUrls) => {
         try {
             const openAt = formatDateToString(data.openAt)
             const closeAt = formatDateToString(data.closeAt)
-            const {code} = await createEvent({
-                ...data,
+            const eventFormData = Object.entries(data)
+                                            .filter(([key]) => key !== 'hitImageUrls' && key !== 'missImageUrls')
+                                                .reduce((obj, [key, value]) => {
+                                                    obj[key] = value
+                                                    return obj
+                                                }, {} as Record<string, any>) as EventForm
+
+            const {eventCode} = await createEvent({
+                ...eventFormData,
                 openAt,
                 closeAt,
                 isPeriod: true,
@@ -71,7 +73,7 @@ const CreateEvent: React.FC = () => {
                 ],
             })
     
-            console.log(code)
+            console.log(eventCode)
         } catch (e) {
             throwError(e)
         }
@@ -141,7 +143,7 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={hitImageUrls}
+                            imagesName='hitImageUrls'
                             inputProps={{
                                 ...register('hitMessage', {required}),
                                 type: 'text',
@@ -149,7 +151,6 @@ const CreateEvent: React.FC = () => {
                             }}
                             label={'당첨'}
                             onUpload={(urls: string[]) => {
-                                addHitImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
                                 setValue('hitImageUrl', urls[0])
                             }}
                             radioName={'hitImageUrl'}
@@ -163,7 +164,7 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={missImageUrls}
+                            imagesName='missImageUrls'
                             inputProps={{
                                 ...register('missMessage', {required}),
                                 type: 'text',
@@ -171,7 +172,6 @@ const CreateEvent: React.FC = () => {
                             }}
                             label={'탈락'}
                             onUpload={(urls: string[]) => {
-                                addMissImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
                                 setValue('missImageUrl', urls[0])
                             }}
                             radioName={'missImageUrl'}
