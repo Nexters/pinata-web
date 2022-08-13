@@ -35,7 +35,11 @@ export const useMyQuery = <T>(url: string, params?: Record<string, string | numb
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
-        })
+        }),
+        {
+            useErrorBoundary: true,
+            retry: 0,
+        }
     )
 
     if (error) {

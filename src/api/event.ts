@@ -1,4 +1,3 @@
-import { getImageSource } from '$util/imageHelper';
 import { useMyQuery, useRequest } from '$hooks/useRequest';
 import client from '$util/client'
 import { GiftItem } from './gift'
@@ -108,34 +107,6 @@ export type EventItem = {
 export type JoinedEventListResponse = EventItem[]
 
 export const useJoinedEventList = () => {
-    return {
-        data: {
-            data: [
-                {
-                    'eventId': 2,
-                    'eventTitle': '이벤트 1',
-                    'eventCode': '39630708-df23-46a8-b31e-03bef5f600d2',
-                    'result': true,
-                    'resultMessage': '메롱~~',
-                    'resultImageUrl': `${getImageSource('hit-image.png')}`,
-                    'itemId': 3,
-                    'itemTitle': '스타벅스 기프티콘 당첨~!',
-                    'itemImageUrl': 'product-image.jpeg',
-                    'participateAt': '2022-08-25 23:00:00',
-                },
-                {
-                    'eventId': 2,
-                    'eventTitle': '이벤트 2',
-                    'eventCode': '39630708-df23-46a8-b31e-03bef5f600d2',
-                    'result': false,
-                    'resultMessage': '탈락입니다.',
-                    'resultImageUrl': `${getImageSource('example-result-card.png')}`,
-                    'itemId': 2,
-                    'participateAt': '2022-08-25 23:00:00',
-                }
-            ]
-        }
-    }
-    // const {data} = useMyQuery<JoinedEventListResponse>('/api/v1/events/participate/me')
-    // return {data}
+    const {data} = useMyQuery<JoinedEventListResponse>('/api/v1/events/participate/me')
+    return {data}
 }
