@@ -1,6 +1,7 @@
 import PlusIcon from '$assets/icons/PlusIcon'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
+import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { MouseEventHandler, useRef } from 'react'
 import styled from 'styled-components'
@@ -32,7 +33,10 @@ const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) 
             <CardListContainer>
                 <CardImageItem>
                     <CardButton onClick={uploadImage}>
-                        <PlusIcon size={20} color={'#848486'} />
+                        <PlusIcon size={20} color={colors.white} style={{
+                            marginBottom: 6,
+                            opacity: .5
+                        }} />
                         나만의 카드 만들기
                     </CardButton>
                 </CardImageItem>
@@ -44,7 +48,7 @@ const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) 
                 ))}
             </CardListContainer>
             <SelectBox label={label} />
-            <Input variant="fill" {...inputProps} />
+            <Input {...inputProps} />
         </>
     )
 }
@@ -54,8 +58,8 @@ const CardButton = styled(Flex).attrs({
     justifyContent: 'center',
 })`
     border-radius: 10px;
-    background: #f1f1f1;
-    color: #848486;
+    background: ${colors.black[300]};
+    color: ${colors.white};
     ${typos.pretendard['12.20.500']};
     width: 150px;
     height: 90px;

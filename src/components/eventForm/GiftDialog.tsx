@@ -1,6 +1,7 @@
 import PlusIcon from '$assets/icons/PlusIcon'
 import {Box} from '$components/commons/Box'
 import Dialog from '$components/dialog/Dialog'
+import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import { useForm } from 'react-hook-form'
@@ -20,14 +21,14 @@ const GiftDialog = () => {
         <Dialog>
             <Dialog.Button width={'100%'}>
                 <Button color={'default'} height={52}>
-                    <PlusIcon size={19} color={'#1B1B1E'} />
+                    <PlusIcon size={19} color={colors.white} />
                 </Button>
             </Dialog.Button>
             <Dialog.Content width={335}>
                 <Dialog.Title>당첨 상품 이미지 및 이름 등록</Dialog.Title>
                 <DialogSubTitle>선물하실 상품 이미지를 등록하세요</DialogSubTitle>
                 <Button color={'default'} height={90}>
-                    <PlusIcon size={19} color={'#1B1B1E'} />
+                    <PlusIcon size={19} color={colors.white} />
                     <Box
                         typo={typos.pretendard['12.20.500']}
                         style={{
@@ -42,7 +43,6 @@ const GiftDialog = () => {
                 <Input
                     {...register('name', {required: true})}
                     type='text'
-                    variant="fill"
                     placeholder="최대 20글자"
                     style={{
                         marginBottom: 36,
@@ -81,8 +81,8 @@ const Button = styled.button<{
     ${({color}) =>
         color === 'default'
             ? css`
-                  background: rgba(27, 27, 30, 0.07);
-                  color: #848486;
+                  background: ${colors.black[300]};
+                  color: ${colors.white};
               `
             : css`
                   background: #1b1b1e;

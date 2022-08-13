@@ -15,6 +15,7 @@ import {useForm} from 'react-hook-form'
 import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
 import { format, parseISO } from 'date-fns'
 import useAsyncError from '$hooks/useAsyncError'
+import { colors } from '$styles/colors'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -22,13 +23,13 @@ const radioCommonStyle = css`
 `
 
 const radioSelectStyle = css`
-    background: #32aaff;
-    color: #fff;
+    background: ${colors.blue[100]};
+    color: ${colors.white};
 `
 
 const radioDefaultStyle = css`
-    background: #e8e8e8;
-    color: #1b1b1e;
+    background: ${colors.black[300]};
+    color: ${colors.white};
 `
 
 const DEMO_GIFTS = [
@@ -179,7 +180,7 @@ const CreateEvent: React.FC = () => {
                         />
                     </Section>
                     <Section marginTop={30}>
-                        <Button type="submit" color={'dark'} height={52}>
+                        <Button type="submit" color={'blue'} height={52}>
                             이벤트 개설하기
                         </Button>
                     </Section>
@@ -199,12 +200,12 @@ const Totals = styled(Flex).attrs({
     width: '100%',
 })`
     ${typos.pretendard['16.26.500']};
-    color: #121212;
+    color: ${colors.white};
     margin-top: 20px;
 `
 
 const Button = styled.button<{
-    color: 'default' | 'dark'
+    color: 'default' | 'blue'
     height: number
 }>`
     display: flex;
@@ -217,12 +218,12 @@ const Button = styled.button<{
     ${({color}) =>
         color === 'default'
             ? css`
-                  background: rgba(27, 27, 30, 0.07);
-                  color: #848486;
+                  background: ${colors.black[700]};
+                  color: ${colors.white};
               `
             : css`
-                  background: #1b1b1e;
-                  color: #fff;
+                  background: ${colors.blue[100]};
+                  color: ${colors.white};
               `}
     border-radius: 15px;
     height: ${extractProp('height')}px;
