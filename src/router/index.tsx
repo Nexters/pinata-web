@@ -12,10 +12,14 @@ import ErrorPage from '$pages/ErrorPage'
 import EventResult from '$pages/EventResult'
 import { FormProvider, useForm } from 'react-hook-form'
 import { EventForm } from '$types/Event'
+import { EVENT_TYPE } from '$api/event'
 
 export const Router = () => {
     const method = useForm<EventForm>({
-        mode: 'onSubmit'
+        mode: 'onSubmit',
+        defaultValues: {
+            type: EVENT_TYPE.RANDOM
+        }
     })
 
     return (

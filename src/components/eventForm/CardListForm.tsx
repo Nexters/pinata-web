@@ -3,6 +3,7 @@ import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
+import { EventForm } from '$types/Event'
 import { MouseEventHandler, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import ImageUploader from './ImageUploader'
@@ -17,7 +18,7 @@ type CardListFormProps = {
     inputProps: InputProps
     label: string
     onUpload(imageUrls: string[]): void
-    onSelect(imageUrl: string): void
+    radioName: keyof EventForm
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
@@ -46,7 +47,7 @@ const defaultRadioStyle = css`
     border-radius: 10px;
 `
 
-const CardListForm = ({images, inputProps, label, onUpload, onSelect}: CardListFormProps) => {
+const CardListForm = ({images, inputProps, label, onUpload, radioName}: CardListFormProps) => {
     const imageUploaderRef = useRef<HTMLInputElement>(null)
     const uploadImage: MouseEventHandler<HTMLDivElement> = (e) => {
         e.preventDefault()
@@ -65,11 +66,11 @@ const CardListForm = ({images, inputProps, label, onUpload, onSelect}: CardListF
                     </CardButton>
                 </CardImageItem>
                 <ImageUploader onUpload={onUpload} ref={imageUploaderRef} />
-                <RadioForm values={images}>
+                <RadioForm>
                     {images.map((imageUrl) => (
                         <CardImageItem key={imageUrl}>
                             <RadioForm.Item 
-                                onSelect={onSelect} 
+                                name={radioName}
                                 value={imageUrl} 
                                 width={150} 
                                 height={90} 

@@ -5,19 +5,19 @@ import CardListForm from '$components/eventForm/CardListForm'
 import GiftDialog from '$components/eventForm/GiftDialog'
 import GiftList from '$components/eventForm/GiftList'
 import Input from '$components/eventForm/Input'
-import RadioForm from '$components/eventForm/RadioForm'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import React, { useState } from 'react'
 import styled, {css} from 'styled-components'
 import {useFormContext} from 'react-hook-form'
-import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
+import { EVENT_TYPE, useCreateEvent } from '$api/event'
 import { format, parseISO } from 'date-fns'
 import useAsyncError from '$hooks/useAsyncError'
 import { colors } from '$styles/colors'
 import { getImageSource } from '$util/imageHelper'
 import { EventForm } from '$types/Event'
+import RadioForm from '$components/eventForm/RadioForm'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -77,16 +77,12 @@ const CreateEvent: React.FC = () => {
         }
     }
 
-    const onSelect = (value: EventType) => {
-        setValue('type', value)
-    }
-
-    const onSelectHitImage = (value: string) => {
-        setValue('hitImageUrl', value)
-    }
-
-    const onSelectMissImage = (value: string) => {
-        setValue('missImageUrl', value)
+    const defaultTypeProps = {
+        width: 162,
+        height: 100,
+        selectedStyle: radioSelectStyle,
+        unselectedStyle: radioDefaultStyle,
+        style: radioCommonStyle,
     }
 
     return (
@@ -111,26 +107,18 @@ const CreateEvent: React.FC = () => {
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 모드를 선택하세요</SectionTitle>
-                        <RadioForm values={[EVENT_TYPE.RANDOM, EVENT_TYPE.FCFS]} defaultValue={EVENT_TYPE.RANDOM}>
-                            <RadioForm.Item
-                                onSelect={onSelect}
-                                width={162}
-                                height={100}
-                                value={EVENT_TYPE.RANDOM}
-                                selectedStyle={radioSelectStyle}
-                                unselectedStyle={radioDefaultStyle}
-                                style={radioCommonStyle}>
-                                랜덤 모드
+                        <RadioForm>
+                            <RadioForm.Item 
+                                name="type" 
+                                value={EVENT_TYPE.RANDOM} 
+                                {...defaultTypeProps}>
+                            랜덤 모드
                             </RadioForm.Item>
-                            <RadioForm.Item
-                                onSelect={onSelect}
-                                width={162}
-                                height={100}
-                                value={EVENT_TYPE.FCFS}
-                                selectedStyle={radioSelectStyle}
-                                unselectedStyle={radioDefaultStyle}
-                                style={radioCommonStyle}>
-                                선착순 모드
+                            <RadioForm.Item 
+                            name="type" 
+                            value={EVENT_TYPE.FCFS}
+                            {...defaultTypeProps}>
+                            선착순 모드
                             </RadioForm.Item>
                         </RadioForm>
                     </Section>
@@ -164,7 +152,7 @@ const CreateEvent: React.FC = () => {
                                 addHitImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
                                 setValue('hitImageUrl', urls[0])
                             }}
-                            onSelect={onSelectHitImage}
+                            radioName={'hitImageUrl'}
                         />
                     </Section>
                     <Section marginTop={40}>
@@ -183,10 +171,10 @@ const CreateEvent: React.FC = () => {
                             }}
                             label={'탈락'}
                             onUpload={(urls: string[]) => {
-                                setValue('missImageUrl', urls[0])
                                 addMissImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
+                                setValue('missImageUrl', urls[0])
                             }}
-                            onSelect={onSelectMissImage}
+                            radioName={'missImageUrl'}
                         />
                     </Section>
                     <Section marginTop={30}>
