@@ -14,6 +14,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { EventForm, ImageUrls } from '$types/Event'
 import { EVENT_TYPE } from '$api/event'
 import { getImageSource } from '$util/imageHelper'
+import NotFoundPage from '$pages/NotFoundPage'
 
 const DEFAULT_HIT_IMAGES = [getImageSource('example-hit-image.png')]
 const DEFAULT_MISS_IMAGES = [getImageSource('example-result-card.png')]
@@ -42,6 +43,7 @@ export const Router = () => {
                     <Route path={ROUTE.LOGIN} element={<Login />} />
                     <Route path={ROUTE.EVENT.DETAIL} element={<Event />} />
                     <Route path={ROUTE.ERROR} element={<ErrorPage />} />
+                    <Route path={'*'} element={<NotFoundPage />} />
                 </Routes>
             </BrowserRouter>
         </FormProvider>
