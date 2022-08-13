@@ -18,7 +18,7 @@ export const login = async (req: LoginRequest) => {
          * @delete 성공 테스트용 mock
          */
         // return sleep<LoginResponse>({accessToken: 'tester'}, 2000)
-        const {data} = await client.post<LoginResponse>('/v1/auth/signin', {
+        const {data} = await client.post<LoginResponse>('/api/v1/auth/signin', {
             ...req,
         })
 

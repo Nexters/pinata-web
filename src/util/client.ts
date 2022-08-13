@@ -32,9 +32,7 @@ const rejectInterceptor = (error: AxiosError) => {
     return Promise.reject(error)
 }
 
-const client = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-})
+const client = axios.create()
 
 client.interceptors.response.use(responseInterceptor, rejectInterceptor)
 

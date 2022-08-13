@@ -5,3 +5,7 @@ export const extractProp =
     <Props, Key extends keyof Props>(key: Key) =>
     (props: Props) =>
         props[key]
+
+export const detectIsMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+}
