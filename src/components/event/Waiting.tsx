@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import EventWrapper from '$components/event/EventWrapper'
 
 import {useInterval} from '$hooks/useInterval'
-import {Event} from '$types/Event'
+import {TargetEvent} from '$types/Event'
 import {changeSecondsHHMMSS} from '$util/time'
 import { typos } from '$styles/typos'
 
@@ -22,7 +22,7 @@ const Instruction = styled.div`
 `
 
 type Props = {
-    event: Event
+    event: TargetEvent
 }
 
 const Waiting: React.FC<Props> = ({event}) => {

@@ -1,6 +1,6 @@
-import { Event } from 'types/Event';
+import { TargetEvent } from 'types/Event';
 
-const dummyEvent: Event = {
+const dummyEvent: TargetEvent = {
     id: 1,
     title: '예시 이벤트',
     code: '123',

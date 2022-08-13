@@ -3,21 +3,21 @@ import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
-import { MouseEventHandler, useRef } from 'react'
+import { EventForm, ImageUrls } from '$types/Event'
+import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import ImageUploader from './ImageUploader'
 import Input, {InputProps} from './Input'
 import RadioForm from './RadioForm'
 import SelectBox from './SelectBox'
 
-type Image = string
-
 type CardListFormProps = {
-    images: Image[]
     inputProps: InputProps
     label: string
     onUpload(imageUrls: string[]): void
-    onSelect(imageUrl: string): void
+    radioName: keyof EventForm
+    imagesName: keyof ImageUrls
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
@@ -46,12 +46,27 @@ const defaultRadioStyle = css`
     border-radius: 10px;
 `
 
-const CardListForm = ({images, inputProps, label, onUpload, onSelect}: CardListFormProps) => {
+const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: CardListFormProps) => {
+    const [images, setImages] = useState<string[]>([])
     const imageUploaderRef = useRef<HTMLInputElement>(null)
     const uploadImage: MouseEventHandler<HTMLDivElement> = (e) => {
         e.preventDefault()
         imageUploaderRef.current && imageUploaderRef.current.click()
     }
+    const {setValue, watch, getValues} = useFormContext<ImageUrls>()
+
+    const currentImages = watch(imagesName)
+
+    useEffect(() => {
+        setImages(currentImages)
+    }, [currentImages])
+
+    const handleUpload = (urls: string[]) => {
+        const prevImages = getValues(imagesName)
+        setValue(imagesName, [urls[0], ...prevImages])
+        onUpload(urls)
+    }
+
     return (
         <>
             <CardListContainer>
@@ -64,12 +79,12 @@ const CardListForm = ({images, inputProps, label, onUpload, onSelect}: CardListF
                         나만의 카드 만들기
                     </CardButton>
                 </CardImageItem>
-                <ImageUploader onUpload={onUpload} ref={imageUploaderRef} />
-                <RadioForm values={images}>
+                <ImageUploader onUpload={handleUpload} ref={imageUploaderRef} />
+                <RadioForm>
                     {images.map((imageUrl) => (
                         <CardImageItem key={imageUrl}>
                             <RadioForm.Item 
-                                onSelect={onSelect} 
+                                name={radioName}
                                 value={imageUrl} 
                                 width={150} 
                                 height={90} 
