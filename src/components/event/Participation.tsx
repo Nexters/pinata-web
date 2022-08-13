@@ -1,36 +1,29 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import EventWrapper from '$components/event/EventWrapper'
+import {typos} from '$styles/typos'
+import {GiftBox} from './GiftBox'
 
 const H1 = styled.div`
     width: 288px;
 
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 800;
-    font-size: 30px;
-    line-height: 43px;
+    ${typos.pretendard['25.38.800']};
 
     text-align: center;
 
     color: #ffffff;
 `
 
-const GiftBox = styled.div`
-    width: 150px;
-    height: 190px;
+// const GiftBox = styled.div`
+//     width: 150px;
+//     height: 190px;
 
-    background-color: #000;
-`
+//     background-color: #000;
+// `
 
 const Text = styled.div`
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 26px;
-    /* or 162% */
+    ${typos.pretendard['16.26.500']}
 
     text-align: center;
     letter-spacing: -0.333333px;
@@ -38,12 +31,6 @@ const Text = styled.div`
     color: #ffffff;
 
     opacity: 0.8;
-`
-
-const SwipeIcon = styled.div`
-    width: 16px;
-    height: 18px;
-    background-image: url(${require('$assets/image/swipe_up.png')});
 `
 
 const Section = styled.section`
@@ -57,14 +44,28 @@ const Section = styled.section`
 `
 
 const Participation: React.FC = () => {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    const handleOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        e.preventDefault()
+
+        setIsOpen(true)
+    }
+
     return (
         <EventWrapper>
-            <H1>넥스터즈 21기 깜작 선물 3분께 드립니다.</H1>
-            <Section>
-                <GiftBox />
-                <SwipeIcon/>
+            <H1>
+                넥스터즈 21기 깜작 선물 <br />
+                3분께 드립니다.
+            </H1>
+            <Section onClick={handleOpen}>
+                <GiftBox isOpen={isOpen} />
             </Section>
-            <Text>지금 바로 이벤트에 참여하려면<br/>위의 선물상자를 클릭해보세요!</Text>
+            <Text>
+                지금 바로 이벤트에 참여하려면
+                <br />
+                위의 선물상자를 클릭해보세요!
+            </Text>
         </EventWrapper>
     )
 }
