@@ -1,3 +1,4 @@
+import { ApiResponse } from '$types/ApiResponse'
 import client from '$util/client'
 import {FetchError} from '$util/FetchError'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
@@ -15,6 +16,7 @@ export const useRequest = <Request, Response>(api: (req: Request, token?: string
             queryClient.invalidateQueries([api]);
             return response
         },
+        cacheTime: 0,
     })
 
     if (error) {
@@ -24,16 +26,20 @@ export const useRequest = <Request, Response>(api: (req: Request, token?: string
     return {mutate, mutateAsync, data, error, isLoading, ...rest}
 }
 
-export const useMyQuery = <T>(url: string, params?: Record<string, string | number>) => {    
+export const useGetQuery = <T>(url: string, params?: Record<string, string | number>) => {    
     const accessToken = useAuthToken()
-
-    const {isLoading, data, error} = useQuery([url], () =>
-        client.get<T, T>(url, {
+    
+    const {isLoading, data, error} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>([url, JSON.stringify(params)], () =>
+        client.get<ApiResponse<T>, ApiResponse<T>>(url, {
             params,
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         }),
+        {
+            useErrorBoundary: true,
+            retry: 0,
+        }
     )
 
     if (error) {

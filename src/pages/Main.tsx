@@ -1,22 +1,34 @@
+import { EVENT_TYPE } from '$api/event'
 import {Section, SectionTitle} from '$components/commons/Section'
 import EventList from '$components/eventList/EventList'
 import JoinedEventList from '$components/eventList/JoinedEventList'
+import { DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES } from '$constants/formData'
 import ROUTE from '$constants/route'
-import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
+import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { getImageSource } from '$util/imageHelper'
-import React from 'react'
+import React, { Suspense, useEffect } from 'react'
+import { useFormContext } from 'react-hook-form'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
 const Main: React.FC = () => {
     const navigate = useNavigate()
-    const {isLoading} = useKakaoLogin()
 
-    if (isLoading) {
-        return <div>로그인 중...</div>
-    }
+    const {formState: {isDirty}, reset} = useFormContext()
+
+    useEffect(() => {
+        isDirty && reset({
+            type: EVENT_TYPE.RANDOM,
+            hitImageUrls: DEFAULT_HIT_IMAGES,
+            missImageUrls: DEFAULT_MISS_IMAGES
+        }, {
+            keepValues: false
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isDirty])
+    
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
@@ -30,19 +42,28 @@ const Main: React.FC = () => {
                 </EventCreateIntro>
                 <Section marginTop={40}>
                     <SectionTitle>개설한 이벤트</SectionTitle>
-                    <EventList />
+                    <Suspense fallback={<Loading />}>
+                        <EventList />
+                    </Suspense>
                 </Section>
                 <Section marginTop={40}>
                     <SectionTitle>참여한 이벤트</SectionTitle>
-                    <JoinedEventList />
+                    <Suspense fallback={<Loading />}>
+                        <JoinedEventList />
+                    </Suspense>
                 </Section>
             </Container>
         </LayoutWrapper>
     )
 }
 
+const Loading = styled.div`
+    color: ${colors.white};
+    ${typos.pretendard['12.18.400']};
+`
+
 const IntroDesc = styled.div`
-    color: #FFFFFF;
+    color: ${colors.white};
     ${typos.pretendard['15.21.500']};
     position: absolute;
     bottom: 20px;

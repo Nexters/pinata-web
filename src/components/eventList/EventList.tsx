@@ -5,12 +5,16 @@ import Flex from '$components/commons/Flex'
 import EventCard from './EventCard'
 
 const EventList = () => {
-    const {data: eventList = []} = useEventList()
+    const {data, isLoading} = useEventList()
+
+    if (!data || isLoading) {
+        return null
+    }
 
     return (
         <Suspense fallback={<>Loading...</>}>
             <EventListContainer>
-                {eventList.map((event: Event) => (
+                {data.data.map((event: Event) => (
                     <EventItemCard key={event.id}>
                         <EventCard {...event} />
                     </EventItemCard>
