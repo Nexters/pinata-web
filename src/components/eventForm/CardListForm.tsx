@@ -4,9 +4,10 @@ import Flex from '$components/commons/Flex'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { MouseEventHandler, useRef } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import ImageUploader from './ImageUploader'
 import Input, {InputProps} from './Input'
+import RadioForm from './RadioForm'
 import SelectBox from './SelectBox'
 
 type Image = string
@@ -16,6 +17,7 @@ type CardListFormProps = {
     inputProps: InputProps
     label: string
     onUpload(imageUrls: string[]): void
+    onSelect(imageUrl: string): void
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
@@ -32,7 +34,19 @@ const CardImageWrapper = styled(Box).attrs({
 
 `
 
-const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) => {
+const selectedStyle = css`
+    outline: 4px solid ${colors.white};
+`
+
+const unselectedStyle = css`
+    outline: none;
+`
+
+const defaultRadioStyle = css`
+    border-radius: 10px;
+`
+
+const CardListForm = ({images, inputProps, label, onUpload, onSelect}: CardListFormProps) => {
     const imageUploaderRef = useRef<HTMLInputElement>(null)
     const uploadImage: MouseEventHandler<HTMLDivElement> = (e) => {
         e.preventDefault()
@@ -41,7 +55,7 @@ const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) 
     return (
         <>
             <CardListContainer>
-                <CardImageItem>
+                <CardImageItem marginLeft={20}>
                     <CardButton onClick={uploadImage}>
                         <PlusIcon size={20} color={colors.white} style={{
                             marginBottom: 6,
@@ -51,11 +65,22 @@ const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) 
                     </CardButton>
                 </CardImageItem>
                 <ImageUploader onUpload={onUpload} ref={imageUploaderRef} />
-                {images.map((imageUrl) => (
-                    <CardImageItem key={imageUrl}>
-                        <CardImage imageUrl={imageUrl} />
-                    </CardImageItem>
-                ))}
+                <RadioForm values={images}>
+                    {images.map((imageUrl) => (
+                        <CardImageItem key={imageUrl}>
+                            <RadioForm.Item 
+                                onSelect={onSelect} 
+                                value={imageUrl} 
+                                width={150} 
+                                height={90} 
+                                selectedStyle={selectedStyle} 
+                                unselectedStyle={unselectedStyle} 
+                                style={defaultRadioStyle}>
+                                <CardImage imageUrl={imageUrl} />
+                            </RadioForm.Item>
+                        </CardImageItem>
+                    ))}
+                </RadioForm>
             </CardListContainer>
             <SelectBox label={label} />
             <Input {...inputProps} />
@@ -76,7 +101,13 @@ const CardButton = styled(Flex).attrs({
     cursor: pointer;
 `
 
-const CardImageItem = styled.div``
+const CardImageItem = styled.div<{marginLeft?: number}>`
+    margin-left: ${({marginLeft}) => marginLeft || 0}px;
+
+    &:last-child {
+        margin-right: 20px !important;
+    }
+`
 
 const CardListContainer = styled(Flex).attrs({
     direction: 'row',
@@ -87,11 +118,7 @@ const CardListContainer = styled(Flex).attrs({
     padding: 20px 0;
 
     ${CardImageItem} {
-        margin: 0 10px 0 20px;
-
-        &:nth-child(n + 2) {
-            margin-left: 0;
-        }
+        margin-right: 10px;
     }
 
     &::-webkit-scrollbar {

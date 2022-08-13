@@ -16,7 +16,8 @@ const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(({multipl
             console.log(data.imageUrls)
             onUpload(data.imageUrls)
         }
-    }, [data, onUpload])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data])
 
     const triggerUpload = async (files: FileList) => {
         await uploadImage({files})
@@ -26,7 +27,7 @@ const ImageUploader = forwardRef<HTMLInputElement, ImageUploaderProps>(({multipl
         const target = e.target as HTMLInputElement;
         if (target.files && target.files[0]) {
 
-            const MAX_FILE_SIZE = 5 * 1024 * 1024;
+            const MAX_FILE_SIZE = 1 * 1024 * 1024;
 
             const checkImageSizes = Array.from(target.files).every((file) => {
                 const fileSize = file.size

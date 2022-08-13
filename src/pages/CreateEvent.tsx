@@ -9,7 +9,7 @@ import RadioForm from '$components/eventForm/RadioForm'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import React from 'react'
+import React, { useState } from 'react'
 import styled, {css} from 'styled-components'
 import {useForm} from 'react-hook-form'
 import { EventType, EVENT_TYPE, useCreateEvent } from '$api/event'
@@ -58,6 +58,9 @@ const required = true
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent: React.FC = () => {
+    const [hitImageUrls, addHitImageUrls] = useState<string[]>([getImageSource('hit-image.png')])
+    const [missImageUrls, addMissImageUrls] = useState<string[]>([])
+
     const {register, handleSubmit, setValue} = useForm<EventForm>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
@@ -86,6 +89,14 @@ const CreateEvent: React.FC = () => {
 
     const onSelect = (value: EventType) => {
         setValue('type', value)
+    }
+
+    const onSelectHitImage = (value: string) => {
+        setValue('hitImageUrl', value)
+    }
+
+    const onSelectMissImage = (value: string) => {
+        setValue('missImageUrl', value)
     }
 
     return (
@@ -152,14 +163,19 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={[getImageSource('hit-image.png')]}
+                            images={hitImageUrls}
                             inputProps={{
                                 ...register('hitMessage', {required}),
                                 type: 'text',
                                 placeholder: '이벤트 당첨 안내 및 축하 메시지를 적어주세요',
                             }}
                             label={'당첨'}
-                            onUpload={(urls: string[]) => setValue('hitImageUrl', urls[0])}
+                            onUpload={(urls: string[]) => {
+                                setValue('hitImageUrl', urls[0])
+                                addHitImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
+                            }}
+                            onSelect={onSelectHitImage}
+
                         />
                     </Section>
                     <Section marginTop={40}>
@@ -170,14 +186,18 @@ const CreateEvent: React.FC = () => {
                             </Flex>
                         </SectionTitle>
                         <CardListForm
-                            images={[]}
+                            images={missImageUrls}
                             inputProps={{
                                 ...register('missMessage', {required}),
                                 type: 'text',
                                 placeholder: '이벤트 탈락 안내 및 위로 메시지를 적어주세요',
                             }}
                             label={'탈락'}
-                            onUpload={(urls: string[]) => setValue('missImageUrl', urls[0])}
+                            onUpload={(urls: string[]) => {
+                                setValue('missImageUrl', urls[0])
+                                addMissImageUrls((imageUrls) => ([urls[0], ...imageUrls]))
+                            }}
+                            onSelect={onSelectMissImage}
                         />
                     </Section>
                     <Section marginTop={30}>
