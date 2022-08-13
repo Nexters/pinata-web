@@ -59,10 +59,12 @@ const useKakaoLogin = () => {
                     removeCookie('pln')
                 },
                 fail: function (error: Error) {
-                    console.log(error)
+                    console.error(error)
                 },
             })
             window.Kakao.Auth.setAccessToken(undefined)
+        } else {
+            removeCookie('pln')
         }
     }
 

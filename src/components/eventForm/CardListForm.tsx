@@ -2,7 +2,9 @@ import PlusIcon from '$assets/icons/PlusIcon'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import {typos} from '$styles/typos'
+import { MouseEventHandler, useRef } from 'react'
 import styled from 'styled-components'
+import ImageUploader from './ImageUploader'
 import Input, {InputProps} from './Input'
 import SelectBox from './SelectBox'
 
@@ -12,22 +14,29 @@ type CardListFormProps = {
     images: Image[]
     inputProps: InputProps
     label: string
+    onUpload(imageUrls: string[]): void
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
     return <Box></Box>
 }
 
-const CardListForm = ({images, inputProps, label}: CardListFormProps) => {
+const CardListForm = ({images, inputProps, label, onUpload}: CardListFormProps) => {
+    const imageUploaderRef = useRef<HTMLInputElement>(null)
+    const uploadImage: MouseEventHandler<HTMLDivElement> = (e) => {
+        e.preventDefault()
+        imageUploaderRef.current && imageUploaderRef.current.click()
+    }
     return (
         <>
             <CardListContainer>
                 <CardImageItem>
-                    <CardButton>
+                    <CardButton onClick={uploadImage}>
                         <PlusIcon size={20} color={'#848486'} />
                         나만의 카드 만들기
                     </CardButton>
                 </CardImageItem>
+                <ImageUploader onUpload={onUpload} ref={imageUploaderRef} />
                 {images.map((imageUrl) => (
                     <CardImageItem key={imageUrl}>
                         <CardImage imageUrl={imageUrl} />
@@ -50,6 +59,7 @@ const CardButton = styled(Flex).attrs({
     ${typos.pretendard['12.20.500']};
     width: 150px;
     height: 90px;
+    cursor: pointer;
 `
 
 const CardImageItem = styled.div``
