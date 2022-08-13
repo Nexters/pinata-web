@@ -18,6 +18,7 @@ const createTypo = (base: Typo, size: number, lineHeight: number, weight: number
 
 export const typos = {
     pretendard: {
+        '11.18.400': createTypo(pretendardBase, 11, 18, 400),
         '12.18.400': createTypo(pretendardBase, 12, 18, 400),
         '12.19.600': createTypo(pretendardBase, 12, 19, 600),
         '12.20.500': createTypo(pretendardBase, 12, 20, 500),

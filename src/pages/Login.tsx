@@ -57,7 +57,7 @@ const LoginWrapper = styled(Flex).attrs({
     justifyContent: 'center',
     alignItems: 'center',
 })`
-    height: 100%;
+    height: 100vh;
     width: 100%;
     background-color: #1B1B1E;
     position: relative;

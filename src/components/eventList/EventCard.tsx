@@ -10,16 +10,19 @@ type EventCardProps = Event
 
 const formatDateTime = (dateTime: string) => format(new Date(dateTime), 'yyyy.MM.dd a hh:mm')
 
-const EventCard = ({title, type, openAt, closeAt, code}: EventCardProps) => {
+const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
+    const copyEventLink = () => {
+        console.log(code)
+    }
     return (
         <Card withOverlay={false}>
             <Card.Content>
-                <EventStatusComponent status={type}>진행중인 이벤트</EventStatusComponent>
+                <EventStatusComponent status={status}>진행중인 이벤트</EventStatusComponent>
                 <Card.Title typo={typos.pretendard['18.19.700']}>{title}</Card.Title>
                 <Card.Desc size="lg">
                     {formatDateTime(openAt)} - {formatDateTime(closeAt)}
                 </Card.Desc>
-                <EventLink>
+                <EventLink onClick={copyEventLink}>
                     <ShareIcon
                         size={20}
                         color={'rgba(255,255,255,.5)'}

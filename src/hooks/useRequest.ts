@@ -1,3 +1,4 @@
+import { ApiResponse } from '$types/ApiResponse'
 import client from '$util/client'
 import {FetchError} from '$util/FetchError'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
@@ -26,14 +27,14 @@ export const useRequest = <Request, Response>(api: (req: Request, token?: string
 
 export const useMyQuery = <T>(url: string, params?: Record<string, string | number>) => {    
     const accessToken = useAuthToken()
-
-    const {isLoading, data, error} = useQuery([url], () =>
-        client.get<T, T>(url, {
+    
+    const {isLoading, data, error} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>([url, JSON.stringify(params)], () =>
+        client.get<ApiResponse<T>, ApiResponse<T>>(url, {
             params,
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
-        }),
+        })
     )
 
     if (error) {
