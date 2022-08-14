@@ -3,9 +3,9 @@ import { useFormContext } from 'react-hook-form'
 import {Navigate, Outlet} from 'react-router-dom'
 
 function FormGuard() {
-    const {formState: {isSubmitted}} = useFormContext()
+    const {formState: {isSubmitSuccessful}} = useFormContext()
 
-    return isSubmitted ? <Outlet /> : <Navigate to={ROUTE.EVENT.CREATE} />
+    return isSubmitSuccessful ? <Outlet /> : <Navigate to={ROUTE.EVENT.CREATE} />
 }
 
 export default FormGuard

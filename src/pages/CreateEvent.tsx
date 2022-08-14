@@ -49,7 +49,7 @@ const required = true
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent = () => {
-    const {register, handleSubmit, setValue, formState: {isSubmitted}} = useFormContext<EventForm & ImageUrls>()
+    const {register, handleSubmit, setValue, formState: {isSubmitSuccessful, errors}} = useFormContext<EventForm & ImageUrls>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
     const navigate = useNavigate()
@@ -85,13 +85,13 @@ const CreateEvent = () => {
     }
 
     useEffect(() => {
-        if (isSubmitted) {
+        if (isSubmitSuccessful && Object.keys(errors).length < 1) {
             navigate(ROUTE.EVENT.CREATE_COMPLETE, {
                 state: {eventCode: completeEventCode}
             })
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isSubmitted, completeEventCode])
+    }, [isSubmitSuccessful, completeEventCode, errors])
 
     const defaultTypeProps = {
         width: 162,
