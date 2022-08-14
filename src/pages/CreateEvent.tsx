@@ -86,8 +86,8 @@ const CreateEvent = () => {
 
     useEffect(() => {
         if (isSubmitSuccessful && Object.keys(errors).length < 1) {
-            navigate(ROUTE.EVENT.CREATE_COMPLETE, {
-                state: {eventCode: completeEventCode}
+            navigate(`${ROUTE.EVENT.CREATE_COMPLETE}/${completeEventCode}`, {
+                replace: true
             })
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps

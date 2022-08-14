@@ -41,7 +41,7 @@ export const Router = () => {
                             <Route path={ROUTE.EVENT.LIST} element={<EventLists />} />
                             <Route path={ROUTE.EVENT.CREATE} element={<CreateEvent />} />
                             <Route path={ROUTE.EVENT.CREATE_COMPLETE} element={<FormGuard />}>
-                                <Route path={ROUTE.EVENT.CREATE_COMPLETE} element={<CreateComplete />} />
+                                <Route path={`${ROUTE.EVENT.CREATE_COMPLETE}/:eventcode`} element={<CreateComplete />} />
                             </Route>
                             <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
                             <Route path={ROUTE.GIFTS} element={<Gifts />} />
