@@ -15,13 +15,6 @@ const H1 = styled.div`
     color: #ffffff;
 `
 
-// const GiftBox = styled.div`
-//     width: 150px;
-//     height: 190px;
-
-//     background-color: #000;
-// `
-
 const Text = styled.div`
     ${typos.pretendard['16.26.500']}
 
