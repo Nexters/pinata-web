@@ -27,7 +27,8 @@ export const Router = () => {
         defaultValues: {
             type: EVENT_TYPE.RANDOM,
             hitImageUrls: DEFAULT_HIT_IMAGES,
-            missImageUrls: DEFAULT_MISS_IMAGES
+            missImageUrls: DEFAULT_MISS_IMAGES,
+            items: []
         }
     })
 

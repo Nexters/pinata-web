@@ -8,6 +8,7 @@ import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import {PropsWithChildren} from 'react'
+import { createPortal } from 'react-dom'
 import styled, {CSSProperties} from 'styled-components'
 
 type Props<T extends unknown> = PropsWithChildren<T>
@@ -29,13 +30,21 @@ const DialogContent = ({children, width}: Props<{width: number}>) => {
     const {isOpen, toggle} = useDialogContext()
     useBodyScrollLock(isOpen)
 
+    const createPortalRoot = () => {
+        const element = document.createElement('div')
+        element.id = '__portal'
+        document.body.appendChild(element)
+        return element
+    }
+
     if (!isOpen) return null
 
-    return (
+    return createPortal(
         <>
+            <Overlay onClick={toggle}/>
             <DialogBox width={width}>{children}</DialogBox>
-            <Overlay onClick={toggle} />
-        </>
+        </>,
+        document.getElementById('__portal') || createPortalRoot(),
     )
 }
 
@@ -64,12 +73,16 @@ const Title = styled(Flex).attrs({
 
 const DialogBox = styled(Box)`
     background: ${colors.black[300]};
-    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 40px  rgba(0, 0, 0, 0.1);
     border-radius: 20px;
-    z-index: 2;
     position: fixed;
     top: 200px;
+    left: 0;
+    right: 0;
+    z-index: 1001;
     padding: 20px;
+    margin: 0 auto;
+    height: fit-content;
 `
 
 const Button = styled.div<{

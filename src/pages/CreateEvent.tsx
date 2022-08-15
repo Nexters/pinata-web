@@ -35,24 +35,17 @@ const radioDefaultStyle = css`
     color: ${colors.white};
 `
 
-const DEMO_GIFTS = [
-    {
-        title: '선물 1',
-    },
-    {
-        title: '선물 2',
-    },
-]
-
 const required = true
 
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent = () => {
-    const {register, handleSubmit, setValue, formState: {isSubmitSuccessful, errors}} = useFormContext<EventForm & ImageUrls>()
+    const {register, handleSubmit, setValue, formState: {isSubmitSuccessful, errors}, watch} = useFormContext<EventForm & ImageUrls>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
     const navigate = useNavigate()
+
+    const numOfHitItems  = watch('items')
 
     const [completeEventCode, setEventCode] = useState<string | null>(null)
     
@@ -142,10 +135,10 @@ const CreateEvent = () => {
                         <SectionTitle marginBottom={16}>당첨 상품을 등록하세요</SectionTitle>
                         <Flex direction="column">
                             <GiftDialog />
-                            <GiftList items={DEMO_GIFTS} />
+                            <GiftList />
                             <Totals>
                                 총 상품 수령 인원
-                                <NumberHighlight>{DEMO_GIFTS.length}명</NumberHighlight>
+                                <NumberHighlight>{numOfHitItems.length}명</NumberHighlight>
                             </Totals>
                         </Flex>
                     </Section>

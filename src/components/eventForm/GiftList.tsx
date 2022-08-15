@@ -2,6 +2,8 @@ import CloseIcon from '$assets/icons/CloseIcon'
 import Flex from '$components/commons/Flex'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
+import { EventForm } from '$types/Event'
+import { useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
 
 export type Gift = {
@@ -9,15 +11,14 @@ export type Gift = {
     giftImageFileName?: string
 }
 
-type GiftListProps = {
-    items: Gift[]
-}
+const GiftList = () => {
+    const {getValues} = useFormContext<EventForm>()
 
-const GiftList = ({items}: GiftListProps) => {
+    const items = getValues('items')
     return (
         <Flex direction="column" width={'100%'}>
-            {items.map(({title}, index) => (
-                <GiftItem key={index}>
+            {items.map(({title, rank}) => (
+                <GiftItem key={rank}>
                     {title}
                     <CloseIcon size={18} color={colors.white} />
                 </GiftItem>

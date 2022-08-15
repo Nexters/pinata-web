@@ -4,19 +4,11 @@ import Dialog from '$components/dialog/Dialog'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import { useForm } from 'react-hook-form'
 import styled, {css} from 'styled-components'
-import Input from './Input'
-
-interface GiftForm {
-    name: string
-}
+// import Input from './Input'
 
 const GiftDialog = () => {
-    const {register, handleSubmit} = useForm<GiftForm>()
-    const onSubmit = (data: GiftForm) => {
-        console.log(data)
-    }
+    // const {register} = useFormContext<GiftForm>()
     return (
         <Dialog>
             <Dialog.Button width={'100%'}>
@@ -39,19 +31,17 @@ const GiftDialog = () => {
                 </Button>
                 <Divider />
                 <DialogSubTitle>선물하실 상품 이름을 적어주세요</DialogSubTitle>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                <Input
+                {/* <Input
                     {...register('name', {required: true})}
                     type='text'
                     placeholder="최대 20글자"
                     style={{
                         marginBottom: 36,
                     }}
-                />
-                <Button type='submit' color="dark" height={52}>
+                /> */}
+                <Button color="dark" height={52}>
                     등록하기
                 </Button>
-                </form>
             </Dialog.Content>
         </Dialog>
     )
@@ -67,7 +57,7 @@ const DialogSubTitle = styled.div`
     color: ${colors.white};
     margin-bottom: 10px;
 `
-const Button = styled.button<{
+const Button = styled.div<{
     color: 'default' | 'dark'
     height: number
 }>`
