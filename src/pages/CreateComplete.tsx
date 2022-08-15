@@ -5,16 +5,14 @@ import { typos } from '$styles/typos'
 import { EventForm, ImageUrls } from '$types/Event'
 import { getImageSource } from '$util/imageHelper'
 import { useFormContext } from 'react-hook-form'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 const CreateComplete = () => {
     const {getValues} = useFormContext<EventForm & ImageUrls>()
-    const location = useLocation()
+    const params = useParams()
 
-    const {eventCode} = location.state as {
-        eventCode: string
-    }
+    const eventCode = params.eventcode
 
     const title = getValues('title')
 
