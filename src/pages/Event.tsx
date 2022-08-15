@@ -7,42 +7,49 @@ import Participation from '$components/event/Participation'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {EventResponse, participateEvent} from '$api/event'
 import ROUTE from '$constants/route'
-import { Navigate } from 'react-router-dom'
+import {Navigate} from 'react-router-dom'
 import useAsyncError from '$hooks/useAsyncError'
+import useAuthToken from '$hooks/useAuthToken'
 
 const EventPage: React.FC = () => {
+    // const [eventCode, setEventCode] = useState<string>('')
     const [event, setEvent] = useState<EventResponse>()
     const {isLogined} = useKakaoLogin()
 
-    const isClosed = event && event.status !== 'wait'
-    const isWaiting = event && event.status === 'wait'
-    const isParticipation = event && true
+    const isClosed = event && event.status === 'CLOSED'
+    const isWaiting = event && event.status === 'WAIT'
+    const isParticipation = event && event.status === 'PROCESS'
+    const isCancel = event && event.status === 'CANCEL'
 
     const throwError = useAsyncError()
+    const token = useAuthToken()
 
-    const callParticipageEvent = async () => {
-        try {
-            const event = await participateEvent('123')
-            setEvent(event)
-        } catch (e: unknown) {
-            throwError(e)
-        }
-    }
-
-    // 여기서 이벤트 정보 호출후 상태 만듬
     useEffect(() => {
-        callParticipageEvent()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        const {pathname} = window.location
+
+        const paths = pathname.split('/')
+        const eventCode = paths[2]
+
+        if (!token) return
+        participateEvent(eventCode, token).then((res) => {
+            const event = res.data
+            setEvent(event)
+        })
+    }, [token])
 
     if (!isLogined) {
         return <NeedLogin />
     }
 
     if (isClosed) {
-        return <Navigate to={ROUTE.EVENT.RESULT} state={{
-            closed: true
-        }} />
+        return (
+            <Navigate
+                to={ROUTE.EVENT.RESULT}
+                state={{
+                    closed: true,
+                }}
+            />
+        )
     }
 
     if (isWaiting && event) {
