@@ -13,7 +13,7 @@ const Wrapper = styled.div`
     opacity: 0;
     transition: 1s linear;
 
-    left: 45%;
+    left: calc(50% - 62px);
     &.move {
         opacity: 1;
     }
@@ -33,6 +33,8 @@ const MoveWrapper = styled.div<{rotate: number}>`
     width: 100px;
     height: 100px;
     position: absolute;
+    top: 20px;
+    left: 15px;
 
     transform: rotate(${(props) => props.rotate}deg);
 
