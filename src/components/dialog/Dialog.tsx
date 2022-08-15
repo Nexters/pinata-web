@@ -7,7 +7,7 @@ import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import {PropsWithChildren} from 'react'
+import {Children, cloneElement, isValidElement, PropsWithChildren} from 'react'
 import { createPortal } from 'react-dom'
 import styled, {CSSProperties} from 'styled-components'
 
@@ -37,12 +37,19 @@ const DialogContent = ({children, width}: Props<{width: number}>) => {
         return element
     }
 
+    const childrenWithProps = Children.map(children, (child) => {
+        if (isValidElement(child)) {
+          return cloneElement(child, { closeDialog: toggle });
+        }
+        return child
+      })
+
     if (!isOpen) return null
 
     return createPortal(
         <>
             <Overlay onClick={toggle}/>
-            <DialogBox width={width}>{children}</DialogBox>
+            <DialogBox width={width}>{childrenWithProps}</DialogBox>
         </>,
         document.getElementById('__portal') || createPortalRoot(),
     )
@@ -60,7 +67,9 @@ const DialogTitle = ({children}: Props<{}>) => {
     )
 }
 
-const IconBox = styled.span``
+const IconBox = styled.span`
+    cursor: pointer;
+`
 
 const Title = styled(Flex).attrs({
     direction: 'row',

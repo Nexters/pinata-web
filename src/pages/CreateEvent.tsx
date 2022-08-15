@@ -19,6 +19,8 @@ import RadioForm from '$components/eventForm/RadioForm'
 import { useNavigate } from 'react-router-dom'
 import ROUTE from '$constants/route'
 import { useEffect, useState } from 'react'
+import { GiftItem } from '$api/gift'
+import PlusIcon from '$assets/icons/PlusIcon'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -40,15 +42,16 @@ const required = true
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent = () => {
-    const {register, handleSubmit, setValue, formState: {isSubmitSuccessful, errors}, watch} = useFormContext<EventForm & ImageUrls>()
+    const {register, handleSubmit, setValue, getValues, formState: {isSubmitSuccessful, errors}, watch} = useFormContext<EventForm & ImageUrls>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
     const navigate = useNavigate()
 
-    const numOfHitItems  = watch('items')
+    const items  = watch('items')
+
+    console.log(items)
 
     const [completeEventCode, setEventCode] = useState<string | null>(null)
-    
 
     const onSubmit = async (data: EventForm & ImageUrls) => {
         try {
@@ -66,10 +69,6 @@ const CreateEvent = () => {
                 openAt,
                 closeAt,
                 isPeriod: true,
-                'items' : [    
-                    { 'title' : '스타벅스 아메리카노 톨사이즈', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/product-image.jpeg', 'rank' : 1 },
-                    { 'title' : '논픽션 핸드크림', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/item-image-02.jpeg', 'rank' : 2 }
-                ],
             })
             setEventCode(eventCode)
         } catch (e) {
@@ -92,6 +91,12 @@ const CreateEvent = () => {
         selectedStyle: radioSelectStyle,
         unselectedStyle: radioDefaultStyle,
         style: radioCommonStyle,
+    }
+
+    const addItem = (item: Pick<GiftItem, 'title' | 'imageUrl'>) => {
+        const currentItems = getValues('items')
+        const newItem: GiftItem = {...item, rank: currentItems.length+1}
+        setValue('items', [...currentItems, newItem])
     }
 
     return (
@@ -134,11 +139,15 @@ const CreateEvent = () => {
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>당첨 상품을 등록하세요</SectionTitle>
                         <Flex direction="column">
-                            <GiftDialog />
+                            <GiftDialog addItem={addItem}>
+                                <Button color={'default'} height={52}>
+                                    <PlusIcon size={19} color={colors.white} />
+                                </Button>
+                            </GiftDialog>
                             <GiftList />
                             <Totals>
                                 총 상품 수령 인원
-                                <NumberHighlight>{numOfHitItems.length}명</NumberHighlight>
+                                <NumberHighlight>{items.length}명</NumberHighlight>
                             </Totals>
                         </Flex>
                     </Section>
@@ -223,7 +232,7 @@ const Button = styled.button<{
     ${({color}) =>
         color === 'default'
             ? css`
-                  background: ${colors.black[700]};
+                  background: ${colors.black[300]};
                   color: ${colors.white};
               `
             : css`
