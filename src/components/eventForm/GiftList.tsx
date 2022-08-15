@@ -31,7 +31,7 @@ const GiftList = () => {
         <Flex direction="column" width={'100%'}>
             {items.map(({title, imageUrl, rank}) => (
                 <ItemContainer key={rank}>
-                    <GiftDialog  addItem={(modifiedItem) => {
+                    <GiftDialog mode='modify' addItem={(modifiedItem) => {
                         modifyItem(rank, modifiedItem)
                     }} defaultValues={{title, imageUrl}}>
                         <Item>

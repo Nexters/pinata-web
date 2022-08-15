@@ -49,8 +49,6 @@ const CreateEvent = () => {
 
     const items  = watch('items')
 
-    console.log(items)
-
     const [completeEventCode, setEventCode] = useState<string | null>(null)
 
     const onSubmit = async (data: EventForm & ImageUrls) => {
@@ -139,7 +137,7 @@ const CreateEvent = () => {
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>당첨 상품을 등록하세요</SectionTitle>
                         <Flex direction="column">
-                            <GiftDialog addItem={addItem}>
+                            <GiftDialog addItem={addItem} mode={'add'}>
                                 <Button color={'default'} height={52}>
                                     <PlusIcon size={19} color={colors.white} />
                                 </Button>

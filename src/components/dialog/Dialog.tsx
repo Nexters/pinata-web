@@ -7,7 +7,7 @@ import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import {Children, cloneElement, isValidElement, PropsWithChildren} from 'react'
+import {Children, cloneElement, isValidElement, PropsWithChildren, useEffect} from 'react'
 import { createPortal } from 'react-dom'
 import styled, {CSSProperties} from 'styled-components'
 
@@ -26,7 +26,7 @@ const DialogButton = ({children, width}: Props<{width: CSSProperties['width']}>)
     )
 }
 
-const DialogContent = ({children, width}: Props<{width: number}>) => {
+const DialogContent = ({children, width, onOpen}: Props<{width: number; onOpen?(): void}>) => {
     const {isOpen, toggle} = useDialogContext()
     useBodyScrollLock(isOpen)
 
@@ -43,6 +43,11 @@ const DialogContent = ({children, width}: Props<{width: number}>) => {
         }
         return child
       })
+
+    useEffect(() => {
+        isOpen && typeof onOpen === 'function' && onOpen()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen])
 
     if (!isOpen) return null
 

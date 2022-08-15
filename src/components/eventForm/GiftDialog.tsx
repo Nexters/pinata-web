@@ -6,7 +6,7 @@ import Dialog from '$components/dialog/Dialog'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import { MouseEventHandler, ReactNode, useEffect, useRef } from 'react'
+import { MouseEventHandler, ReactNode, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import ImageUploader from './ImageUploader'
@@ -18,6 +18,7 @@ type GiftDialogProps = {
     addItem(item: GiftItemForm): void
     defaultValues?: GiftItemForm
     children: ReactNode
+    mode: 'add' | 'modify'
 }
 
 const GiftDialogButton = ({onClick, closeDialog}: {
@@ -35,7 +36,7 @@ const GiftDialogButton = ({onClick, closeDialog}: {
     )
 }
 
-const GiftDialog = ({addItem, defaultValues, children}: GiftDialogProps) => {
+const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) => {
     const {register, getValues, setValue, watch, reset} = useForm<GiftItemForm>({
         defaultValues
     })
@@ -61,21 +62,21 @@ const GiftDialog = ({addItem, defaultValues, children}: GiftDialogProps) => {
         setValue('imageUrl', urls[0])
     }
 
-    useEffect(() => {
-        if (!defaultValues) {
+    const setValueByMode = () => {
+        if (mode === 'add') {
             reset({
                 title: '',
-                imageUrl: ''
+                imageUrl: undefined
             })
         }
-    }, [defaultValues, reset])
+    }
 
     return (
         <Dialog>
             <Dialog.Button width={'100%'}>
                 {children}
             </Dialog.Button>
-            <Dialog.Content width={335}>
+            <Dialog.Content width={335} onOpen={setValueByMode}>
                 <Dialog.Title>당첨 상품 이미지 및 이름 등록</Dialog.Title>
                 <DialogSubTitle>선물하실 상품 이미지를 등록하세요</DialogSubTitle>
                 {
