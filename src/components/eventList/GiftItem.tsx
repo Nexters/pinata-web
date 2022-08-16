@@ -2,6 +2,7 @@ import {EventItem} from '$api/event'
 import DownloadIcon from '$assets/icons/DownloadIcon'
 import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
+import useDownload from '$hooks/useDownload'
 import useItemStatus from '$hooks/useItemStatus'
 import { colors } from '$styles/colors'
 import { typos } from '$styles/typos'
@@ -47,8 +48,10 @@ export const DetailGiftItem = (props: GiftProps) => {
     const {resultImageUrl, eventTitle, participateAt, result, resultMessage, itemImageUrl} = props
     const {badgeProps, cardTitle} = useItemStatus(props)
 
-    const downloadImageUrl = () => {
-        console.log(itemImageUrl)
+    const downloadFromUrl = useDownload()
+
+    const handleDownload = () => {
+        itemImageUrl && downloadFromUrl(itemImageUrl)
     }
 
     return (
@@ -63,7 +66,7 @@ export const DetailGiftItem = (props: GiftProps) => {
                     : ''
                 }</Card.Desc>
             </Card.Content>
-            {result && <Card.Button onClick={downloadImageUrl}>
+            {result && <Card.Button onClick={handleDownload}>
                 <DownloadIcon size={16} color={colors.white} style={{
                     marginRight: 6
                 }} />
