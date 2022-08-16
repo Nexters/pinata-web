@@ -76,7 +76,7 @@ const EventPage: React.FC = () => {
     }
 
     if (isParticipation) {
-        return <Participation />
+        return <Participation event={event} />
     }
 
     return (
