@@ -10,10 +10,12 @@ import ROUTE from '$constants/route'
 import {Navigate} from 'react-router-dom'
 import useAsyncError from '$hooks/useAsyncError'
 import useAuthToken from '$hooks/useAuthToken'
+import InvalidCode from '$components/event/InvalidCode'
 
 const EventPage: React.FC = () => {
     // const [eventCode, setEventCode] = useState<string>('')
     const [event, setEvent] = useState<EventResponse>()
+    const [isError, setIsError] = useState<boolean>(false)
     const {isLogined} = useKakaoLogin()
 
     const isClosed = event && event.status === 'CLOSED'
@@ -32,10 +34,19 @@ const EventPage: React.FC = () => {
 
         if (!token) return
         participateEvent(eventCode, token).then((res) => {
+            if (res.result === 'FAIL') {
+                setIsError(true)
+                return
+            }
+
             const event = res.data
             setEvent(event)
         })
     }, [token])
+
+    if (isError) {
+        return <InvalidCode />
+    }
 
     if (!isLogined) {
         return <NeedLogin />
