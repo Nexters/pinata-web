@@ -20,16 +20,16 @@ const EventPage: React.FC = () => {
     const {isLogined} = useKakaoLogin()
     const params = useParams()
 
-    const isClosed = event && event.status === 'CLOSED'
-    const isWaiting = event && event.status === 'WAIT'
-    const isParticipation = event && event.status === 'PROCESS'
-    const isCancel = event && event.status === 'CANCEL'
+    const isClosed = event ? new Date(event.closeAt) < new Date() : false
+    const isWaiting = event ? new Date() < new Date(event.openAt) : false
+    const isParticipation = event ? new Date(event.openAt) <= new Date() : false
+    const isCancel = event ? event.status === 'CANCEL' : false
 
     const throwError = useAsyncError()
     const token = useAuthToken()
 
     useEffect(() => {
-        const eventCode = params.eventcode
+        const eventCode = params.event_code
 
         if (!token) return
         if (!eventCode) {
@@ -46,7 +46,9 @@ const EventPage: React.FC = () => {
             const event = res.data
             setEvent(event)
         })
-    }, [params.eventcode, token])
+    }, [params.event_code, token])
+
+    if (!event) return null
 
     if (isError) {
         return <InvalidCode />
@@ -71,7 +73,7 @@ const EventPage: React.FC = () => {
         )
     }
 
-    if (isWaiting && event) {
+    if (isWaiting) {
         return <Waiting event={event} />
     }
 
