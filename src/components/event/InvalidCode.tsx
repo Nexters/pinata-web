@@ -10,6 +10,7 @@ import Flex from '$components/commons/Flex'
 import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
+import EventWrapper from './EventWrapper'
 
 const Button = styled.button`
     width: 180px;
@@ -36,17 +37,19 @@ const Container = styled(Box)`
 const InvalidCode = () => {
     const navigate = useNavigate()
     return (
-        <Flex direction="row" justifyContent="center" alignItems="center">
-            <Container>
-                <Box>
-                    유효하지 않은
-                    <br />
-                    이벤트입니다.
-                </Box>
-                <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
-            </Container>
-            <Overlay onClick={() => {}} />
-        </Flex>
+        <EventWrapper>
+            <Flex direction="row" justifyContent="center" alignItems="center">
+                <Container>
+                    <Box>
+                        유효하지 않은
+                        <br />
+                        이벤트입니다.
+                    </Box>
+                    <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
+                </Container>
+                <Overlay onClick={() => {}} />
+            </Flex>
+        </EventWrapper>
     )
 }
 
