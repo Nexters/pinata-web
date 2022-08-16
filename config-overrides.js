@@ -20,5 +20,6 @@ module.exports = override(
         $api: path.resolve(__dirname, 'src/api'),
         $styles: path.resolve(__dirname, 'src/styles'),
         $contexts: path.resolve(__dirname, 'src/contexts'),
+        $config: path.resolve(__dirname, 'src/config'),
     }),
 )
