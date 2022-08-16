@@ -11,6 +11,7 @@ import {Navigate, useParams} from 'react-router-dom'
 import useAsyncError from '$hooks/useAsyncError'
 import useAuthToken from '$hooks/useAuthToken'
 import InvalidCode from '$components/event/InvalidCode'
+import Canceled from '$components/event/Canceled'
 
 const EventPage: React.FC = () => {
     // const [eventCode, setEventCode] = useState<string>('')
@@ -53,6 +54,10 @@ const EventPage: React.FC = () => {
 
     if (!isLogined) {
         return <NeedLogin />
+    }
+
+    if (isCancel) {
+        return <Canceled event={event} />
     }
 
     if (isClosed) {
