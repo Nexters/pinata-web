@@ -68,7 +68,7 @@ const EventResult = () => {
     const {isSuccess, eventTitle, resultMessage, resultImageURL, itemId, itemTitle, itemImageUrl} = state
 
     // 데이터 제대로 안넘어온경우
-    if (!isSuccess || !eventTitle || !resultMessage || !resultImageURL || !itemId || !itemTitle || !itemImageUrl) {
+    if (!eventTitle || !resultMessage || !resultImageURL) {
         return null
     }
     const resultTitle = isSuccess ? '당첨' : '탈락'
