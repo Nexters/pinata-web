@@ -55,6 +55,7 @@ export const checkEventResult = async (eventCode: string, token: string) => {
     const data = await fetch('/api/v1/events/participate', {
         method: 'POST',
         headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({code: eventCode}),
