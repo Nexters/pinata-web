@@ -3,12 +3,12 @@ import PlusIcon from '$assets/icons/PlusIcon'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import Dialog from '$components/dialog/Dialog'
-import { colors } from '$styles/colors'
+import { Color, colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import { MouseEventHandler, ReactNode, useRef } from 'react'
 import { useForm } from 'react-hook-form'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import ImageUploader from './ImageUploader'
 import Input from './Input'
 
@@ -30,7 +30,7 @@ const GiftDialogButton = ({onClick, closeDialog}: {
         typeof closeDialog === 'function' && closeDialog()
     }
     return (
-        <Button onClick={handleClick} height={52}>
+        <Button color="blue" onClick={handleClick} height={52}>
             등록하기
         </Button>
     )
@@ -136,6 +136,7 @@ const DialogSubTitle = styled.div`
 `
 const Button = styled.div<{
     height: number
+    color?: Color
 }>`
     display: flex;
     flex-direction: column;
@@ -144,7 +145,14 @@ const Button = styled.div<{
     cursor: pointer;
     outline: none;
     border: none;
-    background: ${colors.black[700]};
+    ${({color}) =>  color === 'blue'
+        ? css`
+            background: ${colors.blue[100]};
+        `
+        : css`
+            background: #404046;
+        `
+    }
     color: ${colors.white};
     border-radius: 15px;
     height: ${extractProp('height')}px;

@@ -7,18 +7,22 @@ import { getImageSource } from '$util/imageHelper'
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { originUrl } from '$config/index'
+import ROUTE from '$constants/route'
+import useCopy from '$hooks/useCopy'
 
 const CreateComplete = () => {
     const {getValues} = useFormContext<EventForm & ImageUrls>()
     const params = useParams()
+    const eventCode = params.eventcode || ''
 
-    const eventCode = params.eventcode
+    const handleCopy = useCopy()
+
+    const copyEventLink = () => {
+        handleCopy(`${originUrl}${ROUTE.EVENT.DETAIL}/${eventCode}`)
+    }
 
     const title = getValues('title')
-
-    const onClick = () => {
-        console.log('copy ', eventCode)
-    }
 
     return (
         <LayoutWrapper isWhite={false}>
@@ -27,7 +31,7 @@ const CreateComplete = () => {
                     {title}
                     <br />
                     이벤트가 개설되었습니다.
-                    <Button onClick={onClick}>링크 복사해서 공유하기</Button>
+                    <Button onClick={copyEventLink}>링크 복사해서 공유하기</Button>
             </Container>
         </LayoutWrapper>
     )
@@ -42,6 +46,7 @@ const Button = styled.button`
     ${typos.pretendard['16.19.600']};
     padding: 16px 32px;
     margin-top: 34px;
+    cursor: pointer;
 
 `
 
