@@ -61,6 +61,7 @@ interface LocationState {
 }
 
 const EventResult = () => {
+    const navigate = useNavigate()
     const location = useLocation()
     const state = (location.state || {}) as LocationState
     const [isParticipated] = useState(state?.closed || false)
@@ -69,6 +70,7 @@ const EventResult = () => {
 
     // 데이터 제대로 안넘어온경우
     if (!eventTitle || !resultMessage || !resultImageURL) {
+        navigate(ROUTE.ERROR)
         return null
     }
     const resultTitle = isSuccess ? '당첨' : '탈락'
@@ -85,7 +87,7 @@ const EventResult = () => {
                         <Card.Title>{}</Card.Title>
                         <Card.Desc>{resultMessage}</Card.Desc>
                     </Card.Content>
-                    <Card.Button>선물 받기</Card.Button>
+                    {isSuccess && <Card.Button>선물 받기</Card.Button>}
                 </Card>
             )}
         </EventWrapper>
