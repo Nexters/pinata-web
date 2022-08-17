@@ -6,7 +6,7 @@ import EventWrapper from '$components/event/EventWrapper'
 import {useInterval} from '$hooks/useInterval'
 import {TargetEvent} from '$types/Event'
 import {changeSecondsHHMMSS} from '$util/time'
-import { typos } from '$styles/typos'
+import {typos} from '$styles/typos'
 
 const Timer = styled.div`
     height: 45px;
@@ -28,10 +28,10 @@ type Props = {
 const Waiting: React.FC<Props> = ({event}) => {
     const [leftSeconds, setLeftSeconds] = useState<number>(0)
     useEffect(() => {
-        if (!event?.closeAt) return
+        if (!event?.openAt) return
 
-        const diff = new Date(event.closeAt).getTime() - new Date().getTime()
-        const leftSeconds = Math.floor(diff / 10)
+        const diff = new Date(event.openAt).getTime() - new Date().getTime()
+        const leftSeconds = Math.floor(diff / 1000)
 
         if (leftSeconds < 0) {
             setLeftSeconds(0)
@@ -50,7 +50,7 @@ const Waiting: React.FC<Props> = ({event}) => {
         <EventWrapper>
             <Timer>{changeSecondsHHMMSS(leftSeconds)}</Timer>
             <Instruction>
-                넥스터즈 21기 깜짝 선물 3분께 드립니다.
+                "{event.title}"
                 <br />
                 이벤트 추첨이 곧 시작됩니다.
             </Instruction>

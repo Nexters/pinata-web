@@ -5,9 +5,8 @@ const ROUTE = {
     EVENT: {
         CREATE: '/event/create',
         CREATE_COMPLETE: '/event/create/complete',
-        UPDATE: '/event/:id',
         LIST: '/events',
-        DETAIL: '/event',
+        DETAIL: '/event/:event_code',
         RESULT: '/event/result',
     },
     ERROR: '/error',
