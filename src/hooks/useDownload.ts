@@ -19,8 +19,8 @@ const useDownload = () => {
             },
         )
 
-        const name = `pinata_${fileName}`
-        const url = URL.createObjectURL(response)
+        const name = `${fileName}`
+        const url = window.URL.createObjectURL(response);
 
         const link = document.createElement('a')
         link.href = url
