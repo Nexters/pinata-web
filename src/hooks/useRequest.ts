@@ -13,8 +13,11 @@ export const useRequest = <Request, Response>(api: (req: Request, token?: string
 
     const {mutate, mutateAsync, data, error, isLoading, ...rest} = useMutation((req: Request) => api(req, accessToken), {
         onSuccess: async (response) => {
-            queryClient.invalidateQueries([api]);
+            queryClient.invalidateQueries([api])
             return response
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries([api])
         },
         cacheTime: 0,
     })
