@@ -2,7 +2,10 @@ import {EventStatus, Event} from '$api/event'
 import ShareIcon from '$assets/icons/ShareIcon'
 import Flex from '$components/commons/Flex'
 import Card from '$components/eventResult/Card'
+import ROUTE from '$constants/route'
+import useCopy from '$hooks/useCopy'
 import {typos} from '$styles/typos'
+import { originUrl } from '$config/index'
 import {format} from 'date-fns'
 import styled from 'styled-components'
 
@@ -11,8 +14,9 @@ type EventCardProps = Event
 const formatDateTime = (dateTime: string) => format(new Date(dateTime), 'yyyy.MM.dd a hh:mm')
 
 const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
+    const handleCopy = useCopy()
     const copyEventLink = () => {
-        console.log(code)
+        handleCopy(`${originUrl}${ROUTE.EVENT.DETAIL}/${code}`)
     }
     return (
         <Card withOverlay={false}>
@@ -29,6 +33,7 @@ const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
                         style={{
                             marginRight: 4,
                         }}
+
                     />
                     링크 공유하기
                 </EventLink>

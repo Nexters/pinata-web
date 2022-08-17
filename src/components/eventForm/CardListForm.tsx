@@ -1,3 +1,4 @@
+import CheckIcon from '$assets/icons/CheckIcon'
 import PlusIcon from '$assets/icons/PlusIcon'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
@@ -90,7 +91,8 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: Card
                                 height={90} 
                                 selectedStyle={selectedStyle} 
                                 unselectedStyle={unselectedStyle} 
-                                style={defaultRadioStyle}>
+                                style={defaultRadioStyle}
+                                selectIcon={CheckIcon}>
                                 <CardImage imageUrl={imageUrl} />
                             </RadioForm.Item>
                         </CardImageItem>

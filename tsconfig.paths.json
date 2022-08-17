@@ -18,6 +18,7 @@
             "$api/*": ["api/*"],
             "$styles/*": ["styles/*"],
             "$contexts/*": ["contexts/*"],
+            "$config/*": ["config/*"],
             "src/*": ["./src/*"]
         }
     }

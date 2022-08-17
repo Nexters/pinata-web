@@ -1,3 +1,4 @@
+import { Icon } from '$assets/icons'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import { EventForm } from '$types/Event'
@@ -24,6 +25,7 @@ type RadioItemProps = PropsWithChildren<{
     style?: FlattenSimpleInterpolation
     width: CSSProperties['width']
     height: CSSProperties['height']
+    selectIcon?: Icon
 }>
 
 const RadioItem = ({
@@ -35,11 +37,14 @@ const RadioItem = ({
     children,
     width,
     height,
+    selectIcon,
     }: RadioItemProps) => {
     const [selected, setSelected] = useState(false)
     const {register, setValue, watch} = useFormContext()
 
     const currentValue = watch(name)
+
+    const SelectIcon = selectIcon
 
     useEffect(() => {
         setSelected(currentValue === value)
@@ -59,12 +64,23 @@ const RadioItem = ({
                 }}
                 defaultStyle={style}>
                 <Box>{children}</Box>
+                {(SelectIcon && selected) && 
+                    <IconBox>
+                        <SelectIcon size={20} />
+                    </IconBox>
+                }
             </ItemBox>
         </label>
             <HiddenRadioInput {...register(name, {required: true})} name={name} value={value} id={`${name}-${value}`} />
         </>
     )
 }
+
+const IconBox = styled.span`
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+`
 
 const HiddenRadioInput = styled.input.attrs({
     type: 'radio'
@@ -87,6 +103,7 @@ const ItemBox = styled(Flex).attrs({
     selectedStyle: FlattenSimpleInterpolation
     unselectedStyle: FlattenSimpleInterpolation
 }>`
+    position: relative;
     ${extractProp('defaultStyle')};
     ${({isSelected, selectedStyle, unselectedStyle}) => (isSelected ? selectedStyle : unselectedStyle)};
 `
