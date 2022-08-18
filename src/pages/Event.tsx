@@ -11,6 +11,8 @@ import {Navigate, useParams} from 'react-router-dom'
 import useAuthToken from '$hooks/useAuthToken'
 import InvalidCode from '$components/event/InvalidCode'
 import Canceled from '$components/event/Canceled'
+import {useCallback} from 'react'
+import useAsyncError from '$hooks/useAsyncError'
 import {RESULT_CODE} from '$util/client'
 
 const EventPage: React.FC = () => {
@@ -40,6 +42,28 @@ const EventPage: React.FC = () => {
 
     const token = useAuthToken()
 
+    const throwError = useAsyncError()
+
+    const callEventApi = useCallback(
+        async (eventCode: string) => {
+            try {
+                const {data: event, result} = await participateEvent(eventCode, token)
+
+                if (result === 'FAIL') {
+                    setIsError(true)
+                    return
+                }
+
+                setEvent(event)
+            } catch (e) {
+                // Error Boundary로 throw
+                // 나중에 이벤트가 끝났다는 컴포넌트로 렌더링해주셔요
+                throwError(e)
+            }
+        },
+        [token],
+    )
+
     useEffect(() => {
         const eventCode = params.event_code
 
@@ -49,16 +73,8 @@ const EventPage: React.FC = () => {
             return
         }
 
-        participateEvent(eventCode, token).then((res) => {
-            if (res.result === RESULT_CODE.FAIL) {
-                setIsError(true)
-                return
-            }
-
-            const event = res.data
-            setEvent(event)
-        })
-    }, [params.event_code, token])
+        callEventApi(eventCode)
+    }, [callEventApi, params.event_code, token])
 
     if (!event) return null
 
