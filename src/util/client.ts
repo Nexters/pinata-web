@@ -1,6 +1,6 @@
 import {ApiResponse} from '$types/ApiResponse'
 import axios, {AxiosError, AxiosRequestHeaders, AxiosResponse} from 'axios'
-import {AuthorizationError, FetchError} from './FetchError'
+import {AuthorizationError, FetchError, OutofPeriodError} from './FetchError'
 
 export const RESULT_CODE = {
     SUCCESS: 'SUCCESS',
@@ -29,27 +29,32 @@ const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T
 }
 
 const rejectInterceptor = (error: AxiosError) => {
+    if (error.response?.status === 400) {
+        throw new OutofPeriodError()
+    }
     return Promise.reject(error)
 }
 
 const client = axios.create({
-    baseURL: process.env.REACT_APP_ENV === 'production' ?  process.env.REACT_APP_API_URL : ''
+    baseURL: process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_API_URL : '',
 })
 
 client.interceptors.response.use(responseInterceptor, rejectInterceptor)
 
-export const postAuthorized = <T, U>(url: string, req: T, token?: string, headers?: AxiosRequestHeaders) => client.post<U>(url, req, {
-    headers: {
-        Authorization: `Bearer ${token}`,
-        ...headers,
-    },
-})
+export const postAuthorized = <T, U>(url: string, req: T, token?: string, headers?: AxiosRequestHeaders) =>
+    client.post<U>(url, req, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            ...headers,
+        },
+    })
 
-export const deleteAuthorized = <T, U>(url: string, data: T, token?: string) => axios.delete<ApiResponse<U>>(url, {
-    data,
-    headers: {
-        Authorization: `Bearer ${token}`,
-    }
-})
+export const deleteAuthorized = <T, U>(url: string, data: T, token?: string) =>
+    axios.delete<ApiResponse<U>>(url, {
+        data,
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
 
 export default client
