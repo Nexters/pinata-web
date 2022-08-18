@@ -2,13 +2,12 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
 import ROUTE from '$constants/route'
 import Authenticated from '$components/auth/Authenticated'
-import { FormProvider, useForm } from 'react-hook-form'
-import { EventForm, ImageUrls } from '$types/Event'
-import { EVENT_TYPE } from '$api/event'
-import { lazy, Suspense } from 'react'
+import {FormProvider, useForm} from 'react-hook-form'
+import {EventForm, ImageUrls} from '$types/Event'
+import {EVENT_TYPE} from '$api/event'
+import {lazy, Suspense} from 'react'
 import FormGuard from '$components/auth/FormGuard'
-import { DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES } from '$constants/formData'
-
+import {DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES} from '$constants/formData'
 
 const Main = lazy(() => import('$pages/Main'))
 const EventLists = lazy(() => import('$pages/EventLists'))
@@ -23,13 +22,13 @@ const CreateComplete = lazy(() => import('$pages/CreateComplete'))
 
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({
-        mode: 'onSubmit',
+        mode: 'onChange',
         defaultValues: {
             type: EVENT_TYPE.RANDOM,
             hitImageUrls: DEFAULT_HIT_IMAGES,
             missImageUrls: DEFAULT_MISS_IMAGES,
-            items: []
-        }
+            items: [],
+        },
     })
 
     return (
@@ -42,7 +41,10 @@ export const Router = () => {
                             <Route path={ROUTE.EVENT.LIST} element={<EventLists />} />
                             <Route path={ROUTE.EVENT.CREATE} element={<CreateEvent />} />
                             <Route path={ROUTE.EVENT.CREATE_COMPLETE} element={<FormGuard />}>
-                                <Route path={`${ROUTE.EVENT.CREATE_COMPLETE}/:eventcode`} element={<CreateComplete />} />
+                                <Route
+                                    path={`${ROUTE.EVENT.CREATE_COMPLETE}/:eventcode`}
+                                    element={<CreateComplete />}
+                                />
                             </Route>
                             <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
                             <Route path={ROUTE.GIFTS} element={<Gifts />} />

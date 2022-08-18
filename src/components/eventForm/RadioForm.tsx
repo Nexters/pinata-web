@@ -1,12 +1,12 @@
-import { Icon } from '$assets/icons'
+import {Icon} from '$assets/icons'
 import CircleFilledRadioIcon from '$assets/icons/CircleFilledRadioIcon'
 import CircleRadioIcon from '$assets/icons/CircleRadioIcon'
 import Flex from '$components/commons/Flex'
-import { colors } from '$styles/colors'
-import { EventForm } from '$types/Event'
+import {colors} from '$styles/colors'
+import {EventForm} from '$types/Event'
 import {extractProp} from '$util/common'
 import {PropsWithChildren, ReactNode, useEffect, useState} from 'react'
-import { useFormContext } from 'react-hook-form'
+import {useFormContext} from 'react-hook-form'
 import styled, {css, CSSProperties, FlattenSimpleInterpolation} from 'styled-components'
 
 type RadioProps = {
@@ -15,9 +15,7 @@ type RadioProps = {
 }
 
 const RadioForm = ({children, align = 'row'}: RadioProps) => {
-    return (
-        <Wrapper align={align}>{children}</Wrapper>
-    )
+    return <Wrapper align={align}>{children}</Wrapper>
 }
 
 type RadioItemProps = PropsWithChildren<{
@@ -34,9 +32,9 @@ type RadioItemProps = PropsWithChildren<{
 }>
 
 const RadioItem = ({
-    name, 
-    value, 
-    selectedStyle, 
+    name,
+    value,
+    selectedStyle,
     unselectedStyle,
     style = css``,
     children,
@@ -45,9 +43,9 @@ const RadioItem = ({
     selectIcon,
     withRadioButton = false,
     forceSelectIfEmpty = false,
-    }: RadioItemProps) => {
+}: RadioItemProps) => {
     const [selected, setSelected] = useState(false)
-    const {register, setValue, watch} = useFormContext()
+    const {register, setValue, watch, clearErrors, setError} = useFormContext()
 
     const currentValue = watch(name)
 
@@ -57,32 +55,53 @@ const RadioItem = ({
         const nextSeleted = !currentValue && forceSelectIfEmpty
         setSelected(currentValue === value || nextSeleted)
     }, [currentValue, value, forceSelectIfEmpty])
-    
+
+    useEffect(() => {
+        if (currentValue) {
+            clearErrors(name)
+        } else {
+            setError(name, {type: 'required'})
+        }
+    }, [currentValue])
+
     return (
         <>
-        <label htmlFor={`${name}-${value}`}>
-            <ItemBox
-                isSelected={selected}
-                selectedStyle={selectedStyle}
-                unselectedStyle={unselectedStyle}
-                width={width}
-                height={height}
-                onClick={() => {
-                    setValue(name, value)
-                }}
-                defaultStyle={style}>
-                <Flex direction='row' justifyContent={'flex-start'}>
-                    {withRadioButton && <RadioButton>{ selected ? <CircleFilledRadioIcon size={30} color={colors.blue[100]} /> : <CircleRadioIcon size={30} color={colors.white} /> }</RadioButton>}
-                    {children}
-                </Flex>
-                {(SelectIcon && selected) && 
-                    <IconBox>
-                        <SelectIcon size={20} />
-                    </IconBox>
-                }
-            </ItemBox>
-        </label>
-            <HiddenRadioInput {...register(name, {required: true})} name={name} value={value} id={`${name}-${value}`} />
+            <label htmlFor={`${name}-${value}`}>
+                <ItemBox
+                    isSelected={selected}
+                    selectedStyle={selectedStyle}
+                    unselectedStyle={unselectedStyle}
+                    width={width}
+                    height={height}
+                    onClick={() => {
+                        setValue(name, value)
+                    }}
+                    defaultStyle={style}>
+                    <Flex direction="row" justifyContent={'flex-start'}>
+                        {withRadioButton && (
+                            <RadioButton>
+                                {selected ? (
+                                    <CircleFilledRadioIcon size={30} color={colors.blue[100]} />
+                                ) : (
+                                    <CircleRadioIcon size={30} color={colors.white} />
+                                )}
+                            </RadioButton>
+                        )}
+                        {children}
+                    </Flex>
+                    {SelectIcon && selected && (
+                        <IconBox>
+                            <SelectIcon size={20} />
+                        </IconBox>
+                    )}
+                </ItemBox>
+            </label>
+            <HiddenRadioInput
+                {...register(name, {required: true, validate: (vallue) => !!value})}
+                name={name}
+                value={value}
+                id={`${name}-${value}`}
+            />
         </>
     )
 }
@@ -100,7 +119,7 @@ const IconBox = styled.span`
 `
 
 const HiddenRadioInput = styled.input.attrs({
-    type: 'radio'
+    type: 'radio',
 })`
     width: 0;
     height: 0;
@@ -130,13 +149,13 @@ const Wrapper = styled(Flex).attrs({
     justifyContent: 'space-around',
 })<{align: 'row' | 'vertical'}>`
     position: relative;
-    ${({align}) => 
-        align === 'vertical' && css`
+    ${({align}) =>
+        align === 'vertical' &&
+        css`
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
-        `
-    }
+        `}
 `
 
 RadioForm.Item = RadioItem
