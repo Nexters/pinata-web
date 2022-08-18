@@ -2,7 +2,6 @@ import {EventStatus, Event} from '$api/event'
 import ShareIcon from '$assets/icons/ShareIcon'
 import Flex from '$components/commons/Flex'
 import Card from '$components/eventResult/Card'
-import ROUTE from '$constants/route'
 import useCopy from '$hooks/useCopy'
 import {typos} from '$styles/typos'
 import { originUrl } from '$config/index'
@@ -16,7 +15,7 @@ const formatDateTime = (dateTime: string) => format(new Date(dateTime), 'yyyy.MM
 const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
     const handleCopy = useCopy()
     const copyEventLink = () => {
-        handleCopy(`${originUrl}${ROUTE.EVENT.DETAIL}/${code}`)
+        handleCopy(`${originUrl}/event/${code}`)
     }
     return (
         <Card withOverlay={false}>

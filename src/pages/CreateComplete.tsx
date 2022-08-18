@@ -8,7 +8,6 @@ import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { originUrl } from '$config/index'
-import ROUTE from '$constants/route'
 import useCopy from '$hooks/useCopy'
 
 const CreateComplete = () => {
@@ -19,7 +18,7 @@ const CreateComplete = () => {
     const handleCopy = useCopy()
 
     const copyEventLink = () => {
-        handleCopy(`${originUrl}${ROUTE.EVENT.DETAIL}/${eventCode}`)
+        handleCopy(`${originUrl}/event/${eventCode}`)
     }
 
     const title = getValues('title')

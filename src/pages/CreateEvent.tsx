@@ -139,7 +139,7 @@ const CreateEvent = () => {
                         <SectionTitle marginBottom={16}>당첨 상품을 등록하세요</SectionTitle>
                         <Flex direction="column">
                             <GiftDialog addItem={addItem} mode={'add'}>
-                                <Button color={'default'} height={52}>
+                                <Button type="button" color={'default'} height={52}>
                                     <PlusIcon size={19} color={colors.white} />
                                 </Button>
                             </GiftDialog>
