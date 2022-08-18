@@ -175,7 +175,6 @@ const CreateEvent = () => {
                         <Input
                             {...register('title', {
                                 validate: (value) => value.length > 0,
-                                min: new Date().toISOString(),
                                 ...defaultRegisterProps,
                             })}
                             value={watch('title')}
@@ -203,6 +202,7 @@ const CreateEvent = () => {
                         <Input
                             {...register('closeAt', {
                                 validate: isValidCloseDate,
+                                min: new Date().toISOString(),
                                 deps: ['openAt'],
                                 ...defaultRegisterProps,
                             })}
