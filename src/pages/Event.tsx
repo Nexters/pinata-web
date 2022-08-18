@@ -8,7 +8,6 @@ import useKakaoLogin from '$hooks/useKakaoLogin'
 import {EventResponse, participateEvent} from '$api/event'
 import ROUTE from '$constants/route'
 import {Navigate, useParams} from 'react-router-dom'
-import useAsyncError from '$hooks/useAsyncError'
 import useAuthToken from '$hooks/useAuthToken'
 import InvalidCode from '$components/event/InvalidCode'
 import Canceled from '$components/event/Canceled'
@@ -25,7 +24,6 @@ const EventPage: React.FC = () => {
     const isParticipation = event ? new Date(event.openAt) <= new Date() : false
     const isCancel = event ? event.status === 'CANCEL' : false
 
-    const throwError = useAsyncError()
     const token = useAuthToken()
 
     useEffect(() => {

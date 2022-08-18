@@ -7,8 +7,6 @@ import {useNavigate} from 'react-router-dom'
 import ROUTE from '$constants/route'
 
 import Flex from '$components/commons/Flex'
-import Badge from '$components/eventResult/Badge'
-import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
 import EventWrapper from './EventWrapper'
 

@@ -66,7 +66,7 @@ const EventResult = () => {
     const state = (location.state || {}) as LocationState
     const [isParticipated] = useState(state?.closed || false)
 
-    const {isSuccess, eventTitle, resultMessage, resultImageURL, itemId, itemTitle, itemImageUrl} = state
+    const {isSuccess, eventTitle, resultMessage, resultImageURL} = state
 
     // 데이터 제대로 안넘어온경우
     if (!eventTitle || !resultMessage || !resultImageURL) {
