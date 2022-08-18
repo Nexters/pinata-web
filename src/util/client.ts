@@ -15,6 +15,7 @@ type ErrorData = {
 const USER_ERROR_CODE = {
     USER_NOTFOUND: 'ERR0001',
     USER_AUTH_FAIL: 'ERR0002',
+    EVENT_EXPIRED: 'ERR1004',
 }
 
 const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T>>) => {
@@ -28,9 +29,18 @@ const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T
     return res.data
 }
 
-const rejectInterceptor = (error: AxiosError) => {
+const rejectInterceptor = (error: AxiosError<ApiResponse<ErrorData>>) => {
     if (error.response?.status === 400) {
-        throw new OutofPeriodError()
+        const {data} = error.response.data
+        if (data.code === USER_ERROR_CODE.EVENT_EXPIRED) {
+            return Promise.reject(new OutofPeriodError())
+        }
+
+        if (data.code === USER_ERROR_CODE.USER_AUTH_FAIL) {
+            return Promise.reject(new AuthorizationError())
+        }
+
+        return Promise.reject(new FetchError())
     }
     return Promise.reject(error)
 }
