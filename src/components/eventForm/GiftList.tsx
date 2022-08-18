@@ -5,6 +5,7 @@ import Flex from '$components/commons/Flex'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { EventForm } from '$types/Event'
+import { getImageFileName } from '$util/imageHelper'
 import { MouseEvent } from 'react'
 import { useFormContext } from 'react-hook-form'
 import styled from 'styled-components'
@@ -39,7 +40,7 @@ const GiftList = () => {
 
     const handleDeleteImage = async (e: MouseEvent<HTMLSpanElement>, url: string, rank: number) => {
         e.preventDefault()
-        const imageFileName = url.split('/').pop()
+        const imageFileName = getImageFileName(url)
 
         if (imageFileName) {
             await deleteImage({
