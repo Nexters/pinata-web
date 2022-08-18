@@ -20,6 +20,7 @@ export const typos = {
     pretendard: {
         '11.18.400': createTypo(pretendardBase, 11, 18, 400),
         '12.18.400': createTypo(pretendardBase, 12, 18, 400),
+        '12.12.500': createTypo(pretendardBase, 12, 18, 400),
         '12.19.600': createTypo(pretendardBase, 12, 19, 600),
         '12.20.500': createTypo(pretendardBase, 12, 20, 500),
         '13.19.400': createTypo(pretendardBase, 13, 19, 400),

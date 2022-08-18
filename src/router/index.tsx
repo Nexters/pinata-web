@@ -23,7 +23,7 @@ const CreateComplete = lazy(() => import('$pages/CreateComplete'))
 
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({
-        mode: 'onSubmit',
+        mode: 'onChange',
         defaultValues: {
             type: EVENT_TYPE.RANDOM,
             hitImageUrls: DEFAULT_HIT_IMAGES,

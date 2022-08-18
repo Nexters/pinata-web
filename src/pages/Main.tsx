@@ -1,39 +1,51 @@
-import { EVENT_TYPE } from '$api/event'
+import {EVENT_TYPE} from '$api/event'
 import {Section, SectionTitle} from '$components/commons/Section'
 import EventList from '$components/eventList/EventList'
 import JoinedEventList from '$components/eventList/JoinedEventList'
-import { DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES } from '$constants/formData'
+import {DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES} from '$constants/formData'
 import ROUTE from '$constants/route'
 import LayoutWrapper from '$layout/LayoutWrapper'
-import { colors } from '$styles/colors'
+import {colors} from '$styles/colors'
 import {typos} from '$styles/typos'
-import { getImageSource } from '$util/imageHelper'
-import React, { Suspense, useEffect } from 'react'
-import { useFormContext } from 'react-hook-form'
+import {getImageSource} from '$util/imageHelper'
+import React, {Suspense, useEffect} from 'react'
+import {useFormContext} from 'react-hook-form'
 import {useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
 const Main: React.FC = () => {
     const navigate = useNavigate()
 
-    const {formState: {isDirty}, reset} = useFormContext()
+    const {
+        formState: {isDirty},
+        reset,
+    } = useFormContext()
 
     useEffect(() => {
-        isDirty && reset({
-            type: EVENT_TYPE.RANDOM,
-            hitImageUrls: DEFAULT_HIT_IMAGES,
-            missImageUrls: DEFAULT_MISS_IMAGES
-        }, {
-            keepValues: false
-        })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        isDirty &&
+            reset(
+                {
+                    type: EVENT_TYPE.RANDOM,
+                    hitImageUrls: DEFAULT_HIT_IMAGES,
+                    missImageUrls: DEFAULT_MISS_IMAGES,
+                    items: [],
+                },
+                {
+                    keepValues: false,
+                },
+            )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDirty])
-    
+
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
                 <EventCreateIntro onClick={() => navigate(ROUTE.EVENT.CREATE)}>
-                    <IntroTitle>이벤트<br />개설하기</IntroTitle>
+                    <IntroTitle>
+                        이벤트
+                        <br />
+                        개설하기
+                    </IntroTitle>
                     <IntroDesc>
                         누구나 쉽게 이벤트를 만들 수 있어요!
                         <br />
@@ -74,12 +86,12 @@ const IntroTitle = styled.div`
 `
 
 const EventCreateIntro = styled.div`
-    background-color: #73BCFF;
+    background-color: #73bcff;
     background-image: url(${getImageSource('intro-image.png')});
     background-position: right bottom;
     background-repeat: no-repeat;
     border-radius: 20px;
-    color: #1B1B1E;
+    color: #1b1b1e;
     padding: 20px 20px 130px;
     cursor: pointer;
     position: relative;
