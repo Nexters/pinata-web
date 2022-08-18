@@ -11,18 +11,32 @@ import {Navigate, useParams} from 'react-router-dom'
 import useAuthToken from '$hooks/useAuthToken'
 import InvalidCode from '$components/event/InvalidCode'
 import Canceled from '$components/event/Canceled'
+import {RESULT_CODE} from '$util/client'
 
 const EventPage: React.FC = () => {
     // const [eventCode, setEventCode] = useState<string>('')
     const [event, setEvent] = useState<EventResponse>()
     const [isError, setIsError] = useState<boolean>(false)
+    const [isClosed, setIsClosed] = useState<boolean>(false)
+    const [isWaiting, setIsWaiting] = useState<boolean>(false)
+    const [isParticipation, setIsParticipation] = useState<boolean>(false)
+    const [isCancel, setIsCancel] = useState<boolean>(false)
     const {isLogined} = useKakaoLogin()
     const params = useParams()
 
-    const isClosed = event ? new Date(event.closeAt) < new Date() : false
-    const isWaiting = event ? new Date() < new Date(event.openAt) : false
-    const isParticipation = event ? new Date(event.openAt) <= new Date() : false
-    const isCancel = event ? event.status === 'CANCEL' : false
+    useEffect(() => {
+        if (!event) return
+
+        const isClosed = event ? new Date(event.closeAt) < new Date() : false
+        const isWaiting = event ? new Date() < new Date(event.openAt) : false
+        const isParticipation = event ? new Date(event.openAt) <= new Date() : false
+        const isCancel = event ? event.status === 'CANCEL' : false
+
+        setIsClosed(isClosed)
+        setIsWaiting(isWaiting)
+        setIsParticipation(isParticipation)
+        setIsCancel(isCancel)
+    }, [event])
 
     const token = useAuthToken()
 
@@ -36,7 +50,7 @@ const EventPage: React.FC = () => {
         }
 
         participateEvent(eventCode, token).then((res) => {
-            if (res.result === 'FAIL') {
+            if (res.result === RESULT_CODE.FAIL) {
                 setIsError(true)
                 return
             }
@@ -72,7 +86,7 @@ const EventPage: React.FC = () => {
     }
 
     if (isWaiting) {
-        return <Waiting event={event} />
+        return <Waiting event={event} setIsWaiting={setIsWaiting} setIsParticipation={setIsParticipation} />
     }
 
     if (isParticipation) {
