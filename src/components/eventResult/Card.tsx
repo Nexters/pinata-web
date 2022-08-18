@@ -41,15 +41,16 @@ type ImageProps = {
     description?: string
     withClose?: boolean
     replaceIcon?(): JSX.Element
+    onClose?(): void
 }
 
-const Image = ({src, description = '', withClose = false, replaceIcon}: ImageProps) => {
+const Image = ({src, description = '', withClose = false, replaceIcon, onClose = () => {}}: ImageProps) => {
     const ReplaceIcon = replaceIcon
     return (
         <CardImage src={src}>
             <CardImageTitle>{description}</CardImageTitle>
             {withClose && (
-                <IconBox>
+                <IconBox onClick={onClose}>
                     <CloseIcon size={26} />
                 </IconBox>
             )}

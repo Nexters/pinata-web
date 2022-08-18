@@ -1,6 +1,5 @@
 import { EventType } from '$api/event';
 import { GiftItem } from '$api/gift';
-import { Item } from 'types/Items';
 
 export type TargetEvent = {
   id: number;
@@ -10,7 +9,6 @@ export type TargetEvent = {
   openAt: string;
   closeAt: string;
   status: string;
-  items: Item[];
   hitMessage: string;
   hitImageUrl: string;
   missMessage: string;

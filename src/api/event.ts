@@ -1,3 +1,4 @@
+import { ApiResponse } from './../types/ApiResponse';
 import {useGetQuery, useRequest} from '$hooks/useRequest'
 import client from '$util/client'
 import {GiftItem} from './gift'
@@ -16,12 +17,17 @@ export const EVENT_TYPE = {
 
 export type EventType = typeof EVENT_TYPE[keyof typeof EVENT_TYPE]
 
-export type Item = {
-    id: number
-    title: string
-    imageUrl: string
-    rank: string
-    isAccepted: string // ?
+export type EventItem = {
+    eventId: number
+    eventTitle: string
+    eventCode: string
+    result: boolean
+    resultMessage: string
+    resultImageUrl: string
+    itemId: number
+    itemTitle?: string
+    itemImageUrl?: string
+    participateAt: string
 }
 
 export type EventResponse = {
@@ -32,7 +38,6 @@ export type EventResponse = {
     openAt: string
     closeAt: string
     status: string
-    items: Item[]
     hitMessage: string
     hitImageUrl: string
     missMessage: string
@@ -40,27 +45,30 @@ export type EventResponse = {
 }
 
 export const participateEvent = async (eventCode: string, token: string) => {
-    const data = await fetch(`/api/v1/events/participate/${eventCode}`, {
-        method: 'GET',
+    const data = await client.get<EventResponse, ApiResponse<EventResponse>>(`/api/v1/events/participate/${eventCode}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
-    }).then((res) => {
-        return res.json()
     })
     return data
 }
 
+export type ParticipatedEventResponse = {
+    code: string
+    itemId: number
+    itemImageUrl: string
+    itemTitle: string
+    result: boolean
+    resultImageURL: string
+    resultMessage: string
+}
+
 export const checkEventResult = async (eventCode: string, token: string) => {
-    const data = await fetch('/api/v1/events/participate', {
-        method: 'POST',
+    const data = await client.post<ParticipatedEventResponse, ApiResponse<ParticipatedEventResponse>>('/api/v1/events/participate', {code: eventCode}, {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({code: eventCode}),
-    }).then((res) => {
-        return res.json()
     })
     return data
 }
@@ -118,19 +126,6 @@ export const useEventList = () => {
     }
     
     return {data: null}
-}
-
-export type EventItem = {
-    eventId: number
-    eventTitle: string
-    eventCode: string
-    result: boolean
-    resultMessage: string
-    resultImageUrl: string
-    itemId: number
-    itemTitle?: string
-    itemImageUrl?: string
-    participateAt: string
 }
 
 export type JoinedEventListResponse = EventItem[]

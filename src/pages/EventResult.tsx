@@ -5,6 +5,7 @@ import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
 import ROUTE from '$constants/route'
+import useDownload from '$hooks/useDownload'
 import {typos} from '$styles/typos'
 import {useState} from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
@@ -63,10 +64,11 @@ interface LocationState {
 const EventResult = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const downloadImage = useDownload()
     const state = (location.state || {}) as LocationState
     const [isParticipated] = useState(state?.closed || false)
 
-    const {isSuccess, eventTitle, resultMessage, resultImageURL} = state
+    const {isSuccess, eventTitle, resultMessage, resultImageURL, itemImageUrl} = state
 
     // 데이터 제대로 안넘어온경우
     if (!eventTitle || !resultMessage || !resultImageURL) {
@@ -81,13 +83,13 @@ const EventResult = () => {
                 <ParticipatedNotice />
             ) : (
                 <Card bgWhite>
-                    <Card.Image src={resultImageURL} description={'결과 이미지'} withClose />
+                    <Card.Image onClose={() => navigate(ROUTE.MAIN)} src={resultImageURL} description={'결과 이미지'} withClose />
                     <Card.Content>
                         <Badge text={resultTitle} type="default" marginBottom={6} />
                         <Card.Title>{}</Card.Title>
                         <Card.Desc>{resultMessage}</Card.Desc>
                     </Card.Content>
-                    {isSuccess && <Card.Button>선물 받기</Card.Button>}
+                    {isSuccess && <Card.Button onClick={() => downloadImage(itemImageUrl || '')}>선물 받기</Card.Button>}
                 </Card>
             )}
         </EventWrapper>

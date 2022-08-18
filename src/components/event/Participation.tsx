@@ -85,7 +85,6 @@ const Participation: React.FC<Props> = ({event}) => {
         // state
 
         setIsOpen(true)
-
         checkResult()
     }
 
