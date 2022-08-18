@@ -10,6 +10,7 @@ import useAuthToken from '$hooks/useAuthToken'
 import {debounce} from '$util/debounce'
 import ROUTE from '$constants/route'
 import {useNavigate} from 'react-router-dom'
+import {RESULT_CODE} from '$util/client'
 
 const H1 = styled.div`
     width: 288px;
@@ -54,7 +55,7 @@ const Participation: React.FC<Props> = ({event}) => {
 
     const checkResult = debounce(() => {
         checkEventResult(event.code, token).then((res) => {
-            if (res.result === 'FAIL') {
+            if (res.result === RESULT_CODE.FAIL) {
                 navigate(ROUTE.ERROR)
                 return
             }

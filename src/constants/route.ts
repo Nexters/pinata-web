@@ -8,6 +8,7 @@ const ROUTE = {
         LIST: '/events',
         DETAIL: '/event/:event_code',
         RESULT: '/event/result',
+        OVER: '/event/over',
     },
     ERROR: '/error',
 }
