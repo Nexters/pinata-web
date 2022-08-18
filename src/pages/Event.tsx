@@ -6,8 +6,7 @@ import Participation from '$components/event/Participation'
 
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {EventResponse, participateEvent} from '$api/event'
-import ROUTE from '$constants/route'
-import {Navigate, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import useAuthToken from '$hooks/useAuthToken'
 import InvalidCode from '$components/event/InvalidCode'
 import Canceled from '$components/event/Canceled'
@@ -15,6 +14,7 @@ import {useCallback} from 'react'
 import useAsyncError from '$hooks/useAsyncError'
 import {RESULT_CODE} from '$util/client'
 import {AlreadyJoinedError, OutofPeriodError} from '$util/FetchError'
+import {ParticipatedNotice} from './EventResult'
 
 const EventPage: React.FC = () => {
     const [event, setEvent] = useState<EventResponse>()
@@ -61,7 +61,6 @@ const EventPage: React.FC = () => {
                 } else if (e instanceof AlreadyJoinedError) {
                     setIsClosed(true)
                 } else {
-                    console.log('???????')
                     setIsError(true)
                 }
             }
@@ -81,6 +80,10 @@ const EventPage: React.FC = () => {
         callEventApi(eventCode)
     }, [callEventApi, params.event_code, token])
 
+    if (isClosed) {
+        return <ParticipatedNotice />
+    }
+
     if (isError) {
         return <InvalidCode />
     }
@@ -94,17 +97,6 @@ const EventPage: React.FC = () => {
             <Suspense>
                 <Canceled event={event} />
             </Suspense>
-        )
-    }
-
-    if (isClosed) {
-        return (
-            <Navigate
-                to={ROUTE.EVENT.RESULT}
-                state={{
-                    closed: true,
-                }}
-            />
         )
     }
 
