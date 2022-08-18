@@ -4,6 +4,8 @@ import Overlay from '$components/eventResult/Overlay'
 import { PropsWithChildren } from 'react'
 import { DialogProvider, useDialogContext } from '$contexts/DialogContext'
 import { colors } from '$styles/colors'
+import { typos } from '$styles/typos'
+import Flex from '$components/commons/Flex'
 
 const slideUp = keyframes`
     0%,
@@ -55,7 +57,10 @@ const LayerContent = ({children}: PropsWithChildren<{}>) => {
 
     return createPortal(
         <Container isOpen={isOpen}>
-            <Content isOpen={isOpen}>{children}</Content>
+            <Content isOpen={isOpen}>
+                {children}
+                <CloseButton onClick={toggle}>닫기</CloseButton>
+            </Content>
             <Overlay onClick={toggle} withAnimation isOpen={isOpen} />
         </Container>,
         document.getElementById('__portal') || createPortalRoot(),
@@ -64,6 +69,18 @@ const LayerContent = ({children}: PropsWithChildren<{}>) => {
 
 HalfLayer.Trigger = Trigger
 HalfLayer.Content = LayerContent
+
+const CloseButton = styled(Flex).attrs({
+    direction: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+})`
+    height: 50px;
+    color: ${colors.white};
+    ${typos.pretendard['14.19.400']};
+    border-top: 1px solid rgba(255, 255, 255, .15);
+    cursor: pointer;
+`
 
 const Container = styled.div<{isOpen: boolean}>`
     position: fixed;
@@ -87,7 +104,6 @@ const Content = styled.div<{isOpen: boolean}>`
     text-align: center;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    padding: 16px 20px 0;
     ${({isOpen}) => 
         isOpen
         ? css`

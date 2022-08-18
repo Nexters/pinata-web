@@ -99,6 +99,7 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
                 <DialogSubTitle marginTop={40}>선물하실 상품 이름을 적어주세요</DialogSubTitle>
                 <Input
                     {...register('title', {required: true})}
+                    value={watch('title')}
                     type='text'
                     placeholder="최대 20글자"
                     style={{

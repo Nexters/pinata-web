@@ -6,14 +6,15 @@ import styled from 'styled-components'
 
 export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value'> & {
     onChange(e: ChangeEvent<HTMLInputElement>): void
+    value: string
     label?: string
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({onChange, label, ...inputProps}, ref) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(({onChange, value, label, ...inputProps}, ref) => {
     return (
         <Flex direction="row">
             {label && <Label>{label}</Label>}
-            <InputBox ref={ref} onChange={onChange} {...inputProps} />
+            <InputBox ref={ref} value={value || ''} onChange={onChange} {...inputProps} />
         </Flex>
     )
 })

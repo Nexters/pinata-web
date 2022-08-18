@@ -103,11 +103,12 @@ const CreateEvent = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Section>
                         <SectionTitle marginBottom={16}>이벤트 제목을 입력하세요</SectionTitle>
-                        <Input {...register('title', {required})} type="text" />
+                        <Input {...register('title', {required})} value={watch('title')} type="text" />
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 진행 날짜 및 시간을 정해보세요</SectionTitle>
                         <Input
+                            value={watch('openAt')}
                             {...register('openAt', {required})}
                             label={'시작'}
                             style={{
@@ -115,7 +116,7 @@ const CreateEvent = () => {
                             }}
                             type="datetime-local"
                         />
-                        <Input {...register('closeAt', {required})} label={'종료'} type="datetime-local" />
+                        <Input {...register('closeAt', {required})} value={watch('closeAt')} label={'종료'} type="datetime-local" />
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 모드를 선택하세요</SectionTitle>
@@ -160,10 +161,11 @@ const CreateEvent = () => {
                             imagesName='hitImageUrls'
                             inputProps={{
                                 ...register('hitMessage', {required}),
+                                value: watch('hitMessage'),
                                 type: 'text',
                                 placeholder: '이벤트 당첨 안내 및 축하 메시지를 적어주세요',
                             }}
-                            label={'당첨'}
+                            label={'hitMessage'}
                             onUpload={(urls: string[]) => {
                                 setValue('hitImageUrl', urls[0])
                             }}
@@ -181,10 +183,11 @@ const CreateEvent = () => {
                             imagesName='missImageUrls'
                             inputProps={{
                                 ...register('missMessage', {required}),
+                                value: watch('missMessage'),
                                 type: 'text',
                                 placeholder: '이벤트 탈락 안내 및 위로 메시지를 적어주세요',
                             }}
-                            label={'탈락'}
+                            label={'missMessage'}
                             onUpload={(urls: string[]) => {
                                 setValue('missImageUrl', urls[0])
                             }}

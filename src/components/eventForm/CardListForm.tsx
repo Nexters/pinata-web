@@ -16,7 +16,7 @@ import RadioForm from './RadioForm'
 
 type CardListFormProps = {
     inputProps: InputProps
-    label: string
+    label: keyof EventForm
     onUpload(imageUrls: string[]): void
     radioName: keyof EventForm
     imagesName: keyof ImageUrls
@@ -46,6 +46,11 @@ const unselectedStyle = css`
 
 const defaultRadioStyle = css`
     border-radius: 10px;
+`
+
+const defaultLayerRadioStyle = css`
+    ${typos.pretendard['14.26.500']};
+    margin-bottom: 10px;
 `
 
 const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: CardListFormProps) => {
@@ -108,22 +113,67 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: Card
                     </SelectTrigger>
                 </HalfLayer.Trigger>
                 <HalfLayer.Content>
-                    Content Here!
-                    <br />
-                    Content Here!
-                    <br />
-                    Content Here!
-                    <br />
-                    Content Here!
-                    <br />
-                    Content Here!
-                    <br />
+                    <SelectContent>
+                        <SelectTitle>당첨 안내 메세지</SelectTitle>
+                        <RadioForm align={'vertical'}>
+                            <RadioForm.Item 
+                                width={'100%'} 
+                                height={'100%'}
+                                name={label} 
+                                value={'메세지 1'}
+                                selectedStyle={css``}
+                                unselectedStyle={css``}
+                                style={defaultLayerRadioStyle}
+                                withRadioButton
+                            >
+                                메세지 1
+                            </RadioForm.Item>
+                            <RadioForm.Item 
+                                width={'100%'} 
+                                height={'100%'}
+                                name={label}
+                                value={'메세지 2'}
+                                selectedStyle={css``}
+                                unselectedStyle={css``}
+                                style={defaultLayerRadioStyle}
+                                withRadioButton
+                                >
+                                 메세지 2
+                            </RadioForm.Item>
+                            <RadioForm.Item 
+                                width={'100%'} 
+                                height={'100%'}
+                                name={label}
+                                value={''}
+                                selectedStyle={css``}
+                                unselectedStyle={css``}
+                                style={defaultLayerRadioStyle}
+                                withRadioButton
+                                forceSelectIfEmpty
+                                >
+                                 직접 입력
+                            </RadioForm.Item>
+                        </RadioForm>
+                    </SelectContent>
                 </HalfLayer.Content>
             </HalfLayer>
             <Input {...inputProps} />
         </>
     )
 }
+
+const SelectTitle = styled.div`
+    ${typos.pretendard['14.26.700']};
+    color: ${colors.white};
+    margin-bottom: 20px;
+    text-align: left;
+    height: 50px;
+    line-height: 50px;
+`
+
+const SelectContent = styled.div`
+    padding: 0 20px 16px 20px;   
+`
 
 const SelectTrigger = styled(Flex).attrs({
     direction: 'row',
