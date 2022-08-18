@@ -1,7 +1,7 @@
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import EventWrapper from '$components/event/EventWrapper'
-import Badge from '$components/eventResult/Badge'
+import Badge, {BadgeProps} from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
 import Overlay from '$components/eventResult/Overlay'
 import ROUTE from '$constants/route'
@@ -68,14 +68,20 @@ const EventResult = () => {
     const state = (location.state || {}) as LocationState
     const [isParticipated] = useState(state?.closed || false)
 
-    const {isSuccess, eventTitle, resultMessage, resultImageURL, itemImageUrl} = state
+    const {isSuccess, eventTitle, itemTitle, resultMessage, resultImageURL, itemImageUrl} = state
 
     // 데이터 제대로 안넘어온경우
     if (!eventTitle || !resultMessage || !resultImageURL) {
         navigate(ROUTE.ERROR)
         return null
     }
-    const resultTitle = isSuccess ? '당첨' : '탈락'
+    const badgeProps: BadgeProps = isSuccess ? {
+        text: '당첨',
+        type: 'danger'
+    } : {
+        text: '탈락',
+        type: 'default'
+    }
 
     return (
         <EventWrapper>
@@ -83,10 +89,10 @@ const EventResult = () => {
                 <ParticipatedNotice />
             ) : (
                 <Card bgWhite>
-                    <Card.Image onClose={() => navigate(ROUTE.MAIN)} src={resultImageURL} description={'결과 이미지'} withClose />
+                    <Card.Image onClose={() => navigate(ROUTE.MAIN)} src={resultImageURL} description={eventTitle} withClose />
                     <Card.Content>
-                        <Badge text={resultTitle} type="default" marginBottom={6} />
-                        <Card.Title>{}</Card.Title>
+                        <Badge {...badgeProps} marginBottom={6} />
+                        <Card.Title>{itemTitle}</Card.Title>
                         <Card.Desc>{resultMessage}</Card.Desc>
                     </Card.Content>
                     {isSuccess && <Card.Button onClick={() => downloadImage(itemImageUrl || '')}>선물 받기</Card.Button>}
