@@ -91,10 +91,7 @@ const Participation: React.FC<Props> = ({event}) => {
 
     return (
         <EventWrapper>
-            <H1>
-                넥스터즈 21기 깜작 선물 <br />
-                3분께 드립니다.
-            </H1>
+            <H1>{event.title}</H1>
             <Section onClick={handleOpen}>
                 <GiftBox isOpen={isOpen} />
             </Section>

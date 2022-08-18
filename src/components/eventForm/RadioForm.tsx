@@ -62,6 +62,7 @@ const RadioItem = ({
         } else {
             setError(name, {type: 'required'})
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentValue])
 
     return (

@@ -1,6 +1,6 @@
 import {ApiResponse} from '$types/ApiResponse'
 import axios, {AxiosError, AxiosRequestHeaders, AxiosResponse} from 'axios'
-import {AuthorizationError, FetchError, OutofPeriodError} from './FetchError'
+import {AlreadyJoinedError, AuthorizationError, FetchError, NonTargetError, OutofPeriodError} from './FetchError'
 
 export const RESULT_CODE = {
     SUCCESS: 'SUCCESS',
@@ -12,15 +12,24 @@ type ErrorData = {
     message: string
 }
 
+const EVENT_ERROR_CODE = {
+    EVENT_NOTFOUND: 'ERR1001',
+    EVENT_COMPLETE: 'ERR1002',
+    EVENT_EXPIRED: 'ERR1004',
+    EVENT_JOINED: 'ERR2003',
+    EVENT_NONTARGET: 'ERR1006',
+}
+
 const USER_ERROR_CODE = {
     USER_NOTFOUND: 'ERR0001',
     USER_AUTH_FAIL: 'ERR0002',
+    TOKEN_EXPIRED: 'TOKEN_EXPIRED',
 }
 
 const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T>>) => {
     if (res.data.result === RESULT_CODE.FAIL) {
         const errorData = res.data.data as ErrorData
-        if (errorData.code === USER_ERROR_CODE.USER_AUTH_FAIL) {
+        if (errorData.code === USER_ERROR_CODE.USER_AUTH_FAIL || errorData.code === USER_ERROR_CODE.TOKEN_EXPIRED) {
             throw new AuthorizationError()
         }
         throw new FetchError()
@@ -28,10 +37,27 @@ const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T
     return res.data
 }
 
-const rejectInterceptor = (error: AxiosError) => {
-    if (error.response?.status === 400) {
-        throw new OutofPeriodError()
+const rejectInterceptor = (error: AxiosError<ApiResponse<ErrorData>>) => {
+    if (error.response?.status === 401) {
+        return Promise.reject(new AuthorizationError())
     }
+    if (error.response?.status === 400) {
+        const {data} = error.response.data
+        if (data.code === EVENT_ERROR_CODE.EVENT_EXPIRED || data.code === EVENT_ERROR_CODE.EVENT_COMPLETE) {
+            return Promise.reject(new OutofPeriodError())
+        }
+
+        if (data.code === EVENT_ERROR_CODE.EVENT_JOINED) {
+            return Promise.reject(new AlreadyJoinedError())
+        }
+
+        if (data.code === EVENT_ERROR_CODE.EVENT_NONTARGET) {
+            return Promise.reject(new NonTargetError())
+        }
+
+        return Promise.reject(new FetchError())
+    }
+
     return Promise.reject(error)
 }
 

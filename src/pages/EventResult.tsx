@@ -3,28 +3,27 @@ import Flex from '$components/commons/Flex'
 import EventWrapper from '$components/event/EventWrapper'
 import Badge, {BadgeProps} from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
-import Overlay from '$components/eventResult/Overlay'
 import ROUTE from '$constants/route'
 import useDownload from '$hooks/useDownload'
 import {typos} from '$styles/typos'
-import {useState} from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
 import styled from 'styled-components'
 
-const ParticipatedNotice = () => {
+export const ParticipatedNotice = () => {
     const navigate = useNavigate()
     return (
-        <Flex direction="row" justifyContent="center" alignItems="center">
-            <Container>
-                <Box>
-                    이미 참여한
-                    <br />
-                    이벤트입니다.
-                </Box>
-                <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
-            </Container>
-            <Overlay onClick={() => {}} />
-        </Flex>
+        <EventWrapper>
+            <Flex direction="row" justifyContent="center" alignItems="center">
+                <Container>
+                    <Box>
+                        이미 참여한
+                        <br />
+                        이벤트입니다.
+                    </Box>
+                    <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
+                </Container>
+            </Flex>
+        </EventWrapper>
     )
 }
 
@@ -66,7 +65,6 @@ const EventResult = () => {
     const location = useLocation()
     const downloadImage = useDownload()
     const state = (location.state || {}) as LocationState
-    const [isParticipated] = useState(state?.closed || false)
 
     const {isSuccess, eventTitle, itemTitle, resultMessage, resultImageURL, itemImageUrl} = state
 
@@ -75,29 +73,32 @@ const EventResult = () => {
         navigate(ROUTE.ERROR)
         return null
     }
-    const badgeProps: BadgeProps = isSuccess ? {
-        text: '당첨',
-        type: 'danger'
-    } : {
-        text: '탈락',
-        type: 'default'
-    }
+    const badgeProps: BadgeProps = isSuccess
+        ? {
+              text: '당첨',
+              type: 'danger',
+          }
+        : {
+              text: '탈락',
+              type: 'default',
+          }
 
     return (
         <EventWrapper>
-            {isParticipated ? (
-                <ParticipatedNotice />
-            ) : (
-                <Card bgWhite>
-                    <Card.Image onClose={() => navigate(ROUTE.MAIN)} src={resultImageURL} description={eventTitle} withClose />
-                    <Card.Content>
-                        <Badge {...badgeProps} marginBottom={6} />
-                        <Card.Title>{itemTitle}</Card.Title>
-                        <Card.Desc>{resultMessage}</Card.Desc>
-                    </Card.Content>
-                    {isSuccess && <Card.Button onClick={() => downloadImage(itemImageUrl || '')}>선물 받기</Card.Button>}
-                </Card>
-            )}
+            <Card bgWhite>
+                <Card.Image
+                    onClose={() => navigate(ROUTE.MAIN)}
+                    src={resultImageURL}
+                    description={eventTitle}
+                    withClose
+                />
+                <Card.Content>
+                    <Badge {...badgeProps} marginBottom={6} />
+                    <Card.Title>{itemTitle}</Card.Title>
+                    <Card.Desc>{resultMessage}</Card.Desc>
+                </Card.Content>
+                {isSuccess && <Card.Button onClick={() => downloadImage(itemImageUrl || '')}>선물 받기</Card.Button>}
+            </Card>
         </EventWrapper>
     )
 }

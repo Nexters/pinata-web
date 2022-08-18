@@ -1,4 +1,2 @@
-import { getImageSource } from '$util/imageHelper'
-
-export const DEFAULT_HIT_IMAGES = [getImageSource('example-hit-image.png')]
-export const DEFAULT_MISS_IMAGES = [getImageSource('example-result-card.png')]
+export const DEFAULT_HIT_IMAGES = ['https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/default_hit_image.svg']
+export const DEFAULT_MISS_IMAGES = ['https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/default_miss_image.svg']

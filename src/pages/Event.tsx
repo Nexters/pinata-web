@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {Suspense, useEffect, useState} from 'react'
 
 import NeedLogin from '$components/event/NeedLogin'
 import Waiting from '$components/event/Waiting'
@@ -6,18 +6,18 @@ import Participation from '$components/event/Participation'
 
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {EventResponse, participateEvent} from '$api/event'
-import ROUTE from '$constants/route'
-import {Navigate, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import useAuthToken from '$hooks/useAuthToken'
 import InvalidCode from '$components/event/InvalidCode'
 import Canceled from '$components/event/Canceled'
 import {useCallback} from 'react'
 import useAsyncError from '$hooks/useAsyncError'
 import {RESULT_CODE} from '$util/client'
-import {EventOverError} from '$util/FetchError'
+import {AlreadyJoinedError, NonTargetError, OutofPeriodError} from '$util/FetchError'
+import {ParticipatedNotice} from './EventResult'
+import NonTarget from '$components/event/NonTarget'
 
 const EventPage: React.FC = () => {
-    // const [eventCode, setEventCode] = useState<string>('')
     const [event, setEvent] = useState<EventResponse>()
     const [isError, setIsError] = useState<boolean>(false)
     const [isClosed, setIsClosed] = useState<boolean>(false)
@@ -25,6 +25,7 @@ const EventPage: React.FC = () => {
     const [isParticipation, setIsParticipation] = useState<boolean>(false)
     const [isCancel, setIsCancel] = useState<boolean>(false)
     const {isLogined} = useKakaoLogin()
+    const [nonTarget, setNonTarget] = useState<boolean>(false)
     const params = useParams()
 
     useEffect(() => {
@@ -57,9 +58,15 @@ const EventPage: React.FC = () => {
 
                 setEvent(event)
             } catch (e) {
-                // Error Boundary로 throw
-                // 나중에 이벤트가 끝났다는 컴포넌트로 렌더링해주셔요
-                throwError(new EventOverError())
+                if (e instanceof OutofPeriodError) {
+                    throwError(e)
+                } else if (e instanceof AlreadyJoinedError) {
+                    setIsClosed(true)
+                } else if (e instanceof NonTargetError) {
+                    setNonTarget(true)
+                } else {
+                    setIsError(true)
+                }
             }
         },
         [throwError, token],
@@ -77,7 +84,13 @@ const EventPage: React.FC = () => {
         callEventApi(eventCode)
     }, [callEventApi, params.event_code, token])
 
-    if (!event) return null
+    if (nonTarget) {
+        return <NonTarget />
+    }
+
+    if (isClosed) {
+        return <ParticipatedNotice />
+    }
 
     if (isError) {
         return <InvalidCode />
@@ -87,34 +100,23 @@ const EventPage: React.FC = () => {
         return <NeedLogin />
     }
 
-    if (isCancel) {
-        return <Canceled event={event} />
-    }
-
-    if (isClosed) {
+    if (isCancel && event) {
         return (
-            <Navigate
-                to={ROUTE.EVENT.RESULT}
-                state={{
-                    closed: true,
-                }}
-            />
+            <Suspense>
+                <Canceled event={event} />
+            </Suspense>
         )
     }
 
-    if (isWaiting) {
+    if (isWaiting && event) {
         return <Waiting event={event} setIsWaiting={setIsWaiting} setIsParticipation={setIsParticipation} />
     }
 
-    if (isParticipation) {
+    if (isParticipation && event) {
         return <Participation event={event} />
     }
 
-    return (
-        <div className="App">
-            <h1>Event Page</h1>
-        </div>
-    )
+    return null
 }
 
 export default EventPage

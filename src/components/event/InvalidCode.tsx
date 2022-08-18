@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import {Box} from '$components/commons/Box'
@@ -7,7 +6,6 @@ import {useNavigate} from 'react-router-dom'
 import ROUTE from '$constants/route'
 
 import Flex from '$components/commons/Flex'
-import Overlay from '$components/eventResult/Overlay'
 import EventWrapper from './EventWrapper'
 
 const Button = styled.button`
@@ -45,7 +43,6 @@ const InvalidCode = () => {
                     </Box>
                     <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
                 </Container>
-                <Overlay onClick={() => {}} />
             </Flex>
         </EventWrapper>
     )

@@ -16,8 +16,14 @@ export class OutofPeriodError extends FetchError {
     }
 }
 
-export class EventOverError extends FetchError {
+export class AlreadyJoinedError extends FetchError {
     constructor() {
-        super('event is already over')
+        super('User is already joined this event.')
+    }
+}
+
+export class NonTargetError extends FetchError {
+    constructor() {
+        super('This User is non-target.')
     }
 }

@@ -1,5 +1,5 @@
 import {Component, ReactNode} from 'react'
-import {AuthorizationError, EventOverError, FetchError} from '$util/FetchError'
+import {AuthorizationError, FetchError, OutofPeriodError} from '$util/FetchError'
 import ROUTE from '$constants/route'
 
 type ErrorBoundaryProps = {
@@ -9,11 +9,10 @@ type ErrorBoundaryProps = {
 class ErrorBoundary extends Component<ErrorBoundaryProps> {
     static getDerivedStateFromError(error: Error) {
         if (error instanceof AuthorizationError) {
-            console.log('에러 바운더리 실행?', error instanceof FetchError)
             window.location.replace(ROUTE.LOGIN)
             return {}
         }
-        if (error instanceof EventOverError) {
+        if (error instanceof OutofPeriodError) {
             window.location.replace(`${ROUTE.EVENT.OVER}`)
             return {}
         }

@@ -52,7 +52,7 @@ const CreateEvent = () => {
         handleSubmit,
         setValue,
         getValues,
-        formState: {isSubmitSuccessful, errors, isValid},
+        formState: {isSubmitSuccessful, errors},
         watch,
         setError,
         clearErrors,
@@ -69,13 +69,14 @@ const CreateEvent = () => {
         } else {
             clearErrors('items')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items])
 
     const [completeEventCode, setEventCode] = useState<string | null>(null)
 
     const onSubmit = async (data: EventForm & ImageUrls) => {
         try {
-            if (!isValid) {
+            if (Object.keys(errors).length > 0) {
                 return
             }
 
@@ -174,7 +175,6 @@ const CreateEvent = () => {
                         <Input
                             {...register('title', {
                                 validate: (value) => value.length > 0,
-                                min: new Date().toISOString(),
                                 ...defaultRegisterProps,
                             })}
                             value={watch('title')}
@@ -202,6 +202,7 @@ const CreateEvent = () => {
                         <Input
                             {...register('closeAt', {
                                 validate: isValidCloseDate,
+                                min: new Date().toISOString(),
                                 deps: ['openAt'],
                                 ...defaultRegisterProps,
                             })}
