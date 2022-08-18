@@ -14,6 +14,7 @@ import Canceled from '$components/event/Canceled'
 import {useCallback} from 'react'
 import useAsyncError from '$hooks/useAsyncError'
 import {RESULT_CODE} from '$util/client'
+import {EventOverError} from '$util/FetchError'
 
 const EventPage: React.FC = () => {
     // const [eventCode, setEventCode] = useState<string>('')
@@ -49,7 +50,7 @@ const EventPage: React.FC = () => {
             try {
                 const {data: event, result} = await participateEvent(eventCode, token)
 
-                if (result === 'FAIL') {
+                if (result === RESULT_CODE.FAIL) {
                     setIsError(true)
                     return
                 }
@@ -58,10 +59,10 @@ const EventPage: React.FC = () => {
             } catch (e) {
                 // Error Boundary로 throw
                 // 나중에 이벤트가 끝났다는 컴포넌트로 렌더링해주셔요
-                throwError(e)
+                throwError(new EventOverError())
             }
         },
-        [token],
+        [throwError, token],
     )
 
     useEffect(() => {
