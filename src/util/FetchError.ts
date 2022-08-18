@@ -21,3 +21,9 @@ export class AlreadyJoinedError extends FetchError {
         super('User is already joined this event.')
     }
 }
+
+export class NonTargetError extends FetchError {
+    constructor() {
+        super('This User is non-target.')
+    }
+}

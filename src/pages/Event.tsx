@@ -13,8 +13,9 @@ import Canceled from '$components/event/Canceled'
 import {useCallback} from 'react'
 import useAsyncError from '$hooks/useAsyncError'
 import {RESULT_CODE} from '$util/client'
-import {AlreadyJoinedError, OutofPeriodError} from '$util/FetchError'
+import {AlreadyJoinedError, NonTargetError, OutofPeriodError} from '$util/FetchError'
 import {ParticipatedNotice} from './EventResult'
+import NonTarget from '$components/event/NonTarget'
 
 const EventPage: React.FC = () => {
     const [event, setEvent] = useState<EventResponse>()
@@ -24,6 +25,7 @@ const EventPage: React.FC = () => {
     const [isParticipation, setIsParticipation] = useState<boolean>(false)
     const [isCancel, setIsCancel] = useState<boolean>(false)
     const {isLogined} = useKakaoLogin()
+    const [nonTarget, setNonTarget] = useState<boolean>(false)
     const params = useParams()
 
     useEffect(() => {
@@ -60,6 +62,8 @@ const EventPage: React.FC = () => {
                     throwError(e)
                 } else if (e instanceof AlreadyJoinedError) {
                     setIsClosed(true)
+                } else if (e instanceof NonTargetError) {
+                    setNonTarget(true)
                 } else {
                     setIsError(true)
                 }
@@ -79,6 +83,10 @@ const EventPage: React.FC = () => {
 
         callEventApi(eventCode)
     }, [callEventApi, params.event_code, token])
+
+    if (nonTarget) {
+        return <NonTarget />
+    }
 
     if (isClosed) {
         return <ParticipatedNotice />

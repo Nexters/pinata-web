@@ -1,6 +1,6 @@
 import {ApiResponse} from '$types/ApiResponse'
 import axios, {AxiosError, AxiosRequestHeaders, AxiosResponse} from 'axios'
-import {AlreadyJoinedError, AuthorizationError, FetchError, OutofPeriodError} from './FetchError'
+import {AlreadyJoinedError, AuthorizationError, FetchError, NonTargetError, OutofPeriodError} from './FetchError'
 
 export const RESULT_CODE = {
     SUCCESS: 'SUCCESS',
@@ -17,6 +17,7 @@ const EVENT_ERROR_CODE = {
     EVENT_COMPLETE: 'ERR1002',
     EVENT_EXPIRED: 'ERR1004',
     EVENT_JOINED: 'ERR2003',
+    EVENT_NONTARGET: 'ERR1006',
 }
 
 const USER_ERROR_CODE = {
@@ -48,6 +49,10 @@ const rejectInterceptor = (error: AxiosError<ApiResponse<ErrorData>>) => {
 
         if (data.code === EVENT_ERROR_CODE.EVENT_JOINED) {
             return Promise.reject(new AlreadyJoinedError())
+        }
+
+        if (data.code === EVENT_ERROR_CODE.EVENT_NONTARGET) {
+            return Promise.reject(new NonTargetError())
         }
 
         return Promise.reject(new FetchError())
