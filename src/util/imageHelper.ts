@@ -1,7 +1,8 @@
+import { originUrl } from '$config/index'
+
 export const getImageSource = (imageName: string) => {
-    const originUrl = window.location.origin
 
-    const srcWithPrefix = `images/${imageName}`
+    const srcWithPrefix = `/images/${imageName}`
 
-    return originUrl.endsWith('/') ? `${originUrl}${srcWithPrefix}` : `${originUrl}/${srcWithPrefix}`
+    return `${originUrl}${srcWithPrefix}`
 }

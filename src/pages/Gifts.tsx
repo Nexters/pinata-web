@@ -15,7 +15,7 @@ const Gifts: React.FC = () => {
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
-                {data.data.map((gift) => (
+                {data.map((gift) => (
                     <GiftCardItem key={gift.itemId}>
                         <DetailGiftItem {...gift} />
                     </GiftCardItem>

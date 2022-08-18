@@ -14,7 +14,7 @@ const EventList = () => {
     return (
         <Suspense fallback={<>Loading...</>}>
             <EventListContainer>
-                {data.data.map((event: Event) => (
+                {data.map((event: Event) => (
                     <EventItemCard key={event.id}>
                         <EventCard {...event} />
                     </EventItemCard>
