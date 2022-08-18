@@ -113,7 +113,11 @@ export type EventListResponse = Event[]
 
 export const useEventList = () => {
     const {data, isLoading} = useGetQuery<EventListResponse>('/api/v1/events')
-    return {data, isLoading}
+    if (data?.data) {
+        return {data: data.data, isLoading}
+    }
+    
+    return {data: null}
 }
 
 export type EventItem = {
@@ -133,5 +137,8 @@ export type JoinedEventListResponse = EventItem[]
 
 export const useJoinedEventList = () => {
     const {data} = useGetQuery<JoinedEventListResponse>('/api/v1/events/participate/me')
-    return {data}
+    if (data?.data) {
+        return {data: data.data}
+    }
+    return {data: null}
 }

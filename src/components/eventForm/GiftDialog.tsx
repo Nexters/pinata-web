@@ -96,14 +96,15 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
                         </Button>
                 }
                 <ImageUploader onUpload={handleUpload} ref={imageUploaderRef} />
-                <Divider />
-                <DialogSubTitle>선물하실 상품 이름을 적어주세요</DialogSubTitle>
+                <DialogSubTitle marginTop={40}>선물하실 상품 이름을 적어주세요</DialogSubTitle>
                 <Input
                     {...register('title', {required: true})}
+                    value={watch('title')}
                     type='text'
                     placeholder="최대 20글자"
                     style={{
                         marginBottom: 36,
+                        background: colors.black[200],
                     }}
                 />
                 <GiftDialogButton onClick={handleClick} />
@@ -124,15 +125,11 @@ const ImageViewerContainer = styled(Flex).attrs({
     gap: 2px;
 `
 
-const Divider = styled.hr`
-    border: 0.5px solid rgba(255, 255, 255, 0.1);
-    margin: 20px 0;
-`
-
-const DialogSubTitle = styled.div`
+const DialogSubTitle = styled.div<{marginTop?: number}>`
     ${typos.pretendard['14.26.500']};
     color: ${colors.white};
     margin-bottom: 10px;
+    margin-top: ${({marginTop}) => marginTop || 0}px;
 `
 const Button = styled.div<{
     height: number

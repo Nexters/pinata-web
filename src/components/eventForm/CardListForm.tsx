@@ -5,20 +5,23 @@ import Flex from '$components/commons/Flex'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { EventForm, ImageUrls } from '$types/Event'
+import ChevronDownIcon from '$assets/icons/ChevronDownIcon'
 import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
+import HalfLayer from './HalfLayer'
 import ImageUploader from './ImageUploader'
 import Input, {InputProps} from './Input'
 import RadioForm from './RadioForm'
-import SelectBox from './SelectBox'
 
 type CardListFormProps = {
     inputProps: InputProps
-    label: string
+    label: keyof EventForm
     onUpload(imageUrls: string[]): void
     radioName: keyof EventForm
     imagesName: keyof ImageUrls
+    selectTitle: string
+    messageList: string[]
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
@@ -47,7 +50,12 @@ const defaultRadioStyle = css`
     border-radius: 10px;
 `
 
-const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: CardListFormProps) => {
+const defaultLayerRadioStyle = css`
+    ${typos.pretendard['14.26.500']};
+    margin-bottom: 10px;
+`
+
+const CardListForm = ({inputProps, label, onUpload, radioName, imagesName, selectTitle, messageList}: CardListFormProps) => {
     const [images, setImages] = useState<string[]>([])
     const imageUploaderRef = useRef<HTMLInputElement>(null)
     const uploadImage: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -99,11 +107,82 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: Card
                     ))}
                 </RadioForm>
             </CardListContainer>
-            <SelectBox label={label} />
+            <HalfLayer>
+                <HalfLayer.Trigger>
+                    <SelectTrigger>
+                    직접입력
+                    <ChevronDownIcon size={24} color={'#9E9EA9'} />
+                    </SelectTrigger>
+                </HalfLayer.Trigger>
+                <HalfLayer.Content>
+                    <SelectContent>
+                        <SelectTitle>{selectTitle}</SelectTitle>
+                        <RadioForm align={'vertical'}>
+                            {
+                                messageList.map((message) => (
+                                    <RadioForm.Item 
+                                        key={message}
+                                        width={'100%'} 
+                                        height={'100%'}
+                                        name={label} 
+                                        value={message}
+                                        selectedStyle={css``}
+                                        unselectedStyle={css``}
+                                        style={defaultLayerRadioStyle}
+                                        withRadioButton
+                                    >
+                                        {message}
+                                    </RadioForm.Item>
+                                ))
+                            }
+                            <RadioForm.Item 
+                                width={'100%'} 
+                                height={'100%'}
+                                name={label}
+                                value={''}
+                                selectedStyle={css``}
+                                unselectedStyle={css``}
+                                style={defaultLayerRadioStyle}
+                                withRadioButton
+                                forceSelectIfEmpty
+                                >
+                                 직접 입력
+                            </RadioForm.Item>
+                        </RadioForm>
+                    </SelectContent>
+                </HalfLayer.Content>
+            </HalfLayer>
             <Input {...inputProps} />
         </>
     )
 }
+
+const SelectTitle = styled.div`
+    ${typos.pretendard['14.26.700']};
+    color: ${colors.white};
+    margin-bottom: 20px;
+    text-align: left;
+    height: 50px;
+    line-height: 50px;
+`
+
+const SelectContent = styled.div`
+    padding: 0 20px 16px 20px;   
+`
+
+const SelectTrigger = styled(Flex).attrs({
+    direction: 'row',
+    justifyContent: 'space-between'
+})`
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 15px;
+    color: ${colors.white};
+    height: 32px;
+    ${typos.pretendard['14.32.500']};
+    padding: 4px 16px;
+    margin-bottom: 10px;
+`
 
 const CardButton = styled(Flex).attrs({
     direction: 'column',
