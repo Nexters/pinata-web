@@ -2,7 +2,7 @@ import {ApiResponse} from '$types/ApiResponse'
 import axios, {AxiosError, AxiosRequestHeaders, AxiosResponse} from 'axios'
 import {AuthorizationError, FetchError} from './FetchError'
 
-const RESULT_CODE = {
+export const RESULT_CODE = {
     SUCCESS: 'SUCCESS',
     FAIL: 'FAIL',
 }
@@ -43,6 +43,13 @@ export const postAuthorized = <T, U>(url: string, req: T, token?: string, header
         Authorization: `Bearer ${token}`,
         ...headers,
     },
+})
+
+export const deleteAuthorized = <T, U>(url: string, data: T, token?: string) => axios.delete<ApiResponse<U>>(url, {
+    data,
+    headers: {
+        Authorization: `Bearer ${token}`,
+    }
 })
 
 export default client

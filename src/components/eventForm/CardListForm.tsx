@@ -6,13 +6,17 @@ import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { EventForm, ImageUrls } from '$types/Event'
 import ChevronDownIcon from '$assets/icons/ChevronDownIcon'
-import { MouseEventHandler, useEffect, useRef, useState } from 'react'
+import { MouseEvent, MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
 import HalfLayer from './HalfLayer'
 import ImageUploader from './ImageUploader'
 import Input, {InputProps} from './Input'
 import RadioForm from './RadioForm'
+import { TrashIcon } from '@radix-ui/react-icons'
+import { useDeleteImage } from '$api/image'
+import { DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES } from '$constants/formData'
+import { getImageFileName } from '$util/imageHelper'
 
 type CardListFormProps = {
     inputProps: InputProps
@@ -24,9 +28,70 @@ type CardListFormProps = {
     messageList: string[]
 }
 
-const CardImage = ({imageUrl}: {imageUrl: string}) => {
-    return <CardImageWrapper imageUrl={imageUrl} />
+type CardImageProps = {
+    imageUrl: string
+    imagesName: keyof ImageUrls
+    radioName: keyof EventForm
 }
+
+const CardImage = ({imageUrl, imagesName, radioName}: CardImageProps) => {
+    const {setValue, getValues} = useFormContext<ImageUrls & EventForm>()
+    const {deleteImage} = useDeleteImage()
+
+    const isDefaultImage = imagesName === 'hitImageUrls' ? DEFAULT_HIT_IMAGES.includes(imageUrl) : DEFAULT_MISS_IMAGES.includes(imageUrl)
+
+    const deleteImageFromList = (fileName: string) => {
+        const images = getValues(imagesName)
+
+        const nextImages = images.filter((imageUrl) => 
+            getImageFileName(imageUrl) !== fileName
+        )
+
+        setValue(imagesName, nextImages)
+        setValue(radioName, '')
+    }
+
+    const handleDelete = async (e: MouseEvent<HTMLSpanElement>) => {
+        e.stopPropagation()
+
+        const imageFileName = getImageFileName(imageUrl)
+        if (imageFileName) {
+            await deleteImage({
+                imageFileName,
+            })
+
+            // delete image from list
+            deleteImageFromList(imageFileName)
+        }
+    }
+
+    return (
+        <CardImageWrapper imageUrl={imageUrl}>
+            {
+                !isDefaultImage && (
+                    <IconBox onClickCapture={handleDelete}>
+                        <TrashIcon color={colors.white} />
+                    </IconBox>
+                )
+            }
+        </CardImageWrapper>
+    )
+}
+
+const IconBox = styled.span`
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: inline-flex;
+    background: ${colors.red[100]};
+    width: 25px;
+    height: 25px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    cursor: pointer;
+    z-index: 1;
+`
 
 const CardImageWrapper = styled(Box).attrs({
     width: 150,
@@ -35,6 +100,7 @@ const CardImageWrapper = styled(Box).attrs({
     background: ${({imageUrl}) => `url(${imageUrl})`};
     background-size: cover;
     border-radius: 10px;
+    position: relative;
 
 `
 
@@ -62,9 +128,13 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName, selec
         e.preventDefault()
         imageUploaderRef.current && imageUploaderRef.current.click()
     }
-    const {setValue, watch, getValues} = useFormContext<ImageUrls>()
+    const {setValue, watch, getValues} = useFormContext<EventForm & ImageUrls>()
 
     const currentImages = watch(imagesName)
+    
+    const currentMessage = watch(label) as string
+
+    const selectedMessage = messageList.includes(currentMessage) ? currentMessage : '직접 입력'
 
     useEffect(() => {
         setImages(currentImages)
@@ -101,7 +171,7 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName, selec
                                 unselectedStyle={unselectedStyle} 
                                 style={defaultRadioStyle}
                                 selectIcon={CheckIcon}>
-                                <CardImage imageUrl={imageUrl} />
+                                <CardImage imageUrl={imageUrl} imagesName={imagesName} radioName={radioName} />
                             </RadioForm.Item>
                         </CardImageItem>
                     ))}
@@ -110,7 +180,7 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName, selec
             <HalfLayer>
                 <HalfLayer.Trigger>
                     <SelectTrigger>
-                    직접입력
+                    {selectedMessage}
                     <ChevronDownIcon size={24} color={'#9E9EA9'} />
                     </SelectTrigger>
                 </HalfLayer.Trigger>

@@ -1,3 +1,4 @@
+import { getImageFileName } from './../util/imageHelper';
 import client from '$util/client';
 import { useCallback } from 'react';
 import useAuthToken from './useAuthToken';
@@ -6,7 +7,7 @@ const useDownload = () => {
     const accessToken = useAuthToken()
 
     const downloadFromUrl = useCallback(async (source: string) => {
-        const fileName = source.split('/').pop()
+        const fileName = getImageFileName(source)
 
         const response = await client.get<Blob, Blob>(
             `/api/v1/images/download/${fileName}`,
