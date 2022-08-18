@@ -28,7 +28,7 @@ const USER_ERROR_CODE = {
 const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T>>) => {
     if (res.data.result === RESULT_CODE.FAIL) {
         const errorData = res.data.data as ErrorData
-        if (errorData.code === USER_ERROR_CODE.USER_AUTH_FAIL) {
+        if (errorData.code === USER_ERROR_CODE.USER_AUTH_FAIL || errorData.code === USER_ERROR_CODE.TOKEN_EXPIRED) {
             throw new AuthorizationError()
         }
         throw new FetchError()
