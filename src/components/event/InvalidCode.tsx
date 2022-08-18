@@ -7,7 +7,6 @@ import {useNavigate} from 'react-router-dom'
 import ROUTE from '$constants/route'
 
 import Flex from '$components/commons/Flex'
-import Overlay from '$components/eventResult/Overlay'
 import EventWrapper from './EventWrapper'
 
 const Button = styled.button`
