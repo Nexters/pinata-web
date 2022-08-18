@@ -62,9 +62,13 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName, selec
         e.preventDefault()
         imageUploaderRef.current && imageUploaderRef.current.click()
     }
-    const {setValue, watch, getValues} = useFormContext<ImageUrls>()
+    const {setValue, watch, getValues} = useFormContext<EventForm & ImageUrls>()
 
     const currentImages = watch(imagesName)
+    
+    const currentMessage = watch(label) as string
+
+    const selectedMessage = messageList.includes(currentMessage) ? currentMessage : '직접 입력'
 
     useEffect(() => {
         setImages(currentImages)
@@ -110,7 +114,7 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName, selec
             <HalfLayer>
                 <HalfLayer.Trigger>
                     <SelectTrigger>
-                    직접입력
+                    {selectedMessage}
                     <ChevronDownIcon size={24} color={'#9E9EA9'} />
                     </SelectTrigger>
                 </HalfLayer.Trigger>
