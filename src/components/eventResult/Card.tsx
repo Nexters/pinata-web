@@ -16,7 +16,7 @@ type CardProps = {
 const Card = ({children, withOverlay = true, bgWhite = false}: CardProps) => {
     return (
         <>
-            <CardWrapper bgWhite={bgWhite} direction={'row'} justifyContent={'center'} alignItems="center">
+            <CardWrapper withOverlay={withOverlay} bgWhite={bgWhite} direction={'row'} justifyContent={'center'} alignItems="center">
                 {children}
             </CardWrapper>
             {withOverlay && <Overlay onClick={() => {}} />}
@@ -140,7 +140,7 @@ const CardWrapper = styled(Flex).attrs({
     direction: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-})<{bgWhite: boolean}>`
+})<{bgWhite: boolean; withOverlay: boolean}>`
     ${({bgWhite}) => bgWhite
     ? css`
         background: ${colors.white};
@@ -153,7 +153,7 @@ const CardWrapper = styled(Flex).attrs({
     }
     min-width: 335px;
     border-radius: 20px;
-    z-index: 1006;
+    z-index: ${({withOverlay}) => withOverlay ? 1006 : 0};
     position: relative;
 `
 
