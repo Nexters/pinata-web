@@ -8,6 +8,7 @@ import {EVENT_TYPE} from '$api/event'
 import {lazy, Suspense} from 'react'
 import FormGuard from '$components/auth/FormGuard'
 import {DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES} from '$constants/formData'
+import Finished from '$components/event/Finished'
 
 const Main = lazy(() => import('$pages/Main'))
 const EventLists = lazy(() => import('$pages/EventLists'))
@@ -47,6 +48,7 @@ export const Router = () => {
                                 />
                             </Route>
                             <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
+                            <Route path={ROUTE.EVENT.OVER} element={<Finished />} />
                             <Route path={ROUTE.GIFTS} element={<Gifts />} />
                         </Route>
                         <Route path={ROUTE.LOGIN} element={<Login />} />

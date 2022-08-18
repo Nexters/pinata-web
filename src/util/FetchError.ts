@@ -15,3 +15,9 @@ export class OutofPeriodError extends FetchError {
         super('Out of Event Period.')
     }
 }
+
+export class EventOverError extends FetchError {
+    constructor() {
+        super('event is already over')
+    }
+}
