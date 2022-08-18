@@ -37,8 +37,6 @@ const Waiting: React.FC<Props> = ({event, setIsParticipation, setIsWaiting}) => 
 
         if (leftSeconds < 0) {
             setLeftSeconds(0)
-            setIsWaiting(false)
-            setIsParticipation(true)
         } else {
             setLeftSeconds(leftSeconds)
         }
@@ -47,6 +45,9 @@ const Waiting: React.FC<Props> = ({event, setIsParticipation, setIsWaiting}) => 
     useInterval(() => {
         if (leftSeconds > 0) {
             setLeftSeconds((before) => before - 1)
+        } else {
+            setIsWaiting(false)
+            setIsParticipation(true)
         }
     }, 1000)
 
