@@ -36,7 +36,7 @@ const InputBox = styled.input`
     outline: none;
 
     &::placeholder {
-        color: ${colors.white};
+        color: rgba(255, 255, 255, .5);
     }
 
     ${typos.pretendard['13.26.500']};
