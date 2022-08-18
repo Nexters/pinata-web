@@ -23,7 +23,7 @@ const Finished = lazy(() => import('$pages/Finished'))
 
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({
-        mode: 'onChange',
+        mode: 'all',
         defaultValues: {
             type: EVENT_TYPE.RANDOM,
             hitImageUrls: DEFAULT_HIT_IMAGES,

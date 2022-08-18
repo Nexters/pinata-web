@@ -38,10 +38,7 @@ const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T
 
 const rejectInterceptor = (error: AxiosError<ApiResponse<ErrorData>>) => {
     if (error.response?.status === 401) {
-        const {data} = error.response.data
-        if (data.code === USER_ERROR_CODE.TOKEN_EXPIRED) {
-            return Promise.reject(new AuthorizationError())
-        }
+        return Promise.reject(new AuthorizationError())
     }
     if (error.response?.status === 400) {
         const {data} = error.response.data

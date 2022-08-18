@@ -52,7 +52,7 @@ const CreateEvent = () => {
         handleSubmit,
         setValue,
         getValues,
-        formState: {isSubmitSuccessful, errors, isValid},
+        formState: {isSubmitSuccessful, errors},
         watch,
         setError,
         clearErrors,
@@ -76,7 +76,7 @@ const CreateEvent = () => {
 
     const onSubmit = async (data: EventForm & ImageUrls) => {
         try {
-            if (!isValid) {
+            if (Object.keys(errors).length > 0) {
                 return
             }
 

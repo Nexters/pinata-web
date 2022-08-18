@@ -4,8 +4,8 @@ import Badge from '$components/eventResult/Badge'
 import Card from '$components/eventResult/Card'
 import useDownload from '$hooks/useDownload'
 import useItemStatus from '$hooks/useItemStatus'
-import { colors } from '$styles/colors'
-import { typos } from '$styles/typos'
+import {colors} from '$styles/colors'
+import {typos} from '$styles/typos'
 import {format} from 'date-fns'
 import styled from 'styled-components'
 
@@ -30,9 +30,7 @@ const GiftItem = (props: GiftProps) => {
 }
 
 const CustomBadge = ({participateAt}: {participateAt: string}) => {
-    return (
-        <ParticipateDateLabel>{formatDateTime(participateAt, 'yy.MM.dd')}</ParticipateDateLabel>
-    )
+    return <ParticipateDateLabel>{formatDateTime(participateAt, 'yy.MM.dd')}</ParticipateDateLabel>
 }
 
 const ParticipateDateLabel = styled.span`
@@ -56,22 +54,28 @@ export const DetailGiftItem = (props: GiftProps) => {
 
     return (
         <Card withOverlay={false}>
-            <Card.Image src={resultImageUrl} description={eventTitle} replaceIcon={() => <CustomBadge participateAt={participateAt} />} />
+            <Card.Image
+                src={resultImageUrl}
+                description={eventTitle}
+                replaceIcon={() => <CustomBadge participateAt={participateAt} />}
+            />
             <Card.Content>
                 <Badge marginBottom={6} {...badgeProps} />
                 <Card.Title>{cardTitle}</Card.Title>
-                <Card.Desc size={'lg'}>{
-                    result
-                    ? resultMessage
-                    : ''
-                }</Card.Desc>
+                <Card.Desc size={'lg'}>{result ? resultMessage : ''}</Card.Desc>
             </Card.Content>
-            {result && <Card.Button onClick={handleDownload}>
-                <DownloadIcon size={16} color={colors.white} style={{
-                    marginRight: 6
-                }} />
-                선물 받기
-                </Card.Button>}
+            {result && (
+                <Card.Button onClick={handleDownload}>
+                    <DownloadIcon
+                        size={16}
+                        color={colors.white}
+                        style={{
+                            marginRight: 6,
+                        }}
+                    />
+                    선물 받기
+                </Card.Button>
+            )}
         </Card>
     )
 }
