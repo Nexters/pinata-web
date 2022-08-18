@@ -21,6 +21,12 @@ const ErrorPage = lazy(() => import('$pages/ErrorPage'))
 const NotFoundPage = lazy(() => import('$pages/NotFoundPage'))
 const CreateComplete = lazy(() => import('$pages/CreateComplete'))
 
+const Example = () => {
+    return (
+        <a href="https://klutch.page" target={'_blank'} rel="noreferrer">Goto Klutch</a>
+    )
+}
+
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({
         mode: 'onSubmit',
@@ -49,6 +55,7 @@ export const Router = () => {
                         </Route>
                         <Route path={ROUTE.LOGIN} element={<Login />} />
                         <Route path={ROUTE.EVENT.DETAIL} element={<Event />} />
+                        <Route path={'/example'} element={<Example />} />
                         <Route path={ROUTE.ERROR} element={<ErrorPage />} />
                         <Route path={'*'} element={<NotFoundPage />} />
                     </Routes>
