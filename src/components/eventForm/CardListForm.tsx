@@ -5,13 +5,14 @@ import Flex from '$components/commons/Flex'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import { EventForm, ImageUrls } from '$types/Event'
+import ChevronDownIcon from '$assets/icons/ChevronDownIcon'
 import { MouseEventHandler, useEffect, useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import styled, { css } from 'styled-components'
+import HalfLayer from './HalfLayer'
 import ImageUploader from './ImageUploader'
 import Input, {InputProps} from './Input'
 import RadioForm from './RadioForm'
-import SelectBox from './SelectBox'
 
 type CardListFormProps = {
     inputProps: InputProps
@@ -99,11 +100,44 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: Card
                     ))}
                 </RadioForm>
             </CardListContainer>
-            <SelectBox label={label} />
+            <HalfLayer>
+                <HalfLayer.Trigger>
+                    <SelectTrigger>
+                    직접입력
+                    <ChevronDownIcon size={24} color={'#9E9EA9'} />
+                    </SelectTrigger>
+                </HalfLayer.Trigger>
+                <HalfLayer.Content>
+                    Content Here!
+                    <br />
+                    Content Here!
+                    <br />
+                    Content Here!
+                    <br />
+                    Content Here!
+                    <br />
+                    Content Here!
+                    <br />
+                </HalfLayer.Content>
+            </HalfLayer>
             <Input {...inputProps} />
         </>
     )
 }
+
+const SelectTrigger = styled(Flex).attrs({
+    direction: 'row',
+    justifyContent: 'space-between'
+})`
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 15px;
+    color: ${colors.white};
+    height: 32px;
+    ${typos.pretendard['14.32.500']};
+    padding: 4px 16px;
+    margin-bottom: 10px;
+`
 
 const CardButton = styled(Flex).attrs({
     direction: 'column',

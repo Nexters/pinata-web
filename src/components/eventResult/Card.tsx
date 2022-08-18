@@ -153,7 +153,7 @@ const CardWrapper = styled(Flex).attrs({
     }
     min-width: 335px;
     border-radius: 20px;
-    z-index: 1;
+    z-index: 1006;
     position: relative;
 `
 
