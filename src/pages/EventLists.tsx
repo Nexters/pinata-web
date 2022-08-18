@@ -1,16 +1,22 @@
 import {useEventList} from '$api/event'
 import {Box} from '$components/commons/Box'
-import Flex from '$components/commons/Flex'
 import EventCard from '$components/eventList/EventCard'
+import ROUTE from '$constants/route'
+import EmptyLayout from '$layout/EmptyLayout'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import { colors } from '$styles/colors'
 import { typos } from '$styles/typos'
-import { getImageSource } from '$util/imageHelper'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 const EventLists: React.FC = () => {
+    const navigate = useNavigate()
     const {data} = useEventList()
+
+    const startToMakeEvent = () => {
+        navigate(ROUTE.EVENT.CREATE)
+    }
 
     if (!data) {
         return null
@@ -21,14 +27,9 @@ const EventLists: React.FC = () => {
             <Container>
                 {
                     data.length === 0 && 
-                    <EmptyContainer>
-                        <Image src={getImageSource('event_empty_image.png')} />
-                        <Box style={{
-                            marginTop: 10,
-                            marginBottom: 30,
-                        }}>아직 개설한 이벤트가 없습니다.</Box>
-                        <Button>이벤트 개설하기</Button>
-                    </EmptyContainer>
+                    <EmptyLayout description='아직 개설한 이벤트가 없습니다.' imageName='event_empty_image.png'>
+                        <Button onClick={startToMakeEvent}>이벤트 개설하기</Button>
+                    </EmptyLayout>
                 }
                 {data.map((event) => (
                     <EventCardItem key={event.id}>
@@ -49,21 +50,6 @@ const Button = styled.button`
     padding: 8px 26px;
     border-radius: 27px;
     cursor: pointer;
-`
-
-const EmptyContainer = styled(Flex).attrs({
-    direction: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-})`
-    ${typos.pretendard['16.26.500']};
-    color: rgba(255, 255, 255, .5);
-    height: calc(100vh - 61px - 61px);
-`
-
-const Image = styled.img`
-    width: 150px;
-    height: 150px;
 `
 
 const EventCardItem = styled(Box)`
