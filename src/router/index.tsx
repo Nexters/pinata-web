@@ -8,7 +8,6 @@ import {EVENT_TYPE} from '$api/event'
 import {lazy, Suspense} from 'react'
 import FormGuard from '$components/auth/FormGuard'
 import {DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES} from '$constants/formData'
-import Finished from '$components/event/Finished'
 
 const Main = lazy(() => import('$pages/Main'))
 const EventLists = lazy(() => import('$pages/EventLists'))
@@ -20,6 +19,7 @@ const Event = lazy(() => import('$pages/Event'))
 const ErrorPage = lazy(() => import('$pages/ErrorPage'))
 const NotFoundPage = lazy(() => import('$pages/NotFoundPage'))
 const CreateComplete = lazy(() => import('$pages/CreateComplete'))
+const Finished = lazy(() => import('$pages/Finished'))
 
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({

@@ -45,7 +45,6 @@ const InvalidCode = () => {
                     </Box>
                     <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
                 </Container>
-                <Overlay onClick={() => {}} />
             </Flex>
         </EventWrapper>
     )

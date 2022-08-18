@@ -1,6 +1,6 @@
 import {ApiResponse} from '$types/ApiResponse'
 import axios, {AxiosError, AxiosRequestHeaders, AxiosResponse} from 'axios'
-import {AuthorizationError, FetchError, OutofPeriodError} from './FetchError'
+import {AlreadyJoinedError, AuthorizationError, FetchError, OutofPeriodError} from './FetchError'
 
 export const RESULT_CODE = {
     SUCCESS: 'SUCCESS',
@@ -12,10 +12,16 @@ type ErrorData = {
     message: string
 }
 
+const EVENT_ERROR_CODE = {
+    EVENT_NOTFOUND: 'ERR1001',
+    EVENT_COMPLETE: 'ERR1002',
+    EVENT_EXPIRED: 'ERR1004',
+    EVENT_JOINED: 'ERR2003',
+}
+
 const USER_ERROR_CODE = {
     USER_NOTFOUND: 'ERR0001',
     USER_AUTH_FAIL: 'ERR0002',
-    EVENT_EXPIRED: 'ERR1004',
 }
 
 const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T>>) => {
@@ -32,12 +38,16 @@ const responseInterceptor = <T extends unknown>(res: AxiosResponse<ApiResponse<T
 const rejectInterceptor = (error: AxiosError<ApiResponse<ErrorData>>) => {
     if (error.response?.status === 400) {
         const {data} = error.response.data
-        if (data.code === USER_ERROR_CODE.EVENT_EXPIRED) {
+        if (data.code === USER_ERROR_CODE.USER_AUTH_FAIL) {
+            return Promise.reject(new AuthorizationError())
+        }
+
+        if (data.code === EVENT_ERROR_CODE.EVENT_EXPIRED || data.code === EVENT_ERROR_CODE.EVENT_COMPLETE) {
             return Promise.reject(new OutofPeriodError())
         }
 
-        if (data.code === USER_ERROR_CODE.USER_AUTH_FAIL) {
-            return Promise.reject(new AuthorizationError())
+        if (data.code === EVENT_ERROR_CODE.EVENT_JOINED) {
+            return Promise.reject(new AlreadyJoinedError())
         }
 
         return Promise.reject(new FetchError())

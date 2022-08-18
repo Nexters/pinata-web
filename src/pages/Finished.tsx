@@ -6,12 +6,13 @@ import EventWrapper from '$components/event/EventWrapper'
 import {typos} from '$styles/typos'
 import ROUTE from '$constants/route'
 import {useNavigate} from 'react-router-dom'
+import {colors} from '$styles/colors'
 
 const Instruction = styled.div`
     margin-top: 30px;
     text-align: center;
-    ${typos.pretendard['16.26.500']};
-    color: #ffffff;
+    ${typos.pretendard['25.38.800']};
+    color: ${colors.white};
 `
 
 const Button = styled.button`
@@ -33,7 +34,11 @@ const Finished: React.FC = () => {
 
     return (
         <EventWrapper>
-            <Instruction>이미 끝난 이벤트 입니다.</Instruction>
+            <Instruction>
+                이미 끝난
+                <br />
+                이벤트 입니다.
+            </Instruction>
             <Button onClick={() => navigate(ROUTE.MAIN, {replace: true})}>홈으로 돌아가기</Button>
         </EventWrapper>
     )
