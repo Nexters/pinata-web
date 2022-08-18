@@ -69,6 +69,7 @@ const CreateEvent = () => {
         } else {
             clearErrors('items')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items])
 
     const [completeEventCode, setEventCode] = useState<string | null>(null)
