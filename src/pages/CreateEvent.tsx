@@ -166,6 +166,10 @@ const CreateEvent = () => {
                                 placeholder: '이벤트 당첨 안내 및 축하 메시지를 적어주세요',
                             }}
                             label={'hitMessage'}
+                            selectTitle={'당첨 안내 메시지'}
+                            messageList={[
+                                '당첨입니다. 축하드려요!'
+                            ]}
                             onUpload={(urls: string[]) => {
                                 setValue('hitImageUrl', urls[0])
                             }}
@@ -188,6 +192,10 @@ const CreateEvent = () => {
                                 placeholder: '이벤트 탈락 안내 및 위로 메시지를 적어주세요',
                             }}
                             label={'missMessage'}
+                            selectTitle={'탈락 안내 메시지'}
+                            messageList={[
+                                '탈락입니다. 아쉽네요!'
+                            ]}
                             onUpload={(urls: string[]) => {
                                 setValue('missImageUrl', urls[0])
                             }}

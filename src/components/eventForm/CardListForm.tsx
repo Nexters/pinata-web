@@ -20,6 +20,8 @@ type CardListFormProps = {
     onUpload(imageUrls: string[]): void
     radioName: keyof EventForm
     imagesName: keyof ImageUrls
+    selectTitle: string
+    messageList: string[]
 }
 
 const CardImage = ({imageUrl}: {imageUrl: string}) => {
@@ -53,7 +55,7 @@ const defaultLayerRadioStyle = css`
     margin-bottom: 10px;
 `
 
-const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: CardListFormProps) => {
+const CardListForm = ({inputProps, label, onUpload, radioName, imagesName, selectTitle, messageList}: CardListFormProps) => {
     const [images, setImages] = useState<string[]>([])
     const imageUploaderRef = useRef<HTMLInputElement>(null)
     const uploadImage: MouseEventHandler<HTMLDivElement> = (e) => {
@@ -114,32 +116,25 @@ const CardListForm = ({inputProps, label, onUpload, radioName, imagesName}: Card
                 </HalfLayer.Trigger>
                 <HalfLayer.Content>
                     <SelectContent>
-                        <SelectTitle>당첨 안내 메세지</SelectTitle>
+                        <SelectTitle>{selectTitle}</SelectTitle>
                         <RadioForm align={'vertical'}>
-                            <RadioForm.Item 
-                                width={'100%'} 
-                                height={'100%'}
-                                name={label} 
-                                value={'메세지 1'}
-                                selectedStyle={css``}
-                                unselectedStyle={css``}
-                                style={defaultLayerRadioStyle}
-                                withRadioButton
-                            >
-                                메세지 1
-                            </RadioForm.Item>
-                            <RadioForm.Item 
-                                width={'100%'} 
-                                height={'100%'}
-                                name={label}
-                                value={'메세지 2'}
-                                selectedStyle={css``}
-                                unselectedStyle={css``}
-                                style={defaultLayerRadioStyle}
-                                withRadioButton
-                                >
-                                 메세지 2
-                            </RadioForm.Item>
+                            {
+                                messageList.map((message) => (
+                                    <RadioForm.Item 
+                                        key={message}
+                                        width={'100%'} 
+                                        height={'100%'}
+                                        name={label} 
+                                        value={message}
+                                        selectedStyle={css``}
+                                        unselectedStyle={css``}
+                                        style={defaultLayerRadioStyle}
+                                        withRadioButton
+                                    >
+                                        {message}
+                                    </RadioForm.Item>
+                                ))
+                            }
                             <RadioForm.Item 
                                 width={'100%'} 
                                 height={'100%'}
