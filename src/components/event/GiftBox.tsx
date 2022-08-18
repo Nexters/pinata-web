@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {Particles} from './Particles'
 
 const Wrapper = styled.div`
     svg.giftbox-top-move g {
@@ -89,6 +90,7 @@ export const GiftBox: React.FC<Props> = ({isOpen}) => {
     // const color = '#FF6AB2'
     return (
         <Wrapper>
+            <Particles isOpen={isOpen} />
             <svg overflow="visible" width="123" height="110" viewBox="0 0 123 110">
                 <svg
                     className={`giftbox-bottom-${isOpen ? 'open' : 'move'}`}

@@ -4,6 +4,12 @@ import styled from 'styled-components'
 import EventWrapper from '$components/event/EventWrapper'
 import {typos} from '$styles/typos'
 import {GiftBox} from './GiftBox'
+import {TargetEvent} from '$types/Event'
+import {checkEventResult} from '$api/event'
+import useAuthToken from '$hooks/useAuthToken'
+import {debounce} from '$util/debounce'
+import ROUTE from '$constants/route'
+import {useNavigate} from 'react-router-dom'
 
 const H1 = styled.div`
     width: 288px;
@@ -14,13 +20,6 @@ const H1 = styled.div`
 
     color: #ffffff;
 `
-
-// const GiftBox = styled.div`
-//     width: 150px;
-//     height: 190px;
-
-//     background-color: #000;
-// `
 
 const Text = styled.div`
     ${typos.pretendard['16.26.500']}
@@ -43,13 +42,51 @@ const Section = styled.section`
     gap: 22px;
 `
 
-const Participation: React.FC = () => {
+type Props = {
+    event: TargetEvent
+}
+
+const Participation: React.FC<Props> = ({event}) => {
+    const token = useAuthToken()
+    const navigate = useNavigate()
+
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
-    const handleOpen = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const checkResult = debounce(() => {
+        checkEventResult(event.code, token).then((res) => {
+            if (res.result === 'FAIL') {
+                navigate(ROUTE.ERROR)
+                return
+            }
+
+            const {data} = res
+            const {resultMessage, resultImageURL, itemId, itemTitle, itemImageUrl} = data
+
+            navigate(ROUTE.EVENT.RESULT, {
+                state: {
+                    isSuccess: data.result,
+                    eventTitle: event.title,
+                    resultMessage,
+                    resultImageURL,
+                    itemId,
+                    itemTitle,
+                    itemImageUrl,
+                },
+            })
+        })
+    }, 1000)
+
+    const handleOpen = async (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
         e.preventDefault()
 
+        if (isOpen) return
+
+        // ROUTE.EVENT.RESULT
+        // state
+
         setIsOpen(true)
+
+        checkResult()
     }
 
     return (

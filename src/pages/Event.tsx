@@ -7,50 +7,76 @@ import Participation from '$components/event/Participation'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {EventResponse, participateEvent} from '$api/event'
 import ROUTE from '$constants/route'
-import { Navigate } from 'react-router-dom'
-import useAsyncError from '$hooks/useAsyncError'
+import {Navigate, useParams} from 'react-router-dom'
+import useAuthToken from '$hooks/useAuthToken'
+import InvalidCode from '$components/event/InvalidCode'
+import Canceled from '$components/event/Canceled'
 
 const EventPage: React.FC = () => {
+    // const [eventCode, setEventCode] = useState<string>('')
     const [event, setEvent] = useState<EventResponse>()
+    const [isError, setIsError] = useState<boolean>(false)
     const {isLogined} = useKakaoLogin()
+    const params = useParams()
 
-    const isClosed = event && event.status !== 'wait'
-    const isWaiting = event && event.status === 'wait'
-    const isParticipation = event && true
+    const isClosed = event ? new Date(event.closeAt) < new Date() : false
+    const isWaiting = event ? new Date() < new Date(event.openAt) : false
+    const isParticipation = event ? new Date(event.openAt) <= new Date() : false
+    const isCancel = event ? event.status === 'CANCEL' : false
 
-    const throwError = useAsyncError()
+    const token = useAuthToken()
 
-    const callParticipageEvent = async () => {
-        try {
-            const event = await participateEvent('123')
-            setEvent(event)
-        } catch (e: unknown) {
-            throwError(e)
-        }
-    }
-
-    // 여기서 이벤트 정보 호출후 상태 만듬
     useEffect(() => {
-        callParticipageEvent()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        const eventCode = params.event_code
+
+        if (!token) return
+        if (!eventCode) {
+            setIsError(true)
+            return
+        }
+
+        participateEvent(eventCode, token).then((res) => {
+            if (res.result === 'FAIL') {
+                setIsError(true)
+                return
+            }
+
+            const event = res.data
+            setEvent(event)
+        })
+    }, [params.event_code, token])
+
+    if (!event) return null
+
+    if (isError) {
+        return <InvalidCode />
+    }
 
     if (!isLogined) {
         return <NeedLogin />
     }
 
-    if (isClosed) {
-        return <Navigate to={ROUTE.EVENT.RESULT} state={{
-            closed: true
-        }} />
+    if (isCancel) {
+        return <Canceled event={event} />
     }
 
-    if (isWaiting && event) {
+    if (isClosed) {
+        return (
+            <Navigate
+                to={ROUTE.EVENT.RESULT}
+                state={{
+                    closed: true,
+                }}
+            />
+        )
+    }
+
+    if (isWaiting) {
         return <Waiting event={event} />
     }
 
     if (isParticipation) {
-        return <Participation />
+        return <Participation event={event} />
     }
 
     return (

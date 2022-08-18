@@ -1,4 +1,5 @@
 import { EventType } from '$api/event';
+import { GiftItem } from '$api/gift';
 import { Item } from 'types/Items';
 
 export type TargetEvent = {
@@ -26,6 +27,7 @@ export interface EventForm {
   type: EventType
   hitImageUrl: string
   missImageUrl: string
+  items: GiftItem[]
 }
 
 export interface ImageUrls {

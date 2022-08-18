@@ -14,7 +14,7 @@ const JoinedEventList = () => {
     return (
         <Suspense fallback={<>Loading...</>}>
             <EventListContainer>
-                {data.data.map((gift: EventItem) => (
+                {data.map((gift: EventItem) => (
                     <GiftBox key={gift.itemId}>
                         <GiftItem  {...gift} />
                     </GiftBox>

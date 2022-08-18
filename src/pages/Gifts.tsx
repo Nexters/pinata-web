@@ -1,6 +1,7 @@
 import {useJoinedEventList} from '$api/event'
 import {Box} from '$components/commons/Box'
 import { DetailGiftItem } from '$components/eventList/GiftItem'
+import EmptyLayout from '$layout/EmptyLayout'
 import LayoutWrapper from '$layout/LayoutWrapper'
 import React from 'react'
 import styled from 'styled-components'
@@ -15,7 +16,12 @@ const Gifts: React.FC = () => {
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
-                {data.data.map((gift) => (
+                {
+                    data.length === 0 && (
+                        <EmptyLayout description='아직 참여한 이벤트가 없습니다.' imageName='gift_empty_image.png' />
+                    )
+                }
+                {data.map((gift) => (
                     <GiftCardItem key={gift.itemId}>
                         <DetailGiftItem {...gift} />
                     </GiftCardItem>

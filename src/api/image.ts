@@ -1,5 +1,6 @@
 import { useRequest } from '$hooks/useRequest';
-import { postAuthorized } from '$util/client'
+import { deleteAuthorized, postAuthorized, RESULT_CODE } from '$util/client'
+import { FetchError } from '$util/FetchError';
 
 export type ImageRequest = {
     files: FileList
@@ -31,4 +32,21 @@ export const uploadImage = async (req: ImageRequest, token?: string) => {
 export const useUploadImage = () => {
     const {mutateAsync, data, error} = useRequest<ImageRequest, ImageResponse>(uploadImage)
     return {uploadImage: mutateAsync, data, error} 
+}
+
+type DeleteImageRequest = {
+    imageFileName: string
+}
+
+const deleteImage = async (req: DeleteImageRequest, token?: string) => {
+    const res = await deleteAuthorized<DeleteImageRequest, null>('/api/v1/images', req, token)
+
+    if (res.data.result === RESULT_CODE.FAIL) {
+        throw new FetchError()
+    }
+}
+
+export const useDeleteImage = () => {
+    const {mutateAsync, data, error} = useRequest<DeleteImageRequest, unknown>(deleteImage)
+    return {deleteImage: mutateAsync, data, error} 
 }

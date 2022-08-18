@@ -19,6 +19,8 @@ import RadioForm from '$components/eventForm/RadioForm'
 import { useNavigate } from 'react-router-dom'
 import ROUTE from '$constants/route'
 import { useEffect, useState } from 'react'
+import { GiftItem } from '$api/gift'
+import PlusIcon from '$assets/icons/PlusIcon'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -35,27 +37,19 @@ const radioDefaultStyle = css`
     color: ${colors.white};
 `
 
-const DEMO_GIFTS = [
-    {
-        title: '선물 1',
-    },
-    {
-        title: '선물 2',
-    },
-]
-
 const required = true
 
 const formatDateToString = (date: string) => format(parseISO(date), 'yyyy-MM-dd HH:mm:ss')
 
 const CreateEvent = () => {
-    const {register, handleSubmit, setValue, formState: {isSubmitSuccessful, errors}} = useFormContext<EventForm & ImageUrls>()
+    const {register, handleSubmit, setValue, getValues, formState: {isSubmitSuccessful, errors}, watch} = useFormContext<EventForm & ImageUrls>()
     const {createEvent} = useCreateEvent()
     const throwError = useAsyncError()
     const navigate = useNavigate()
 
+    const items  = watch('items')
+
     const [completeEventCode, setEventCode] = useState<string | null>(null)
-    
 
     const onSubmit = async (data: EventForm & ImageUrls) => {
         try {
@@ -73,10 +67,6 @@ const CreateEvent = () => {
                 openAt,
                 closeAt,
                 isPeriod: true,
-                'items' : [    
-                    { 'title' : '스타벅스 아메리카노 톨사이즈', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/product-image.jpeg', 'rank' : 1 },
-                    { 'title' : '논픽션 핸드크림', 'imageUrl' : 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/item-image-02.jpeg', 'rank' : 2 }
-                ],
             })
             setEventCode(eventCode)
         } catch (e) {
@@ -101,17 +91,24 @@ const CreateEvent = () => {
         style: radioCommonStyle,
     }
 
+    const addItem = (item: Pick<GiftItem, 'title' | 'imageUrl'>) => {
+        const currentItems = getValues('items')
+        const newItem: GiftItem = {...item, rank: currentItems.length+1}
+        setValue('items', [...currentItems, newItem])
+    }
+
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
             <Container>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Section>
                         <SectionTitle marginBottom={16}>이벤트 제목을 입력하세요</SectionTitle>
-                        <Input {...register('title', {required})} type="text" />
+                        <Input {...register('title', {required})} value={watch('title')} type="text" />
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 진행 날짜 및 시간을 정해보세요</SectionTitle>
                         <Input
+                            value={watch('openAt')}
                             {...register('openAt', {required})}
                             label={'시작'}
                             style={{
@@ -119,7 +116,7 @@ const CreateEvent = () => {
                             }}
                             type="datetime-local"
                         />
-                        <Input {...register('closeAt', {required})} label={'종료'} type="datetime-local" />
+                        <Input {...register('closeAt', {required})} value={watch('closeAt')} label={'종료'} type="datetime-local" />
                     </Section>
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>이벤트 모드를 선택하세요</SectionTitle>
@@ -141,11 +138,15 @@ const CreateEvent = () => {
                     <Section marginTop={40}>
                         <SectionTitle marginBottom={16}>당첨 상품을 등록하세요</SectionTitle>
                         <Flex direction="column">
-                            <GiftDialog />
-                            <GiftList items={DEMO_GIFTS} />
+                            <GiftDialog addItem={addItem} mode={'add'}>
+                                <Button color={'default'} height={52}>
+                                    <PlusIcon size={19} color={colors.white} />
+                                </Button>
+                            </GiftDialog>
+                            <GiftList />
                             <Totals>
                                 총 상품 수령 인원
-                                <NumberHighlight>{DEMO_GIFTS.length}명</NumberHighlight>
+                                <NumberHighlight>{items.length}명</NumberHighlight>
                             </Totals>
                         </Flex>
                     </Section>
@@ -160,10 +161,15 @@ const CreateEvent = () => {
                             imagesName='hitImageUrls'
                             inputProps={{
                                 ...register('hitMessage', {required}),
+                                value: watch('hitMessage'),
                                 type: 'text',
                                 placeholder: '이벤트 당첨 안내 및 축하 메시지를 적어주세요',
                             }}
-                            label={'당첨'}
+                            label={'hitMessage'}
+                            selectTitle={'당첨 안내 메시지'}
+                            messageList={[
+                                '당첨입니다. 축하드려요!'
+                            ]}
                             onUpload={(urls: string[]) => {
                                 setValue('hitImageUrl', urls[0])
                             }}
@@ -181,10 +187,15 @@ const CreateEvent = () => {
                             imagesName='missImageUrls'
                             inputProps={{
                                 ...register('missMessage', {required}),
+                                value: watch('missMessage'),
                                 type: 'text',
                                 placeholder: '이벤트 탈락 안내 및 위로 메시지를 적어주세요',
                             }}
-                            label={'탈락'}
+                            label={'missMessage'}
+                            selectTitle={'탈락 안내 메시지'}
+                            messageList={[
+                                '탈락입니다. 아쉽네요!'
+                            ]}
                             onUpload={(urls: string[]) => {
                                 setValue('missImageUrl', urls[0])
                             }}
@@ -230,7 +241,7 @@ const Button = styled.button<{
     ${({color}) =>
         color === 'default'
             ? css`
-                  background: ${colors.black[700]};
+                  background: ${colors.black[300]};
                   color: ${colors.white};
               `
             : css`

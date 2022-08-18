@@ -12,3 +12,5 @@ export const IconSvg = styled.svg<{size: number}>`
         height: ${size}px;
     `}
 `
+
+export type Icon = (props: IconProps) => JSX.Element

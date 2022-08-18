@@ -51,12 +51,29 @@ const Container = styled(Box)`
 
 interface LocationState {
     closed?: boolean
+    eventTitle?: string
+    isSuccess?: boolean
+    resultMessage?: string
+    resultImageURL?: string
+    itemId?: number
+    itemTitle?: string
+    itemImageUrl?: string
 }
 
 const EventResult = () => {
+    const navigate = useNavigate()
     const location = useLocation()
     const state = (location.state || {}) as LocationState
     const [isParticipated] = useState(state?.closed || false)
+
+    const {isSuccess, eventTitle, resultMessage, resultImageURL} = state
+
+    // 데이터 제대로 안넘어온경우
+    if (!eventTitle || !resultMessage || !resultImageURL) {
+        navigate(ROUTE.ERROR)
+        return null
+    }
+    const resultTitle = isSuccess ? '당첨' : '탈락'
 
     return (
         <EventWrapper>
@@ -64,17 +81,13 @@ const EventResult = () => {
                 <ParticipatedNotice />
             ) : (
                 <Card bgWhite>
-                    <Card.Image src={'example-result-card.png'} description={'Image 설명'} withClose />
+                    <Card.Image src={resultImageURL} description={'결과 이미지'} withClose />
                     <Card.Content>
-                        <Badge text={'탈락'} type="default" marginBottom={6} />
-                        <Card.Title>카드 제목</Card.Title>
-                        <Card.Desc>
-                            누구나 쉽게 이벤트를 만들 수 있어요!
-                            <br />
-                            직접 만들러 가볼까요?
-                        </Card.Desc>
+                        <Badge text={resultTitle} type="default" marginBottom={6} />
+                        <Card.Title>{}</Card.Title>
+                        <Card.Desc>{resultMessage}</Card.Desc>
                     </Card.Content>
-                    <Card.Button>나도 이벤트 개설하러 가기</Card.Button>
+                    {isSuccess && <Card.Button>선물 받기</Card.Button>}
                 </Card>
             )}
         </EventWrapper>

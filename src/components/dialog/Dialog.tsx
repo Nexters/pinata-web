@@ -7,7 +7,8 @@ import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import { colors } from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import {PropsWithChildren} from 'react'
+import {Children, cloneElement, isValidElement, PropsWithChildren, useEffect} from 'react'
+import { createPortal } from 'react-dom'
 import styled, {CSSProperties} from 'styled-components'
 
 type Props<T extends unknown> = PropsWithChildren<T>
@@ -25,17 +26,37 @@ const DialogButton = ({children, width}: Props<{width: CSSProperties['width']}>)
     )
 }
 
-const DialogContent = ({children, width}: Props<{width: number}>) => {
+const DialogContent = ({children, width, onOpen}: Props<{width: number; onOpen?(): void}>) => {
     const {isOpen, toggle} = useDialogContext()
     useBodyScrollLock(isOpen)
 
+    const createPortalRoot = () => {
+        const element = document.createElement('div')
+        element.id = '__portal'
+        document.body.appendChild(element)
+        return element
+    }
+
+    const childrenWithProps = Children.map(children, (child) => {
+        if (isValidElement(child)) {
+          return cloneElement(child, { closeDialog: toggle });
+        }
+        return child
+      })
+
+    useEffect(() => {
+        isOpen && typeof onOpen === 'function' && onOpen()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen])
+
     if (!isOpen) return null
 
-    return (
+    return createPortal(
         <>
-            <DialogBox width={width}>{children}</DialogBox>
-            <Overlay onClick={toggle} />
-        </>
+            <Overlay onClick={toggle}/>
+            <DialogBox width={width}>{childrenWithProps}</DialogBox>
+        </>,
+        document.getElementById('__portal') || createPortalRoot(),
     )
 }
 
@@ -51,7 +72,9 @@ const DialogTitle = ({children}: Props<{}>) => {
     )
 }
 
-const IconBox = styled.span``
+const IconBox = styled.span`
+    cursor: pointer;
+`
 
 const Title = styled(Flex).attrs({
     direction: 'row',
@@ -63,13 +86,17 @@ const Title = styled(Flex).attrs({
 `
 
 const DialogBox = styled(Box)`
-    background: ${colors.black[300]};
-    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
+    background: ${colors.black[200]};
+    box-shadow: 0px 4px 40px  rgba(0, 0, 0, 0.1);
     border-radius: 20px;
-    z-index: 2;
     position: fixed;
     top: 200px;
+    left: 0;
+    right: 0;
+    z-index: 1001;
     padding: 20px;
+    margin: 0 auto;
+    height: fit-content;
 `
 
 const Button = styled.div<{
