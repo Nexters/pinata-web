@@ -9,3 +9,15 @@ export class AuthorizationError extends FetchError {
         super('Login Expired.')
     }
 }
+
+export class OutofPeriodError extends FetchError {
+    constructor() {
+        super('Out of Event Period.')
+    }
+}
+
+export class EventOverError extends FetchError {
+    constructor() {
+        super('event is already over')
+    }
+}

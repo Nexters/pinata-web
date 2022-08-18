@@ -23,9 +23,11 @@ const Instruction = styled.div`
 
 type Props = {
     event: TargetEvent
+    setIsWaiting: React.Dispatch<React.SetStateAction<boolean>>
+    setIsParticipation: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Waiting: React.FC<Props> = ({event}) => {
+const Waiting: React.FC<Props> = ({event, setIsParticipation, setIsWaiting}) => {
     const [leftSeconds, setLeftSeconds] = useState<number>(0)
     useEffect(() => {
         if (!event?.openAt) return
@@ -43,6 +45,9 @@ const Waiting: React.FC<Props> = ({event}) => {
     useInterval(() => {
         if (leftSeconds > 0) {
             setLeftSeconds((before) => before - 1)
+        } else {
+            setIsWaiting(false)
+            setIsParticipation(true)
         }
     }, 1000)
 

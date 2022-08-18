@@ -1,14 +1,14 @@
-import { GiftItem } from '$api/gift'
+import {GiftItem} from '$api/gift'
 import PlusIcon from '$assets/icons/PlusIcon'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
 import Dialog from '$components/dialog/Dialog'
-import { Color, colors } from '$styles/colors'
+import {Color, colors} from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import { MouseEventHandler, ReactNode, useRef } from 'react'
-import { useForm } from 'react-hook-form'
-import styled, { css } from 'styled-components'
+import {MouseEventHandler, ReactNode, useRef} from 'react'
+import {useForm} from 'react-hook-form'
+import styled, {css} from 'styled-components'
 import ImageUploader from './ImageUploader'
 import Input from './Input'
 
@@ -21,10 +21,7 @@ type GiftDialogProps = {
     mode: 'add' | 'modify'
 }
 
-const GiftDialogButton = ({onClick, closeDialog}: {
-    onClick(): void
-    closeDialog?(): void
-}) => {
+const GiftDialogButton = ({onClick, closeDialog}: {onClick(): void; closeDialog?(): void}) => {
     const handleClick = () => {
         onClick()
         typeof closeDialog === 'function' && closeDialog()
@@ -38,7 +35,7 @@ const GiftDialogButton = ({onClick, closeDialog}: {
 
 const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) => {
     const {register, getValues, setValue, watch, reset} = useForm<GiftItemForm>({
-        defaultValues
+        defaultValues,
     })
 
     const imageUrl = watch('imageUrl')
@@ -66,41 +63,39 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
         if (mode === 'add') {
             reset({
                 title: '',
-                imageUrl: undefined
+                imageUrl: undefined,
             })
         }
     }
 
     return (
         <Dialog>
-            <Dialog.Button width={'100%'}>
-                {children}
-            </Dialog.Button>
+            <Dialog.Button width={'100%'}>{children}</Dialog.Button>
             <Dialog.Content width={335} onOpen={setValueByMode}>
                 <Dialog.Title>당첨 상품 이미지 및 이름 등록</Dialog.Title>
                 <DialogSubTitle>선물하실 상품 이미지를 등록하세요</DialogSubTitle>
-                {
-                    imageUrl
-                    ? <ImageViewerContainer>
-                        <img src={imageUrl} width={90} height={90} alt='gift' />
+                {imageUrl ? (
+                    <ImageViewerContainer>
+                        <img src={imageUrl} width={90} height={90} alt="gift" />
                     </ImageViewerContainer>
-                    : <Button height={90} onClick={uploadImage}>
-                            <PlusIcon size={19} color={colors.white} />
-                            <Box
-                                typo={typos.pretendard['12.20.500']}
-                                style={{
-                                    marginTop: 5,
-                                }}>
-                                상품 이미지 등록하기
-                            </Box>
-                        </Button>
-                }
+                ) : (
+                    <Button height={90} onClick={uploadImage}>
+                        <PlusIcon size={19} color={colors.white} />
+                        <Box
+                            typo={typos.pretendard['12.20.500']}
+                            style={{
+                                marginTop: 5,
+                            }}>
+                            상품 이미지 등록하기
+                        </Box>
+                    </Button>
+                )}
                 <ImageUploader onUpload={handleUpload} ref={imageUploaderRef} />
                 <DialogSubTitle marginTop={40}>선물하실 상품 이름을 적어주세요</DialogSubTitle>
                 <Input
-                    {...register('title', {required: true})}
+                    {...register('title', {required: true, maxLength: 20})}
                     value={watch('title')}
-                    type='text'
+                    type="text"
                     placeholder="최대 20글자"
                     style={{
                         marginBottom: 36,
@@ -116,10 +111,10 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
 const ImageViewerContainer = styled(Flex).attrs({
     direction: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
 })`
     & img {
-        border: 1px solid rgba(255, 255, 255, .3);
+        border: 1px solid rgba(255, 255, 255, 0.3);
         padding: 2px;
     }
     gap: 2px;
@@ -142,14 +137,14 @@ const Button = styled.div<{
     cursor: pointer;
     outline: none;
     border: none;
-    ${({color}) =>  color === 'blue'
-        ? css`
-            background: ${colors.blue[100]};
-        `
-        : css`
-            background: #404046;
-        `
-    }
+    ${({color}) =>
+        color === 'blue'
+            ? css`
+                  background: ${colors.blue[100]};
+              `
+            : css`
+                  background: #404046;
+              `}
     color: ${colors.white};
     border-radius: 15px;
     height: ${extractProp('height')}px;
