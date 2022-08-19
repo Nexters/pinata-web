@@ -109,7 +109,7 @@ const unselectedStyle = css`
 `
 
 const defaultRadioStyle = css`
-    border-radius: 10px;
+    border-radius: 15px;
 `
 
 const defaultLayerRadioStyle = css`
