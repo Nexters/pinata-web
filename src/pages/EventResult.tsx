@@ -76,7 +76,7 @@ const EventResult = () => {
     const badgeProps: BadgeProps = isSuccess
         ? {
               text: '당첨',
-              type: 'danger',
+              type: 'active',
           }
         : {
               text: '탈락',
