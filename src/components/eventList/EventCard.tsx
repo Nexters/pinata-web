@@ -5,14 +5,14 @@ import Card from '$components/eventResult/Card'
 import useCopy from '$hooks/useCopy'
 import {typos} from '$styles/typos'
 import {originUrl} from '$config/index'
-import {format} from 'date-fns'
 import styled from 'styled-components'
 import {useMemo} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { formatDateTime } from '$util/dateHelper'
+import ChevronRightIcon from '$assets/icons/ChevronRightIcon'
+import { colors } from '$styles/colors'
 
 type EventCardProps = Event
-
-const formatDateTime = (dateTime: string) => format(new Date(dateTime), 'yyyy.MM.dd a hh:mm')
 
 const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
     const navigate = useNavigate()
@@ -37,7 +37,12 @@ const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
         <Card withOverlay={false}>
             <Card.Content>
                 <EventStatusComponent status={status}>{statusText}</EventStatusComponent>
-                <Card.Title onClick={() => navigate(`/event/detail/${code}`)} typo={typos.pretendard['18.19.700']}>{title}</Card.Title>
+                <Card.Title onClick={() => navigate(`/event/detail/${code}`)} typo={typos.pretendard['18.19.700']}>
+                    <Flex direction="row">
+                        {title}
+                        <ChevronRightIcon size={20} color={colors.white} />
+                    </Flex>
+                </Card.Title>
                 <Card.Desc size="lg">
                     {formatDateTime(openAt)} - {formatDateTime(closeAt)}
                 </Card.Desc>

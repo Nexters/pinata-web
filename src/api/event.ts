@@ -139,8 +139,8 @@ export const useJoinedEventList = () => {
 }
 
 type AcceptedItem = GiftItem & {
-    id: string
-    isAccepted: string
+    id: number
+    isAccepted: boolean
     acceptorEmail: string
     acceptorNickname: string
     acceptorProfileImageUrl: string
@@ -163,9 +163,47 @@ export type EventDetailResponse = {
 }
 
 export const useEventDetail = ({eventCode}: {eventCode: string}) => {
-    const {data} = useGetQuery<EventDetailResponse>(`/api/v1/events/${eventCode}`)
-    if (data?.data) {
-        return {data: data.data}
+    return {
+        data: {
+            id: 1,
+            title: '율리아가 주는 짤 줍줍 이벤트',
+            code: 'qqqq-qqqq-qqqq-qqqq',
+            type: 'unknown',
+            openAt: '2022-08-19 02:00:00',
+            closeAt: '2022-08-20 02:00:00',
+            status: EventStatus.PROCESS,
+            items: [
+                {
+                    id: 1,
+                    isAccepted: true,
+                    acceptorEmail: 'workingnewjeong@gmail.com',
+                    acceptorNickname: '유정 yullia',
+                    acceptorProfileImageUrl: 'http://k.kakaocdn.net/dn/bUu7bC/btrI0e71AEf/u2RgGR0UbfAe2D6WkQXJd1/p1.jpg',
+                    title: '짤 1',
+                    imageUrl: 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/default_hit_image.svg',
+                    rank: 1,
+                },
+                {
+                    id: 2,
+                    isAccepted: false,
+                    acceptorEmail: 'workingnewjeong@gmail.com',
+                    acceptorNickname: '유정 yullia',
+                    acceptorProfileImageUrl: 'http://k.kakaocdn.net/dn/bUu7bC/btrI0e71AEf/u2RgGR0UbfAe2D6WkQXJd1/p1.jpg',
+                    title: '짤 2',
+                    imageUrl: 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/default_hit_image.svg',
+                    rank: 2,
+                }
+            ],
+            hitMessage: '당첨 ㅊㅋ',
+            hitImageUrl: 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/default_hit_image.svg',
+            missMessage: '탈락 아쉽',
+            missImageUrl: 'https://bucket-pinata.s3.ap-northeast-2.amazonaws.com/default_miss_image.svg',
+            totalParicinantCount: 3,
+        }
     }
-    return {data: null}
+    // const {data} = useGetQuery<EventDetailResponse>(`/api/v1/events/${eventCode}`)
+    // if (data?.data) {
+    //     return {data: data.data}
+    // }
+    // return {data: null}
 }
