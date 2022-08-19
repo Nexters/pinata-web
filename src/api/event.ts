@@ -1,6 +1,6 @@
 import { ApiResponse } from './../types/ApiResponse';
 import {useGetQuery, useRequest} from '$hooks/useRequest'
-import client from '$util/client'
+import client, { postAuthorized } from '$util/client'
 import {GiftItem} from './gift'
 
 export enum EventStatus {
@@ -91,15 +91,8 @@ export type CreateEventResponse = {
 }
 
 const createEvent = async (newEvent: CreateEventRequest, token?: string) => {
-    const {data} = await client.post<CreateEventResponse>(
-        '/api/v1/events',
-        {...newEvent},
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    )
+    const {data} = await postAuthorized<CreateEventRequest, CreateEventResponse>('/api/v1/events',
+    {...newEvent}, token)
     return data
 }
 

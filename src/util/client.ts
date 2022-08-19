@@ -67,20 +67,27 @@ const client = axios.create({
 
 client.interceptors.response.use(responseInterceptor, rejectInterceptor)
 
-export const postAuthorized = <T, U>(url: string, req: T, token?: string, headers?: AxiosRequestHeaders) =>
-    client.post<U>(url, req, {
+export const postAuthorized = <T, U>(url: string, req: T, token?: string, headers?: AxiosRequestHeaders) => {
+    if (!token) {
+        return Promise.reject(new AuthorizationError())
+    }
+    return client.post<U>(url, req, {
         headers: {
             Authorization: `Bearer ${token}`,
             ...headers,
         },
     })
+}
 
-export const deleteAuthorized = <T, U>(url: string, data: T, token?: string) =>
-    axios.delete<ApiResponse<U>>(url, {
+export const deleteAuthorized = <T, U>(url: string, data: T, token?: string) => {
+    if (!token) {
+        return Promise.reject(new AuthorizationError())
+    }
+    return axios.delete<ApiResponse<U>>(url, {
         data,
         headers: {
             Authorization: `Bearer ${token}`,
         },
     })
-
+}
 export default client
