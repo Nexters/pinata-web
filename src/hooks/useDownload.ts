@@ -3,6 +3,7 @@ import client from '$util/client'
 import {useCallback} from 'react'
 import useAuthToken from './useAuthToken'
 import useAsyncError from './useAsyncError'
+import toast from '$components/toast/Toast'
 
 const useDownload = () => {
     const accessToken = useAuthToken()
@@ -30,6 +31,7 @@ const useDownload = () => {
             document.body.appendChild(link)
             link.click()
             link.remove()
+            toast('이미지가 저장되었습니다.', 1000)
         } catch (e) {
             throwError(e)
         }

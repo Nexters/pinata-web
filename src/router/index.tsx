@@ -8,6 +8,7 @@ import {EVENT_TYPE} from '$api/event'
 import {lazy, Suspense} from 'react'
 import FormGuard from '$components/auth/FormGuard'
 import {DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES} from '$constants/formData'
+import { ToastContainer } from '$components/toast/Toast'
 
 const Main = lazy(() => import('$pages/Main'))
 const EventLists = lazy(() => import('$pages/EventLists'))
@@ -60,6 +61,7 @@ export const Router = () => {
                     </Routes>
                 </BrowserRouter>
             </Suspense>
+            <ToastContainer />
         </FormProvider>
     )
 }

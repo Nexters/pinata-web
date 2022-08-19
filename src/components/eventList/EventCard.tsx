@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { formatDateTime } from '$util/dateHelper'
 import ChevronRightIcon from '$assets/icons/ChevronRightIcon'
 import { colors } from '$styles/colors'
+import toast from '$components/toast/Toast'
 
 type EventCardProps = Event
 
@@ -19,6 +20,7 @@ const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
     const handleCopy = useCopy()
     const copyEventLink = () => {
         handleCopy(`${originUrl}/event/${code}`)
+        toast('링크가 복사되었습니다.', 1000)
     }
 
     const statusText = useMemo(() => {
