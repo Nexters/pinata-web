@@ -9,6 +9,7 @@ const ROUTE = {
         DETAIL: '/event/:event_code',
         RESULT: '/event/result',
         OVER: '/event/over',
+        INFO: '/event/detail/:eventcode',
     },
     ERROR: '/error',
 }

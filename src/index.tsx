@@ -10,6 +10,7 @@ import './common.css'
 import {CookiesProvider} from 'react-cookie'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import ErrorBoundary from '$components/ErrorBoundary'
+import { Helmet } from 'react-helmet'
 
 function setupLoginConfig() {
     if (process.env.REACT_APP_KAKAO_APP_KEY && !window.Kakao.isInitialized()) {
@@ -21,6 +22,9 @@ const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
             suspense: true,
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+            retry: false,
         },
     },
 })
@@ -33,6 +37,10 @@ function main() {
 
     root.render(
         <React.StrictMode>
+            <Helmet>
+                <title>Pinata</title>
+                <meta name="description" content="이벤트 메이커" />
+            </Helmet>
             <ErrorBoundary>
                 <QueryClientProvider client={queryClient}>
                     <CookiesProvider>

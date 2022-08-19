@@ -5,18 +5,22 @@ import Card from '$components/eventResult/Card'
 import useCopy from '$hooks/useCopy'
 import {typos} from '$styles/typos'
 import {originUrl} from '$config/index'
-import {format} from 'date-fns'
 import styled from 'styled-components'
 import {useMemo} from 'react'
+import { useNavigate } from 'react-router-dom'
+import { formatDateTime } from '$util/dateHelper'
+import ChevronRightIcon from '$assets/icons/ChevronRightIcon'
+import { colors } from '$styles/colors'
+import toast from '$components/toast/Toast'
 
 type EventCardProps = Event
 
-const formatDateTime = (dateTime: string) => format(new Date(dateTime), 'yyyy.MM.dd a hh:mm')
-
 const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
+    const navigate = useNavigate()
     const handleCopy = useCopy()
     const copyEventLink = () => {
         handleCopy(`${originUrl}/event/${code}`)
+        toast('링크가 복사되었습니다.', 1000)
     }
 
     const statusText = useMemo(() => {
@@ -35,7 +39,12 @@ const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
         <Card withOverlay={false}>
             <Card.Content>
                 <EventStatusComponent status={status}>{statusText}</EventStatusComponent>
-                <Card.Title typo={typos.pretendard['18.19.700']}>{title}</Card.Title>
+                <Card.Title onClick={() => navigate(`/event/detail/${code}`)} typo={typos.pretendard['18.19.700']}>
+                    <Flex direction="row">
+                        <Text>{title}</Text>
+                        <ChevronRightIcon size={20} color={colors.white} />
+                    </Flex>
+                </Card.Title>
                 <Card.Desc size="lg">
                     {formatDateTime(openAt)} - {formatDateTime(closeAt)}
                 </Card.Desc>
@@ -68,6 +77,13 @@ const getColorByStatus = () => (props: {status: EventStatus}) => {
             return '#fff'
     }
 }
+
+const Text = styled.span`
+    max-width: calc(335px - 20px - 40px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`
 
 const EventStatusComponent = styled.div<{
     status: EventStatus

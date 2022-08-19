@@ -1,6 +1,8 @@
+import useAuthToken from '$hooks/useAuthToken';
+import { useEffect } from 'react';
 import { ApiResponse } from './../types/ApiResponse';
 import {useGetQuery, useRequest} from '$hooks/useRequest'
-import client from '$util/client'
+import client, { postAuthorized } from '$util/client'
 import {GiftItem} from './gift'
 
 export enum EventStatus {
@@ -53,6 +55,24 @@ export const participateEvent = async (eventCode: string, token: string) => {
     return data
 }
 
+export const useParticipateEvent = ({eventCode}: {eventCode: string}) => {
+    const accessToken = useAuthToken()
+    const {data, error, isLoading, refetch} = useGetQuery<EventResponse>(`/api/v1/events/participate/${eventCode}`, undefined, {
+        throwWhenError: false,
+        useErrorBoundary: false,
+    })
+
+    useEffect(() => {
+        accessToken && refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accessToken])
+
+    if (data?.data) {
+        return {data: data.data, isLoading, error}
+    }
+    return {data: null, isLoading, error, refetch}
+}
+
 export type ParticipatedEventResponse = {
     code: string
     itemId: number
@@ -91,15 +111,8 @@ export type CreateEventResponse = {
 }
 
 const createEvent = async (newEvent: CreateEventRequest, token?: string) => {
-    const {data} = await client.post<CreateEventResponse>(
-        '/api/v1/events',
-        {...newEvent},
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    )
+    const {data} = await postAuthorized<CreateEventRequest, CreateEventResponse>('/api/v1/events',
+    {...newEvent}, token)
     return data
 }
 
@@ -132,6 +145,38 @@ export type JoinedEventListResponse = EventItem[]
 
 export const useJoinedEventList = () => {
     const {data} = useGetQuery<JoinedEventListResponse>('/api/v1/events/participate/me')
+    if (data?.data) {
+        return {data: data.data}
+    }
+    return {data: null}
+}
+
+type AcceptedItem = GiftItem & {
+    id: number
+    accepted: boolean
+    acceptorEmail: string
+    acceptorNickname: string
+    acceptorProfileImageUrl: string
+}
+
+export type EventDetailResponse = {
+    id: number
+    title: string
+    code: string
+    type: EventType
+    openAt: string
+    closeAt: string
+    status: EventStatus
+    items: AcceptedItem[]
+    hitMessage: string
+    hitImageUrl: string
+    missMessage: string
+    missImageUrl: string
+    totalParicinantCount: number
+}
+
+export const useEventDetail = ({eventCode}: {eventCode: string}) => {
+    const {data} = useGetQuery<EventDetailResponse>(`/api/v1/events/${eventCode}`)
     if (data?.data) {
         return {data: data.data}
     }

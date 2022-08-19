@@ -5,13 +5,14 @@ import styled from 'styled-components'
 
 export type BadgeProps = {
     text: string
-    type: 'danger' | 'default'
+    type: 'danger' | 'default' | 'active'
     marginBottom?: number
 }
 
 const BADGE_COLOR = {
     danger: colors.red[100],
     default: colors.black[100],
+    active: colors.blue[100],
 }
 
 const Badge = ({text, type, marginBottom = 0}: BadgeProps) => {
@@ -23,7 +24,7 @@ const Badge = ({text, type, marginBottom = 0}: BadgeProps) => {
 }
 
 const BadgeContainer = styled.span<{
-    type: 'danger' | 'default'
+    type: 'danger' | 'default' | 'active'
     marginBottom: number
 }>`
     border: 1px solid ${({type}) => BADGE_COLOR[type]};
