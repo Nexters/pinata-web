@@ -1,3 +1,4 @@
+import toast from '$components/toast/Toast'
 import { useCallback } from 'react'
 
 const useCopy = () => {
@@ -20,6 +21,7 @@ const useCopy = () => {
 
     const handleCopy = useCallback((value: string) => {
         copy(value)
+        toast('링크가 복사되었습니다.', 1000)
     }, [copy])
 
     return handleCopy
