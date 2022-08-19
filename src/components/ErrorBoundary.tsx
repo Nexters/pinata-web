@@ -16,6 +16,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
             window.location.replace(`${ROUTE.ERROR}`)
             return {}
         }
+
+        window.location.replace(`${ROUTE.ERROR}`)
+        return {}
     }
 
     render() {

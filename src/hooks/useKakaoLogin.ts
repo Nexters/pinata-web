@@ -2,7 +2,7 @@ import {useCallback, useEffect, useMemo} from 'react'
 import {useCookies} from 'react-cookie'
 import {LoginResponse, useLogin} from '$api/login'
 import ROUTE from '$constants/route'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 // const ONE_DAY = 24 * 60 * 60
 const TWO_HOURS = 2 * 60 * 60
@@ -59,12 +59,15 @@ const useKakaoLogin = () => {
 
     const isLogined = useMemo(() => !!cookies.pln, [cookies])
     const {pathname} = useLocation()
+    const parms = useParams()
+    const eventCode = parms.event_code
 
     useEffect(() => {
-        if (!isLogined && pathname !== ROUTE.LOGIN) {
+        const isEventPage = eventCode && pathname === `/event/${eventCode}`
+        if (!isLogined && (pathname !== ROUTE.LOGIN && !isEventPage)) {
             window.location.replace(ROUTE.LOGIN)
         }
-    }, [isLogined, pathname])
+    }, [isLogined, pathname, eventCode])
 
     const logout = () => {
         if (window.Kakao.Auth.getAccessToken()) {

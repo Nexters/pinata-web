@@ -2,6 +2,7 @@ import { ApiResponse } from '$types/ApiResponse'
 import client from '$util/client'
 import {AuthorizationError, FetchError} from '$util/FetchError'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import useAuthToken from './useAuthToken'
 
 /**
@@ -39,7 +40,7 @@ export const useGetQuery = <T>(url: string, params?: Record<string, string | num
     const {throwWhenError = true, useErrorBoundary = true} = config
     const accessToken = useAuthToken()
     
-    const {isLoading, data, error, refetch} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>(
+    const {isLoading, data, error, isError, refetch} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>(
         [url, JSON.stringify(params)], 
         () => {
             if (!accessToken) {
@@ -53,12 +54,15 @@ export const useGetQuery = <T>(url: string, params?: Record<string, string | num
             })
         },
         {
-            useErrorBoundary,
+            useErrorBoundary: (error) => {
+                const {response} = error as AxiosError
+                return useErrorBoundary || (!!response?.status && response?.status >= 500)
+            },
             retry: 0,
         }
     )
 
-    if (error && throwWhenError) {
+    if (isError && throwWhenError) {
         throw new FetchError()
     }
 

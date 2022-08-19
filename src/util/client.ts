@@ -58,6 +58,10 @@ const rejectInterceptor = (error: AxiosError<ApiResponse<ErrorData>>) => {
         return Promise.reject(new FetchError())
     }
 
+    if (error.response?.status === 500) {
+        return Promise.reject(new FetchError())
+    }
+
     return Promise.reject(error)
 }
 
