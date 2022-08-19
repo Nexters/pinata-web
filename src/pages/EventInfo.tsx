@@ -86,7 +86,9 @@ const EventInfo = () => {
                                 </Description>
                                 <Description>
                                     <Title>수령인</Title>
-                                    <Content>{item.acceptorNickname}</Content>
+                                    <Content>
+                                        {item.accepted ? item.acceptorNickname : <BlurredText>미정</BlurredText>}
+                                    </Content>
                                 </Description>
                             </Flex>
                         </CardView>
@@ -96,6 +98,10 @@ const EventInfo = () => {
         </LayoutWrapper>
     )
 }
+
+const BlurredText = styled.span`
+    color: rgba(255, 255, 255, 0.5);
+`
 
 const Title = styled.span`
     ${typos.pretendard['15.32.600']}
@@ -122,6 +128,7 @@ const CardView = styled.div`
     border-radius: 20px;
     padding: 20px;
     color: ${colors.white};
+    margin-bottom: 22px;
 `
 
 const Image = styled.div<{src: string}>`
