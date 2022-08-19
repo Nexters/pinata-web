@@ -3,7 +3,6 @@ import ROUTE from '$constants/route'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import {typos} from '$styles/typos'
-import {getImageSource} from '$util/imageHelper'
 import React from 'react'
 import styled from 'styled-components'
 
