@@ -8,6 +8,7 @@ import {EVENT_TYPE} from '$api/event'
 import {lazy, Suspense} from 'react'
 import FormGuard from '$components/auth/FormGuard'
 import {DEFAULT_HIT_IMAGES, DEFAULT_MISS_IMAGES} from '$constants/formData'
+import { ToastContainer } from '$components/toast/Toast'
 
 const Main = lazy(() => import('$pages/Main'))
 const EventLists = lazy(() => import('$pages/EventLists'))
@@ -19,7 +20,7 @@ const Event = lazy(() => import('$pages/Event'))
 const ErrorPage = lazy(() => import('$pages/ErrorPage'))
 const NotFoundPage = lazy(() => import('$pages/NotFoundPage'))
 const CreateComplete = lazy(() => import('$pages/CreateComplete'))
-const Finished = lazy(() => import('$pages/Finished'))
+const EventInfo = lazy(() => import('$pages/EventInfo'))
 
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({
@@ -48,7 +49,7 @@ export const Router = () => {
                                 />
                             </Route>
                             <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
-                            <Route path={ROUTE.EVENT.OVER} element={<Finished />} />
+                            <Route path={ROUTE.EVENT.INFO} element={<EventInfo />} />
                             <Route path={ROUTE.GIFTS} element={<Gifts />} />
                         </Route>
                         <Route path={ROUTE.LOGIN} element={<Login />} />
@@ -58,6 +59,7 @@ export const Router = () => {
                     </Routes>
                 </BrowserRouter>
             </Suspense>
+            <ToastContainer />
         </FormProvider>
     )
 }

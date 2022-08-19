@@ -23,6 +23,7 @@ import {GiftItem} from '$api/gift'
 import PlusIcon from '$assets/icons/PlusIcon'
 import FormText from '$components/eventForm/FormText'
 import {useMemo} from 'react'
+import { Helmet } from 'react-helmet'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -168,6 +169,10 @@ const CreateEvent = () => {
 
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
+            <Helmet>
+                <title>신규 이벤트 개설하기</title>
+                <meta name="description" content="지금 이벤트를 만들고 참가자를 모으세요!" />
+            </Helmet>
             <Container>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Section>

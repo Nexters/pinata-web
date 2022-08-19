@@ -1,5 +1,5 @@
 import {Component, ReactNode} from 'react'
-import {AuthorizationError, FetchError, OutofPeriodError} from '$util/FetchError'
+import {AuthorizationError, FetchError} from '$util/FetchError'
 import ROUTE from '$constants/route'
 
 type ErrorBoundaryProps = {
@@ -12,14 +12,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps> {
             window.location.replace(ROUTE.LOGIN)
             return {}
         }
-        if (error instanceof OutofPeriodError) {
-            window.location.replace(`${ROUTE.EVENT.OVER}`)
-            return {}
-        }
         if (error instanceof FetchError) {
             window.location.replace(`${ROUTE.ERROR}`)
             return {}
         }
+
+        window.location.replace(`${ROUTE.ERROR}`)
+        return {}
     }
 
     render() {

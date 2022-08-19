@@ -1,7 +1,8 @@
 import { ApiResponse } from '$types/ApiResponse'
 import client from '$util/client'
-import {FetchError} from '$util/FetchError'
+import {AuthorizationError, FetchError} from '$util/FetchError'
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import useAuthToken from './useAuthToken'
 
 /**
@@ -29,28 +30,46 @@ export const useRequest = <Request, Response>(api: (req: Request, token?: string
     return {mutate, mutateAsync, data, error, isLoading, ...rest}
 }
 
-export const useGetQuery = <T>(url: string, params?: Record<string, string | number>) => {    
+export const useGetQuery = <T>(url: string, params?: Record<string, string | number>, config: {
+    throwWhenError?: boolean
+    useErrorBoundary?: boolean
+} = {
+    throwWhenError: true,
+    useErrorBoundary: true,
+}) => {
+    const {throwWhenError = true, useErrorBoundary = true} = config
     const accessToken = useAuthToken()
     
-    const {isLoading, data, error} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>([url, JSON.stringify(params)], () =>
-        client.get<ApiResponse<T>, ApiResponse<T>>(url, {
-            params,
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        }),
+    const {isLoading, data, error, isError, refetch} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>(
+        [url, JSON.stringify(params)], 
+        () => {
+            if (!accessToken) {
+                return Promise.reject(new AuthorizationError())
+            }
+            return client.get<ApiResponse<T>, ApiResponse<T>>(url, {
+                params,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            })
+        },
         {
-            useErrorBoundary: true,
+            useErrorBoundary: (error) => {
+                const {response} = error as AxiosError
+                return useErrorBoundary || (!!response?.status && response?.status >= 500)
+            },
             retry: 0,
         }
     )
 
-    if (error) {
+    if (isError && throwWhenError) {
         throw new FetchError()
     }
 
     return {
         isLoading,
         data,
+        error,
+        refetch,
     }
 }
