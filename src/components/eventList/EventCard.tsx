@@ -7,26 +7,30 @@ import {typos} from '$styles/typos'
 import {originUrl} from '$config/index'
 import styled from 'styled-components'
 import {useMemo} from 'react'
-import { useNavigate } from 'react-router-dom'
-import { formatDateTime } from '$util/dateHelper'
+import {useNavigate} from 'react-router-dom'
+import {formatDateTime} from '$util/dateHelper'
 import ChevronRightIcon from '$assets/icons/ChevronRightIcon'
-import { colors } from '$styles/colors'
+import {colors} from '$styles/colors'
+import useEventStatus from '$hooks/useEventtStatus'
 
 type EventCardProps = Event
 
-const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
+const EventCard = ({title, openAt, closeAt, code}: EventCardProps) => {
     const navigate = useNavigate()
     const handleCopy = useCopy()
     const copyEventLink = () => {
         handleCopy(`${originUrl}/event/${code}`)
     }
 
+    const {status} = useEventStatus({openAt, closeAt})
+
     const statusText = useMemo(() => {
         switch (status) {
             case EventStatus.COMPLETE:
             case EventStatus.CANCEL:
-                return '완료된 이벤트'
+                return '종료된 이벤트'
             case EventStatus.WAIT:
+                return '시작전 이벤트'
             case EventStatus.PROCESS:
             default:
                 return '진행중인 이벤트'
@@ -61,16 +65,16 @@ const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
     )
 }
 
-const getColorByStatus = () => (props: {status: EventStatus}) => {
+const getColorByStatus = () => (props: {status: EventStatus | null}) => {
     switch (props.status) {
         case EventStatus.WAIT:
-            return '#60B3FF'
+            return colors.red[100]
         case EventStatus.PROCESS:
-            return '#60B3FF'
+            return colors.blue[100]
         case EventStatus.COMPLETE:
-            return '#fff'
+            return colors.black[100]
         case EventStatus.CANCEL:
-            return '#fff'
+            return colors.red[100]
         default:
             return '#fff'
     }
@@ -84,7 +88,7 @@ const Text = styled.span`
 `
 
 const EventStatusComponent = styled.div<{
-    status: EventStatus
+    status: EventStatus | null
 }>`
     width: 100%;
     color: ${getColorByStatus()};

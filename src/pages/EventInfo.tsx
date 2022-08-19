@@ -1,17 +1,18 @@
-import { EventStatus, useEventDetail } from '$api/event'
+import {useEventDetail} from '$api/event'
 import CircleConfirmOffIcon from '$assets/icons/CircleConfirmOffIcon'
 import CircleConfirmOnIcon from '$assets/icons/CircleConfirmOnIcon'
 import Flex from '$components/commons/Flex'
-import { Section, SectionTitle } from '$components/commons/Section'
-import { Table, TableCell, TableHeader, TableHeaders, TableRow } from '$components/commons/Table'
+import {Section, SectionTitle} from '$components/commons/Section'
+import {Table, TableCell, TableHeader, TableHeaders, TableRow} from '$components/commons/Table'
 import Badge from '$components/eventResult/Badge'
 import LayoutWrapper from '$layout/LayoutWrapper'
-import { colors } from '$styles/colors'
-import { typos } from '$styles/typos'
-import { formatDateTime } from '$util/dateHelper'
-import { useParams } from 'react-router-dom'
+import {colors} from '$styles/colors'
+import {typos} from '$styles/typos'
+import {formatDateTime} from '$util/dateHelper'
+import {useParams} from 'react-router-dom'
 import styled, {css, CSSProperties} from 'styled-components'
 import {Helmet} from 'react-helmet'
+import useEventStatus from '$hooks/useEventtStatus'
 
 const EventInfo = () => {
     const params = useParams()
@@ -19,35 +20,16 @@ const EventInfo = () => {
 
     const {data: event} = useEventDetail({eventCode})
 
+    const {badgeProps} = useEventStatus({
+        openAt: event?.openAt || '',
+        closeAt: event?.closeAt || '',
+    })
+
     if (!event) {
         return null
     }
 
-    const {title, openAt, closeAt, status, items} = event
-
-    const statusText = () => {
-        switch (status) {
-            case EventStatus.COMPLETE:
-            case EventStatus.CANCEL:
-                return '완료'
-            case EventStatus.WAIT:
-            case EventStatus.PROCESS:
-            default:
-                return '진행중'
-        }
-    }
-
-    const badgeColor = () => {
-        switch (status) {
-            case EventStatus.COMPLETE:
-            case EventStatus.CANCEL:
-                return 'danger'
-            case EventStatus.WAIT:
-            case EventStatus.PROCESS:
-            default:
-                return 'active'
-        }
-    }
+    const {title, openAt, closeAt, items} = event
 
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
@@ -56,24 +38,31 @@ const EventInfo = () => {
                 <meta name="description" content="이벤트 상세" />
             </Helmet>
             <Container>
-                <Section aria-label='event-title'>
+                <Section aria-label="event-title">
                     <SectionTitle marginBottom={16}>이벤트 이름</SectionTitle>
                     <ValueArea>{title}</ValueArea>
                 </Section>
-                <Section marginTop={40} aria-label='event-period'>
+                <Section marginTop={40} aria-label="event-period">
                     <FlexTitle marginBottom={16} justifyContent="space-between">
                         이벤트 기간
-                        <Badge type={badgeColor()} text={statusText()} />
+                        <Badge {...badgeProps} />
                     </FlexTitle>
-                    <Flex direction='row' justifyContent={'space-between'} style={{
-                        gap: 5
-                    }}>
-                        <ValueArea width={'50%'} align={'center'}>{formatDateTime(openAt)}</ValueArea>
+                    <Flex
+                        direction="row"
+                        justifyContent={'space-between'}
+                        style={{
+                            gap: 5,
+                        }}>
+                        <ValueArea width={'50%'} align={'center'}>
+                            {formatDateTime(openAt)}
+                        </ValueArea>
                         <Text>-</Text>
-                        <ValueArea width={'50%'} align={'center'}>{formatDateTime(closeAt)}</ValueArea>
+                        <ValueArea width={'50%'} align={'center'}>
+                            {formatDateTime(closeAt)}
+                        </ValueArea>
                     </Flex>
                 </Section>
-                <Section marginTop={40} aria-label='event-situation'>
+                <Section marginTop={40} aria-label="event-situation">
                     <SectionTitle marginBottom={16}>이벤트 현황</SectionTitle>
                     <Table columnSizeList={[122, 122, 122]}>
                         <TableHeaders>
@@ -89,20 +78,26 @@ const EventInfo = () => {
                                             <Image src={item.imageUrl} />
                                             {item.title}
                                         </ItemBox>
-                                        </TableCell>
+                                    </TableCell>
                                     <TableCell>
                                         <ItemBox direction="row">
-                                            {
-                                                !!item.acceptorEmail
-                                                ?   <>
-                                                        <ProfileImage src={item.acceptorProfileImageUrl} />
-                                                        {item.acceptorNickname}
-                                                    </>
-                                                :   <>없음</>
-                                            }
+                                            {!!item.acceptorEmail ? (
+                                                <>
+                                                    <ProfileImage src={item.acceptorProfileImageUrl} />
+                                                    {item.acceptorNickname}
+                                                </>
+                                            ) : (
+                                                <>없음</>
+                                            )}
                                         </ItemBox>
                                     </TableCell>
-                                    <TableCell>{item.accepted ? <CircleConfirmOnIcon size={30} color={colors.blue[100]} /> : <CircleConfirmOffIcon size={30} color={colors.red[100]} />}</TableCell>
+                                    <TableCell>
+                                        {item.accepted ? (
+                                            <CircleConfirmOnIcon size={30} color={colors.blue[100]} />
+                                        ) : (
+                                            <CircleConfirmOffIcon size={30} color={colors.red[100]} />
+                                        )}
+                                    </TableCell>
                                 </TableRow>
                             )
                         })}
@@ -133,7 +128,7 @@ const Image = styled.img`
 `
 
 const FlexTitle = styled(Flex).attrs({
-    direction: 'row'
+    direction: 'row',
 })<{marginBottom?: number}>`
     margin-bottom: ${({marginBottom}) => marginBottom || 0}px;
     color: ${colors.white};
@@ -146,18 +141,24 @@ const Text = styled.span`
 
 const ValueArea = styled(Flex).attrs({
     direction: 'row',
-})<{ width?: CSSProperties['width']; align?: CSSProperties['justifyContent'] }>`
+})<{width?: CSSProperties['width']; align?: CSSProperties['justifyContent']}>`
     min-height: 32px;
     padding: 4px 8px;
     background: ${colors.black[300]};
     color: ${colors.white};
     border-radius: 10px;
     ${typos.pretendard['14.26.500']};
-    ${({width}) => width && css`width: ${width};` };
-    ${({align}) => align && css`
-        justify-content: ${align};
-        text-align: ${align === 'center' ? align : 'left'};
-    `};
+    ${({width}) =>
+        width &&
+        css`
+            width: ${width};
+        `};
+    ${({align}) =>
+        align &&
+        css`
+            justify-content: ${align};
+            text-align: ${align === 'center' ? align : 'left'};
+        `};
 `
 
 const Container = styled.div`
