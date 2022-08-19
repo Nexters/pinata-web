@@ -1,6 +1,13 @@
 import {ApiResponse} from '$types/ApiResponse'
 import axios, {AxiosError, AxiosRequestHeaders, AxiosResponse} from 'axios'
-import {AlreadyJoinedError, AuthorizationError, FetchError, NonTargetError, OutofPeriodError} from './FetchError'
+import {
+    AlreadyJoinedError,
+    AuthorizationError,
+    FetchError,
+    NonTargetError,
+    NotFoundError,
+    OutofPeriodError,
+} from './FetchError'
 
 export const RESULT_CODE = {
     SUCCESS: 'SUCCESS',
@@ -43,6 +50,11 @@ const rejectInterceptor = (error: AxiosError<ApiResponse<ErrorData>>) => {
     }
     if (error.response?.status === 400) {
         const {data} = error.response.data
+
+        if (data.code === EVENT_ERROR_CODE.EVENT_NOTFOUND) {
+            return Promise.reject(new NotFoundError())
+        }
+
         if (data.code === EVENT_ERROR_CODE.EVENT_EXPIRED || data.code === EVENT_ERROR_CODE.EVENT_COMPLETE) {
             return Promise.reject(new OutofPeriodError())
         }

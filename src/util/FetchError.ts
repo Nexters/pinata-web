@@ -27,3 +27,9 @@ export class NonTargetError extends FetchError {
         super('This User is non-target.')
     }
 }
+
+export class NotFoundError extends FetchError {
+    constructor() {
+        super('Event or User is not found.')
+    }
+}
