@@ -3,6 +3,7 @@ import {Suspense} from 'react'
 import styled from 'styled-components'
 import {EventItem, useJoinedEventList} from '$api/event'
 import GiftItem from './GiftItem'
+import {Empty} from './Empty'
 
 const JoinedEventList = () => {
     const {data} = useJoinedEventList()
@@ -14,9 +15,10 @@ const JoinedEventList = () => {
     return (
         <Suspense fallback={<>Loading...</>}>
             <EventListContainer>
+                {data.length === 0 && <Empty>아직 참여한 이벤트가 없습니다.</Empty>}
                 {data.map((gift: EventItem) => (
                     <GiftBox key={gift.itemId}>
-                        <GiftItem  {...gift} />
+                        <GiftItem {...gift} />
                     </GiftBox>
                 ))}
             </EventListContainer>
