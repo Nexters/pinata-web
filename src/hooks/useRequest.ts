@@ -29,11 +29,19 @@ export const useRequest = <Request, Response>(api: (req: Request, token?: string
     return {mutate, mutateAsync, data, error, isLoading, ...rest}
 }
 
-export const useGetQuery = <T>(url: string, params?: Record<string, string | number>) => {    
+export const useGetQuery = <T>(url: string, params?: Record<string, string | number>, config: {
+    throwWhenError?: boolean
+    useErrorBoundary?: boolean
+} = {
+    throwWhenError: true,
+    useErrorBoundary: true,
+}) => {
+    const {throwWhenError = true, useErrorBoundary = true} = config
     const accessToken = useAuthToken()
     
-    const {isLoading, data, error} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>([url, JSON.stringify(params)], () =>
-        {
+    const {isLoading, data, error, refetch} = useQuery<ApiResponse<T>, Error, ApiResponse<T>, string[]>(
+        [url, JSON.stringify(params)], 
+        () => {
             if (!accessToken) {
                 return Promise.reject(new AuthorizationError())
             }
@@ -45,17 +53,19 @@ export const useGetQuery = <T>(url: string, params?: Record<string, string | num
             })
         },
         {
-            useErrorBoundary: true,
+            useErrorBoundary,
             retry: 0,
         }
     )
 
-    if (error) {
+    if (error && throwWhenError) {
         throw new FetchError()
     }
 
     return {
         isLoading,
         data,
+        error,
+        refetch,
     }
 }

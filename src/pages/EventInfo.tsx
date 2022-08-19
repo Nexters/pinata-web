@@ -11,6 +11,7 @@ import { typos } from '$styles/typos'
 import { formatDateTime } from '$util/dateHelper'
 import { useParams } from 'react-router-dom'
 import styled, {css, CSSProperties} from 'styled-components'
+import {Helmet} from 'react-helmet'
 
 const EventInfo = () => {
     const params = useParams()
@@ -50,6 +51,10 @@ const EventInfo = () => {
 
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
+            <Helmet>
+                <title>{title}</title>
+                <meta name="description" content="이벤트 상세" />
+            </Helmet>
             <Container>
                 <Section aria-label='event-title'>
                     <SectionTitle marginBottom={16}>이벤트 이름</SectionTitle>

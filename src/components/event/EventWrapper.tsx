@@ -1,6 +1,7 @@
 import Background from '$assets/image/Background'
 import Logo from '$assets/image/Logo'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
@@ -46,6 +47,10 @@ type Props = {
 const EventWrapper: React.FC<Props> = ({children, hasLogo = true}) => {
     return (
         <Wrapper>
+            <Helmet>
+                <title>Pinata</title>
+                <meta property="og:description" content="지금 이벤트에 참여하여 상품을 얻으세요!" />
+            </Helmet>
             {hasLogo && (
                 <HeaderLogo>
                     <Logo />

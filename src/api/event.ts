@@ -1,3 +1,5 @@
+import useAuthToken from '$hooks/useAuthToken';
+import { useEffect } from 'react';
 import { ApiResponse } from './../types/ApiResponse';
 import {useGetQuery, useRequest} from '$hooks/useRequest'
 import client, { postAuthorized } from '$util/client'
@@ -51,6 +53,24 @@ export const participateEvent = async (eventCode: string, token: string) => {
         },
     })
     return data
+}
+
+export const useParticipateEvent = ({eventCode}: {eventCode: string}) => {
+    const accessToken = useAuthToken()
+    const {data, error, isLoading, refetch} = useGetQuery<EventResponse>(`/api/v1/events/participate/${eventCode}`, undefined, {
+        throwWhenError: false,
+        useErrorBoundary: false,
+    })
+
+    useEffect(() => {
+        accessToken && refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accessToken])
+
+    if (data?.data) {
+        return {data: data.data, isLoading, error}
+    }
+    return {data: null, isLoading, error, refetch}
 }
 
 export type ParticipatedEventResponse = {
