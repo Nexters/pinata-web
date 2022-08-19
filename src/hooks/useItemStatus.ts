@@ -1,11 +1,11 @@
-import { EventItem } from '$api/event'
-import { BadgeProps } from '$components/eventResult/Badge'
+import {EventItem} from '$api/event'
+import {BadgeProps} from '$components/eventResult/Badge'
 
 const useItemStatus = ({result, itemTitle, resultMessage}: EventItem) => {
     const badgeProps: Pick<BadgeProps, 'text' | 'type'> = result
         ? {
               text: '당첨',
-              type: 'danger',
+              type: 'active',
           }
         : {
               text: '탈락',
@@ -15,7 +15,7 @@ const useItemStatus = ({result, itemTitle, resultMessage}: EventItem) => {
 
     return {
         badgeProps,
-        cardTitle
+        cardTitle,
     }
 }
 
