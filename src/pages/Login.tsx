@@ -3,8 +3,8 @@ import Flex from '$components/commons/Flex'
 import ROUTE from '$constants/route'
 import useKakaoLogin from '$hooks/useKakaoLogin'
 import LayoutWrapper from '$layout/LayoutWrapper'
-import { typos } from '$styles/typos'
-import { getImageSource } from '$util/imageHelper'
+import {typos} from '$styles/typos'
+import {getImageSource} from '$util/imageHelper'
 import {Navigate} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -31,7 +31,11 @@ const Login = () => {
 }
 
 const PinataImage = styled.div`
-    background: url(${getImageSource('pinata-image.png')});
+    background: url(${getImageSource('new-pinata-logo.png')});
+    background-repeat: none;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     width: 181px;
     height: 129px;
     margin-bottom: 120px;
@@ -59,7 +63,7 @@ const LoginWrapper = styled(Flex).attrs({
 })`
     height: 100vh;
     width: 100%;
-    background-color: #1B1B1E;
+    background-color: #1b1b1e;
     position: relative;
     background-repeat: no-repeat;
     background-size: cover;
@@ -69,7 +73,7 @@ const LoginWrapper = styled(Flex).attrs({
 const Container = styled(Flex).attrs({
     direction: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
 })`
     text-align: center;
     font-style: normal;
