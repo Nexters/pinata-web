@@ -20,6 +20,7 @@ const ErrorPage = lazy(() => import('$pages/ErrorPage'))
 const NotFoundPage = lazy(() => import('$pages/NotFoundPage'))
 const CreateComplete = lazy(() => import('$pages/CreateComplete'))
 const Finished = lazy(() => import('$pages/Finished'))
+const EventInfo = lazy(() => import('$pages/EventInfo'))
 
 export const Router = () => {
     const method = useForm<EventForm & ImageUrls>({
@@ -49,6 +50,7 @@ export const Router = () => {
                             </Route>
                             <Route path={ROUTE.EVENT.RESULT} element={<EventResult />} />
                             <Route path={ROUTE.EVENT.OVER} element={<Finished />} />
+                            <Route path={ROUTE.EVENT.INFO} element={<EventInfo />} />
                             <Route path={ROUTE.GIFTS} element={<Gifts />} />
                         </Route>
                         <Route path={ROUTE.LOGIN} element={<Login />} />

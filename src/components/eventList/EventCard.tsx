@@ -8,12 +8,14 @@ import {originUrl} from '$config/index'
 import {format} from 'date-fns'
 import styled from 'styled-components'
 import {useMemo} from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type EventCardProps = Event
 
 const formatDateTime = (dateTime: string) => format(new Date(dateTime), 'yyyy.MM.dd a hh:mm')
 
 const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
+    const navigate = useNavigate()
     const handleCopy = useCopy()
     const copyEventLink = () => {
         handleCopy(`${originUrl}/event/${code}`)
@@ -35,7 +37,7 @@ const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
         <Card withOverlay={false}>
             <Card.Content>
                 <EventStatusComponent status={status}>{statusText}</EventStatusComponent>
-                <Card.Title typo={typos.pretendard['18.19.700']}>{title}</Card.Title>
+                <Card.Title onClick={() => navigate(`/event/detail/${code}`)} typo={typos.pretendard['18.19.700']}>{title}</Card.Title>
                 <Card.Desc size="lg">
                     {formatDateTime(openAt)} - {formatDateTime(closeAt)}
                 </Card.Desc>

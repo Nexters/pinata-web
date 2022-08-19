@@ -28,8 +28,8 @@ const Content = ({children}: {children: ReactNode}) => {
     return <CardContent>{children}</CardContent>
 }
 
-const Title = ({children, typo = typos.pretendard['22.32.700']}: {children: ReactNode; typo?: Typo}) => {
-    return <CardTitle typo={typo}>{children}</CardTitle>
+const Title = ({children, typo = typos.pretendard['22.32.700'], onClick = () => {}}: {children: ReactNode; typo?: Typo; onClick?(): void}) => {
+    return <CardTitle typo={typo} onClick={onClick}>{children}</CardTitle>
 }
 
 const Desc = ({children, size = 'md'}: {children: ReactNode; size?: 'lg' | 'md'}) => {

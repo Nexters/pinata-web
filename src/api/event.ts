@@ -137,3 +137,35 @@ export const useJoinedEventList = () => {
     }
     return {data: null}
 }
+
+type AcceptedItem = GiftItem & {
+    id: string
+    isAccepted: string
+    acceptorEmail: string
+    acceptorNickname: string
+    acceptorProfileImageUrl: string
+}
+
+export type EventDetailResponse = {
+    id: number
+    title: string
+    code: string
+    type: string
+    openAt: string
+    closeAt: string
+    status: EventStatus
+    items: AcceptedItem[]
+    hitMessage: string
+    hitImageUrl: string
+    missMessage: string
+    missImageUrl: string
+    totalParicinantCount: number
+}
+
+export const useEventDetail = ({eventCode}: {eventCode: string}) => {
+    const {data} = useGetQuery<EventDetailResponse>(`/api/v1/events/${eventCode}`)
+    if (data?.data) {
+        return {data: data.data}
+    }
+    return {data: null}
+}
