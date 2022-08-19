@@ -23,7 +23,7 @@ import {GiftItem} from '$api/gift'
 import PlusIcon from '$assets/icons/PlusIcon'
 import FormText from '$components/eventForm/FormText'
 import {useMemo} from 'react'
-import { Helmet } from 'react-helmet'
+import {Helmet} from 'react-helmet'
 
 const radioCommonStyle = css`
     border-radius: 15px;
@@ -267,7 +267,12 @@ const CreateEvent = () => {
                             }}
                             label={'hitMessage'}
                             selectTitle={'당첨 안내 메시지'}
-                            messageList={['당첨입니다. 축하드려요!']}
+                            messageList={[
+                                '당첨입니다. 축하드려요!',
+                                '딱히 너주려고 산건 아니거든?',
+                                '당첨! 축하드립니다. 운이 좋으시네요.',
+                                '띵동~! 선물 배달왔어요~',
+                            ]}
                             onUpload={(urls: string[]) => {
                                 setValue('hitImageUrl', urls[0])
                             }}
@@ -298,7 +303,12 @@ const CreateEvent = () => {
                             }}
                             label={'missMessage'}
                             selectTitle={'탈락 안내 메시지'}
-                            messageList={['탈락입니다. 아쉽네요!']}
+                            messageList={[
+                                '탈락입니다. 아쉽네요!',
+                                '왜 줘도 가져가지를 못하니~~',
+                                '꽝! 탈락입니다. 다음에 다시 도전하세요.',
+                                '이런, 오늘은 날이 아닌가봐요...',
+                            ]}
                             onUpload={(urls: string[]) => {
                                 setValue('missImageUrl', urls[0])
                             }}
