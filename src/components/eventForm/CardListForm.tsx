@@ -101,11 +101,11 @@ const CardImageWrapper = styled(Box).attrs({
 `
 
 const selectedStyle = css`
-    outline: 4px solid ${colors.white};
+    border: 4px solid ${colors.white};
 `
 
 const unselectedStyle = css`
-    outline: none;
+    border: 4px solid transparent;
 `
 
 const defaultRadioStyle = css`

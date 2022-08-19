@@ -3,6 +3,7 @@ import {Suspense} from 'react'
 import styled from 'styled-components'
 import Flex from '$components/commons/Flex'
 import EventCard from './EventCard'
+import {Empty} from './Empty'
 
 const EventList = () => {
     const {data, isLoading} = useEventList()
@@ -14,6 +15,7 @@ const EventList = () => {
     return (
         <Suspense fallback={<>Loading...</>}>
             <EventListContainer>
+                {data.length === 0 && <Empty>아직 개설한 이벤트가 없습니다.</Empty>}
                 {data.map((event: Event) => (
                     <EventItemCard key={event.id}>
                         <EventCard {...event} />

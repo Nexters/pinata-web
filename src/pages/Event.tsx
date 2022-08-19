@@ -17,6 +17,7 @@ import {Helmet} from 'react-helmet'
 import {originUrl} from '$config/index'
 import Spinner from '$components/commons/Spinner'
 import EventWrapper from '$components/event/EventWrapper'
+import {parseISODatetime} from '$util/dateHelper'
 
 const SuspensePage = () => {
     return (
@@ -55,9 +56,9 @@ const EventPage: React.FC = () => {
 
     useEffect(() => {
         const t = setInterval(() => {
-            const isClosed = event ? new Date(event.closeAt) < new Date() : false
-            const isWaiting = event ? new Date() < new Date(event.openAt) : false
-            const isParticipation = event ? new Date(event.openAt) <= new Date() : false
+            const isClosed = event ? parseISODatetime(event.closeAt) < new Date() : false
+            const isWaiting = event ? new Date() < parseISODatetime(event.openAt) : false
+            const isParticipation = event ? parseISODatetime(event.openAt) <= new Date() : false
             const isCancel = event ? event.status === 'CANCEL' : false
 
             setIsClosed(isClosed)
@@ -76,7 +77,7 @@ const EventPage: React.FC = () => {
     }
 
     if (isLoading) {
-        return <div style={{color: '#fff'}}>이벤트 불러오는 중...</div>
+        return <SuspensePage />
     }
 
     if (error instanceof NotFoundError) {
@@ -88,7 +89,7 @@ const EventPage: React.FC = () => {
     } else if (error instanceof NonTargetError) {
         return <NonTarget />
     } else if (error) {
-        ;<InvalidCode />
+        return <InvalidCode />
     }
 
     if (event) {
