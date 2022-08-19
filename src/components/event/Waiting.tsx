@@ -7,6 +7,7 @@ import {useInterval} from '$hooks/useInterval'
 import {TargetEvent} from '$types/Event'
 import {changeSecondsHHMMSS} from '$util/time'
 import {typos} from '$styles/typos'
+import {parseISODatetime} from '$util/dateHelper'
 
 const Timer = styled.div`
     height: 45px;
@@ -32,7 +33,7 @@ const Waiting: React.FC<Props> = ({event, setIsParticipation, setIsWaiting}) => 
     useEffect(() => {
         if (!event?.openAt) return
 
-        const diff = new Date(event.openAt).getTime() - new Date().getTime()
+        const diff = parseISODatetime(event.openAt).getTime() - new Date().getTime()
         const leftSeconds = Math.floor(diff / 1000)
 
         if (leftSeconds < 0) {

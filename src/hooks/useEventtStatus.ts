@@ -1,4 +1,5 @@
 import {EventStatus} from '$api/event'
+import {parseISODatetime} from '$util/dateHelper'
 import {isAfter, isBefore} from 'date-fns'
 import {useEffect, useMemo, useState} from 'react'
 
@@ -37,8 +38,8 @@ const useEventStatus = ({openAt, closeAt}: {openAt: string; closeAt: string}) =>
 
         const today = new Date()
 
-        const isComplete = isAfter(today, new Date(closeAt))
-        const isBeforeStart = isBefore(today, new Date(openAt))
+        const isComplete = isAfter(today, parseISODatetime(closeAt))
+        const isBeforeStart = isBefore(today, parseISODatetime(openAt))
         if (isComplete) {
             setStatus(EventStatus.COMPLETE)
             return
