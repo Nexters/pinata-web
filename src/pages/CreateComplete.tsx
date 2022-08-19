@@ -50,7 +50,11 @@ const Button = styled.button`
 `
 
 const PinataImage = styled.div`
-    background: url(${getImageSource('pinata-image.png')});
+    background: url(${getImageSource('new-pinata-logo.png')});
+    background-repeat: none;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     width: 181px;
     height: 129px;
     margin-bottom: 20px;
