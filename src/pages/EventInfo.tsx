@@ -9,7 +9,6 @@ import LayoutWrapper from '$layout/LayoutWrapper'
 import { colors } from '$styles/colors'
 import { typos } from '$styles/typos'
 import { formatDateTime } from '$util/dateHelper'
-import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled, {css, CSSProperties} from 'styled-components'
 
@@ -19,9 +18,13 @@ const EventInfo = () => {
 
     const {data: event} = useEventDetail({eventCode})
 
+    if (!event) {
+        return null
+    }
+
     const {title, openAt, closeAt, status, items} = event
 
-    const statusText = useMemo(() => {
+    const statusText = () => {
         switch (status) {
             case EventStatus.COMPLETE:
             case EventStatus.CANCEL:
@@ -31,9 +34,9 @@ const EventInfo = () => {
             default:
                 return '진행중'
         }
-    }, [status])
+    }
 
-    const badgeColor = useMemo(() => {
+    const badgeColor = () => {
         switch (status) {
             case EventStatus.COMPLETE:
             case EventStatus.CANCEL:
@@ -43,7 +46,7 @@ const EventInfo = () => {
             default:
                 return 'active'
         }
-    }, [status])
+    }
 
     return (
         <LayoutWrapper isWhite={false} withBorderBottom>
@@ -55,7 +58,7 @@ const EventInfo = () => {
                 <Section marginTop={40} aria-label='event-period'>
                     <FlexTitle marginBottom={16} justifyContent="space-between">
                         이벤트 기간
-                        <Badge type={badgeColor} text={statusText} />
+                        <Badge type={badgeColor()} text={statusText()} />
                     </FlexTitle>
                     <Flex direction='row' justifyContent={'space-between'} style={{
                         gap: 5
@@ -84,11 +87,17 @@ const EventInfo = () => {
                                         </TableCell>
                                     <TableCell>
                                         <ItemBox direction="row">
-                                            <ProfileImage src={item.acceptorProfileImageUrl} />
-                                            {item.acceptorNickname}
+                                            {
+                                                !!item.acceptorEmail
+                                                ?   <>
+                                                        <ProfileImage src={item.acceptorProfileImageUrl} />
+                                                        {item.acceptorNickname}
+                                                    </>
+                                                :   <>없음</>
+                                            }
                                         </ItemBox>
                                     </TableCell>
-                                    <TableCell>{item.isAccepted ? <CircleConfirmOnIcon size={30} color={colors.blue[100]} /> : <CircleConfirmOffIcon size={30} color={colors.red[100]} />}</TableCell>
+                                    <TableCell>{item.accepted ? <CircleConfirmOnIcon size={30} color={colors.blue[100]} /> : <CircleConfirmOffIcon size={30} color={colors.red[100]} />}</TableCell>
                                 </TableRow>
                             )
                         })}
@@ -104,6 +113,8 @@ const ProfileImage = styled.img`
     height: 40px;
     border-radius: 20px;
     margin-right: 5px;
+    background: ${colors.black[100]};
+    border: none;
 `
 
 const ItemBox = styled(Flex)`

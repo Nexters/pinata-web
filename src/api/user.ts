@@ -1,16 +1,14 @@
-// import {useMyQuery} from '$hooks/useRequest'
+import { useGetQuery } from '$hooks/useRequest'
 
 export type UserResponse = {
     email: string
-    profileImgUrl: string
+    profileImageUrl: string
     nickname: string
     state: string
 }
 
-// export const useUser = () => {
-//     const {data, isLoading} = useMyQuery<UserResponse>('/api/v1/me')
+export const useUser = () => {
+    const {data, isLoading} = useGetQuery<UserResponse>('/api/v1/me')
 
-//     console.log(data)
-
-//     return {data, isLoading}
-// }
+    return {data: data?.data, isLoading}
+}
