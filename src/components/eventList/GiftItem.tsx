@@ -6,12 +6,15 @@ import useDownload from '$hooks/useDownload'
 import useItemStatus from '$hooks/useItemStatus'
 import {colors} from '$styles/colors'
 import {typos} from '$styles/typos'
-import {format} from 'date-fns'
+import {format, parseISO} from 'date-fns'
 import styled from 'styled-components'
 
 type GiftProps = EventItem
 
-const formatDateTime = (dateTime: string, to = 'yyyy.MM.dd') => format(new Date(dateTime), to)
+const formatDateTime = (dateTime: string, to = 'yyyy.MM.dd') => {
+    dateTime = dateTime.replace(/ /g, 'T')
+    return format(parseISO(dateTime), to)
+}
 
 const GiftItem = (props: GiftProps) => {
     const {resultImageUrl, eventTitle, participateAt} = props
