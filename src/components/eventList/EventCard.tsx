@@ -39,7 +39,7 @@ const EventCard = ({title, status, openAt, closeAt, code}: EventCardProps) => {
                 <EventStatusComponent status={status}>{statusText}</EventStatusComponent>
                 <Card.Title onClick={() => navigate(`/event/detail/${code}`)} typo={typos.pretendard['18.19.700']}>
                     <Flex direction="row">
-                        {title}
+                        <Text>{title}</Text>
                         <ChevronRightIcon size={20} color={colors.white} />
                     </Flex>
                 </Card.Title>
@@ -75,6 +75,13 @@ const getColorByStatus = () => (props: {status: EventStatus}) => {
             return '#fff'
     }
 }
+
+const Text = styled.span`
+    max-width: calc(335px - 20px - 40px);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+`
 
 const EventStatusComponent = styled.div<{
     status: EventStatus
