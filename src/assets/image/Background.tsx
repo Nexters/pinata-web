@@ -7,6 +7,8 @@ const Wrapper = styled.div`
     width: 100%;
     height: 543px;
 
+    overflow-y: hidden;
+
     .pebble-fast {
         path {
             transform-origin: 50% 100%;
@@ -83,7 +85,7 @@ const Background = () => (
             <svg
                 overflow={'visible'}
                 x={189}
-                y={10}
+                y={30}
                 width={200}
                 height={160}
                 fill="none"
@@ -149,24 +151,62 @@ const Background = () => (
             />
             <path opacity={0.8} d="M179 419h17v31h-17v-31Z" fill="#FB7AB8" />
             <path d="M179 450h17v93h-17v-93Z" fill="#FF6AB2" />
-            <path d="M256 405h119v138H256V405Z" fill="#73BCFF" />
-            <mask
-                id="prefix__a"
-                style={{
-                    maskType: 'alpha',
-                }}
-                maskUnits="userSpaceOnUse"
-                x={256}
+            <svg
+                width="369"
+                height="138"
+                x={250}
                 y={405}
-                width={119}
-                height={138}>
-                <path d="M256 405h119v138H256V405Z" fill="#73BCFF" />
-            </mask>
-            <g mask="url(#prefix__a)">
-                <path opacity={0.2} d="M256 434h158v71.5L256 434Z" fill="#3597F0" />
-            </g>
-            <path d="M244 410a5 5 0 0 1 5-5h149a5 5 0 0 1 5 5v19a5 5 0 0 1-5 5H249a5 5 0 0 1-5-5v-19Z" fill="#99CEFF" />
-            <path d="M244 415h159v14a5 5 0 0 1-5 5H249a5 5 0 0 1-5-5v-14Z" fill="#83C3FF" />
+                viewBox="0 0 348 138"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0H337V138H12V0Z" fill="#73BCFF" />
+                <mask
+                    id="mask0_418_5020"
+                    style={{
+                        maskType: 'alpha',
+                    }}
+                    maskUnits="userSpaceOnUse"
+                    x="12"
+                    y="0"
+                    width="325"
+                    height="138">
+                    <path d="M12 0H337V138H12V0Z" fill="#73BCFF" />
+                </mask>
+                <g mask="url(#mask0_418_5020)">
+                    <g opacity="0.2" filter="url(#filter0_d_418_5020)">
+                        <path d="M12 29H337V100L12 29Z" fill="#3597F0" />
+                    </g>
+                </g>
+                <path
+                    d="M0 5C0 2.23858 2.23858 0 5 0H343C345.761 0 348 2.23858 348 5V24C348 26.7614 345.761 29 343 29H5C2.23858 29 0 26.7614 0 24V5Z"
+                    fill="#99CEFF"
+                />
+                <path d="M0 10H348V24C348 26.7614 345.761 29 343 29H5C2.23858 29 0 26.7614 0 24V10Z" fill="#83C3FF" />
+                <defs>
+                    <filter
+                        id="filter0_d_418_5020"
+                        x="8"
+                        y="29"
+                        width="333"
+                        height="79"
+                        filterUnits="userSpaceOnUse"
+                        color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                        />
+                        <feOffset dy="4" />
+                        <feGaussianBlur stdDeviation="2" />
+                        <feComposite in2="hardAlpha" operator="out" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_418_5020" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_418_5020" result="shape" />
+                    </filter>
+                </defs>
+            </svg>
         </svg>
     </Wrapper>
 )
