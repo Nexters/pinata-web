@@ -1,5 +1,5 @@
 import Flex from '$components/commons/Flex'
-import { colors } from '$styles/colors'
+import {colors} from '$styles/colors'
 import {typos} from '$styles/typos'
 import {ChangeEvent, forwardRef, InputHTMLAttributes} from 'react'
 import styled from 'styled-components'
@@ -37,7 +37,7 @@ const InputBox = styled.input`
     outline: none;
 
     &::placeholder {
-        color: rgba(255, 255, 255, .5);
+        color: rgba(255, 255, 255, 0.5);
     }
 
     ${typos.pretendard['13.26.500']};

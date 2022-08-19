@@ -9,12 +9,12 @@ import {EventResponse, useParticipateEvent} from '$api/event'
 import {useParams} from 'react-router-dom'
 import InvalidCode from '$components/event/InvalidCode'
 import Canceled from '$components/event/Canceled'
-import {AlreadyJoinedError, NonTargetError, OutofPeriodError} from '$util/FetchError'
+import {AlreadyJoinedError, NonTargetError, NotFoundError, OutofPeriodError} from '$util/FetchError'
 import {ParticipatedNotice} from './EventResult'
 import NonTarget from '$components/event/NonTarget'
 import Finished from '$components/event/Finished'
-import { Helmet } from 'react-helmet'
-import { originUrl } from '$config/index'
+import {Helmet} from 'react-helmet'
+import {originUrl} from '$config/index'
 import Spinner from '$components/commons/Spinner'
 import EventWrapper from '$components/event/EventWrapper'
 
@@ -26,10 +26,7 @@ const SuspensePage = () => {
     )
 }
 
-const HelmetWrapper = ({children, event: {title, code, hitImageUrl}}: {
-    children: ReactNode
-    event: EventResponse
-}) => {
+const HelmetWrapper = ({children, event: {title, code, hitImageUrl}}: {children: ReactNode; event: EventResponse}) => {
     return (
         <>
             <Helmet>
@@ -82,14 +79,16 @@ const EventPage: React.FC = () => {
         return <div style={{color: '#fff'}}>이벤트 불러오는 중...</div>
     }
 
-    if (error instanceof OutofPeriodError) {
+    if (error instanceof NotFoundError) {
+        return <InvalidCode />
+    } else if (error instanceof OutofPeriodError) {
         return <Finished />
     } else if (error instanceof AlreadyJoinedError) {
         return <ParticipatedNotice />
     } else if (error instanceof NonTargetError) {
         return <NonTarget />
     } else if (error) {
-        <InvalidCode />
+        ;<InvalidCode />
     }
 
     if (event) {
@@ -108,7 +107,7 @@ const EventPage: React.FC = () => {
                 </HelmetWrapper>
             )
         }
-    
+
         if (isWaiting) {
             return (
                 <Suspense fallback={<SuspensePage />}>
@@ -118,7 +117,7 @@ const EventPage: React.FC = () => {
                 </Suspense>
             )
         }
-    
+
         if (isParticipation) {
             return (
                 <HelmetWrapper event={event}>
@@ -128,9 +127,7 @@ const EventPage: React.FC = () => {
         }
     }
 
-    return (
-        <SuspensePage />
-    )
+    return <SuspensePage />
 }
 
 export default EventPage

@@ -1,4 +1,6 @@
 import {GiftItem} from '$api/gift'
+import {useDeleteImage} from '$api/image'
+import CircleCloseIcon from '$assets/icons/CircleCloseIcon'
 import PlusIcon from '$assets/icons/PlusIcon'
 import {Box} from '$components/commons/Box'
 import Flex from '$components/commons/Flex'
@@ -6,9 +8,11 @@ import Dialog from '$components/dialog/Dialog'
 import {Color, colors} from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
-import {MouseEventHandler, ReactNode, useRef} from 'react'
+import {getImageFileName} from '$util/imageHelper'
+import {MouseEvent, MouseEventHandler, ReactNode, useEffect, useRef} from 'react'
 import {useForm} from 'react-hook-form'
 import styled, {css} from 'styled-components'
+import FormText from './FormText'
 import ImageUploader from './ImageUploader'
 import Input from './Input'
 
@@ -21,10 +25,10 @@ type GiftDialogProps = {
     mode: 'add' | 'modify'
 }
 
-const GiftDialogButton = ({onClick, closeDialog}: {onClick(): void; closeDialog?(): void}) => {
+const GiftDialogButton = ({onClick, closeDialog}: {onClick(): boolean; closeDialog?(): void}) => {
     const handleClick = () => {
-        onClick()
-        typeof closeDialog === 'function' && closeDialog()
+        const result = onClick()
+        typeof closeDialog === 'function' && result && closeDialog()
     }
     return (
         <Button color="blue" onClick={handleClick} height={52}>
@@ -34,11 +38,25 @@ const GiftDialogButton = ({onClick, closeDialog}: {onClick(): void; closeDialog?
 }
 
 const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) => {
-    const {register, getValues, setValue, watch, reset} = useForm<GiftItemForm>({
+    const {
+        register,
+        getValues,
+        setValue,
+        watch,
+        reset,
+        setError,
+        clearErrors,
+        formState: {errors},
+    } = useForm<GiftItemForm>({
         defaultValues,
     })
+    const {deleteImage} = useDeleteImage()
 
-    const imageUrl = watch('imageUrl')
+    const imageUrl = watch('imageUrl', '')
+
+    useEffect(() => {
+        imageUrl && clearErrors('imageUrl')
+    }, [clearErrors, imageUrl, setError])
 
     const imageUploaderRef = useRef<HTMLInputElement>(null)
 
@@ -50,9 +68,22 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
     const handleClick = () => {
         const [title, imageUrl] = getValues(['title', 'imageUrl'])
         if (!imageUrl) {
-            return
+            setError('imageUrl', {type: 'required'})
+            clearErrors('title')
+            return false
+        }
+        if (!title) {
+            setError('title', {type: 'required'})
+            clearErrors('imageUrl')
+            return false
+        }
+        if (title.length > 20) {
+            setError('title', {type: 'maxLength'})
+            clearErrors('imageUrl')
+            return false
         }
         addItem({title, imageUrl})
+        return true
     }
 
     const handleUpload = (urls: string[]) => {
@@ -65,6 +96,22 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
                 title: '',
                 imageUrl: undefined,
             })
+        } else {
+            reset(defaultValues)
+        }
+    }
+
+    const handleDelete = async (e: MouseEvent<HTMLSpanElement>) => {
+        e.stopPropagation()
+
+        const imageFileName = getImageFileName(imageUrl)
+        if (imageFileName) {
+            if (mode === 'add') {
+                await deleteImage({
+                    imageFileName,
+                })
+            }
+            setValue('imageUrl', '')
         }
     }
 
@@ -73,13 +120,18 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
             <Dialog.Button width={'100%'}>{children}</Dialog.Button>
             <Dialog.Content width={335} onOpen={setValueByMode}>
                 <Dialog.Title>당첨 상품 이미지 및 이름 등록</Dialog.Title>
-                <DialogSubTitle>선물하실 상품 이미지를 등록하세요</DialogSubTitle>
+                <DialogSubTitle marginBottom={!!errors.imageUrl ? 0 : 10}>
+                    선물하실 상품 이미지를 등록하세요
+                </DialogSubTitle>
+                <FormText isShow={!!errors.imageUrl} text={'상품 이미지를 등록하세요.'} />
                 {imageUrl ? (
-                    <ImageViewerContainer>
-                        <img src={imageUrl} width={90} height={90} alt="gift" />
+                    <ImageViewerContainer src={imageUrl}>
+                        <IconBox onClick={handleDelete}>
+                            <CircleCloseIcon size={24} />
+                        </IconBox>
                     </ImageViewerContainer>
                 ) : (
-                    <Button height={90} onClick={uploadImage}>
+                    <Button height={174} onClick={uploadImage}>
                         <PlusIcon size={19} color={colors.white} />
                         <Box
                             typo={typos.pretendard['12.20.500']}
@@ -91,9 +143,12 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
                     </Button>
                 )}
                 <ImageUploader onUpload={handleUpload} ref={imageUploaderRef} />
-                <DialogSubTitle marginTop={40}>선물하실 상품 이름을 적어주세요</DialogSubTitle>
+                <DialogSubTitle marginTop={40} marginBottom={!!errors.title ? 0 : 10}>
+                    선물하실 상품 이름을 적어주세요
+                </DialogSubTitle>
+                <FormText isShow={!!errors.title} text={'상품 이름을 20자 내로 등록하세요.'} />
                 <Input
-                    {...register('title', {required: true, maxLength: 20})}
+                    {...register('title', {required: true, maxLength: 20, shouldUnregister: true})}
                     value={watch('title')}
                     type="text"
                     placeholder="최대 20글자"
@@ -108,22 +163,31 @@ const GiftDialog = ({addItem, defaultValues, children, mode}: GiftDialogProps) =
     )
 }
 
-const ImageViewerContainer = styled(Flex).attrs({
-    direction: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-})`
-    & img {
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 2px;
-    }
-    gap: 2px;
+const IconBox = styled.span`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 `
 
-const DialogSubTitle = styled.div<{marginTop?: number}>`
+const ImageViewerContainer = styled(Flex).attrs({
+    direction: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+})<{src: string}>`
+    width: 100%;
+    height: 220px;
+    border-radius: 20px;
+    position: relative;
+    background-image: url(${extractProp('src')});
+    background-size: cover;
+    background-repeat: no-repeat;
+`
+
+const DialogSubTitle = styled.div<{marginTop?: number; marginBottom?: number}>`
     ${typos.pretendard['14.26.500']};
     color: ${colors.white};
-    margin-bottom: 10px;
+    margin-bottom: ${({marginBottom}) => marginBottom || 0}px;
     margin-top: ${({marginTop}) => marginTop || 0}px;
 `
 const Button = styled.div<{

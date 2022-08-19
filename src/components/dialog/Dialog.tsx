@@ -4,11 +4,11 @@ import Flex from '$components/commons/Flex'
 import Overlay from '$components/eventResult/Overlay'
 import {DialogProvider, useDialogContext} from '$contexts/DialogContext'
 import useBodyScrollLock from '$hooks/useBodyScrollLock'
-import { colors } from '$styles/colors'
+import {colors} from '$styles/colors'
 import {typos} from '$styles/typos'
 import {extractProp} from '$util/common'
 import {Children, cloneElement, isValidElement, PropsWithChildren, useEffect} from 'react'
-import { createPortal } from 'react-dom'
+import {createPortal} from 'react-dom'
 import styled, {CSSProperties} from 'styled-components'
 
 type Props<T extends unknown> = PropsWithChildren<T>
@@ -39,21 +39,21 @@ const DialogContent = ({children, width, onOpen}: Props<{width: number; onOpen?(
 
     const childrenWithProps = Children.map(children, (child) => {
         if (isValidElement(child)) {
-          return cloneElement(child, { closeDialog: toggle });
+            return cloneElement(child, {closeDialog: toggle})
         }
         return child
-      })
+    })
 
     useEffect(() => {
         isOpen && typeof onOpen === 'function' && onOpen()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen])
 
     if (!isOpen) return null
 
     return createPortal(
         <>
-            <Overlay onClick={toggle}/>
+            <Overlay onClick={toggle} />
             <DialogBox width={width}>{childrenWithProps}</DialogBox>
         </>,
         document.getElementById('__portal') || createPortalRoot(),
@@ -87,10 +87,10 @@ const Title = styled(Flex).attrs({
 
 const DialogBox = styled(Box)`
     background: ${colors.black[200]};
-    box-shadow: 0px 4px 40px  rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     position: fixed;
-    top: 200px;
+    top: 10%;
     left: 0;
     right: 0;
     z-index: 1001;
