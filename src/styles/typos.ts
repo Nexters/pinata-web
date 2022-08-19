@@ -4,6 +4,7 @@ const pretendardBase = css`
     font-family: 'Pretendard';
     font-style: normal;
     letter-spacing: -0.0075em;
+    font-display: auto;
     font-feature-settings: 'tnum' on, 'lnum' on;
 `
 
