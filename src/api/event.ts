@@ -133,9 +133,9 @@ export type Event = {
 export type EventListResponse = Event[]
 
 export const useEventList = () => {
-    const {data, isLoading} = useGetQuery<EventListResponse>('/api/v1/events')
+    const {data, isLoading, refetch} = useGetQuery<EventListResponse>('/api/v1/events')
     if (data?.data) {
-        return {data: data.data, isLoading}
+        return {data: data.data, isLoading, refetch}
     }
     
     return {data: null}

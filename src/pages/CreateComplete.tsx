@@ -9,8 +9,11 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { originUrl } from '$config/index'
 import useCopy from '$hooks/useCopy'
+import { useEffect } from 'react'
+import { useEventList } from '$api/event'
 
 const CreateComplete = () => {
+    const {refetch} = useEventList()
     const {getValues} = useFormContext<EventForm & ImageUrls>()
     const params = useParams()
     const eventCode = params.eventcode || ''
@@ -22,6 +25,11 @@ const CreateComplete = () => {
     }
 
     const title = getValues('title')
+
+    useEffect(() => {
+        typeof refetch === 'function' && refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <LayoutWrapper isWhite={false}>
