@@ -1,46 +1,67 @@
-# Getting Started with Create React App
+# 🪅 피나타! 가져가 다줄께 너의 선물
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+![logo](https://user-images.githubusercontent.com/78334008/192086757-618aa989-4aee-48d1-aa5a-adcfa0fee7d0.png)
 
-## Available Scripts
+## 🎁 서비스 링크
 
-In the project directory, you can run:
+[배포 링크 바로가기](https://pinata-gift.com/)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## ✨ 프로젝트 소개
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![image](https://user-images.githubusercontent.com/78334008/192086989-9fdd6119-bfcf-4245-a309-82336be583ee.png)
 
-### `npm test`
+> Pinata는 연락처 교환 없이도 다수의 사용자를 대상으로 상품 선물 이벤트를 만들 수 있는 이벤트 메이커 서비스 입니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+좀 더 쉽게, 좀 더 재미있게, 좀 더 의미있게 전해주세요. 당신의 Pinata
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🕹️ 주요기능
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 🟨 로그인
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> 카카오 로그인을 지원하여 별도의 번거로은 절차 없이 쉽게 서비스를 이용할 수 있습니다.
 
-### `npm run eject`
+![login_sample](https://user-images.githubusercontent.com/78334008/192087560-22065914-2491-4b4f-a236-1679ac325164.gif)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 🟨 이벤트 생성
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+> 이벤트 추최자는 Pinata를 통해 쉽게 이벤트를 생성 할 수 있습니다.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![create_event_1](https://user-images.githubusercontent.com/78334008/192087580-f95be32f-e41a-4526-8c0c-e7717ed4134a.gif)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+![create_event_2](https://user-images.githubusercontent.com/78334008/192087644-5a499cf5-4846-4e3b-bcae-42987f435f1d.gif)
 
-## Learn More
+생성 절차는 아래와 같습니다.  
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. 이벤트 방식 결정 ( 선착순, 랜덤추첨 )  
+2. 이벤트 시작, 종료 날짜 결정
+3. 이벤트 상품 등록 ( 기프티콘, 별도의 쿠폰 등등 )  
+4. 당첨/탈락 시 보여줄 이미지, 텍스트 결정한다. ( 이미지, 텍스트, 이펙트 등등 )  
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+위 과정이 끝나면 이벤트 참여를 위한 URL이 생성됩니다.  
+
+### 🟨 이벤트 참여
+
+> 주최자에 의해 전달 된 URL에 접속하면 "이벤트 참여 페이지"에 접속합니다.  
+
+![event_enter](https://user-images.githubusercontent.com/78334008/192087697-dfe1926e-14e1-426f-9b5b-5f46b1d0290e.gif)
+
+정해진 규칙에 따라 이벤트에 참여하여 경품을 받아가세요.
+
+---
+
+## 🏗️ Frontend Structure
+
+추가 예정.
+
+---
+
+## 👨🏻‍💻 Team
+
+|                                                     Designer                                                     |                     Frontend Developer                      |                     Frontend Developer                      |                    (PM)Backend Developer                    |                      Backend Developer                      |
+| :--------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
+|                                                      김단비                                                      |                           전유정                            |                           조찬기                            |                           김지훈                            |                           박혜린                            |
+| ![김단비](https://user-images.githubusercontent.com/78334008/192086155-8f4b8d50-4f40-4916-9c8d-da7fd7069d81.png) | ![전유정](https://avatars.githubusercontent.com/u/54320809) | ![조찬기](https://avatars.githubusercontent.com/u/38618187) | ![김지훈](https://avatars.githubusercontent.com/u/78334008) | ![박혜린](https://avatars.githubusercontent.com/u/33855307) |
