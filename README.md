@@ -53,15 +53,24 @@
 
 ---
 
-## 🏗️ Frontend Structure
+## 🏛️ Frontend 기술 스택
 
-추가 예정.
+![넥스터즈 21기_피나타-1](https://user-images.githubusercontent.com/38618187/193618178-d4317af6-527c-42c4-bfaa-4a2997720e65.png)
+
+## 🏗️ 배포 구조
+
+![넥스터즈 21기_피나타-2](https://user-images.githubusercontent.com/38618187/193618188-ebe60acb-19aa-458d-b30b-f993c95c338c.png)
+
+## 🎈 Frontend 기술 특징
+
+![넥스터즈 21기_피나타-3](https://user-images.githubusercontent.com/38618187/193618192-78d29c92-309e-4158-bca6-a276aef444d6.png)
 
 ---
 
 ## 👨🏻‍💻 Team
 
-|                                                     Designer                                                     |                     Frontend Developer                      |                     Frontend Developer                      |                    (PM)Backend Developer                    |                      Backend Developer                      |
-| :--------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
-|                                                      김단비                                                      |                           전유정                            |                           조찬기                            |                           김지훈                            |                           박혜린                            |
-| ![김단비](https://user-images.githubusercontent.com/78334008/192086155-8f4b8d50-4f40-4916-9c8d-da7fd7069d81.png) | ![전유정](https://avatars.githubusercontent.com/u/54320809) | ![조찬기](https://avatars.githubusercontent.com/u/38618187) | ![김지훈](https://avatars.githubusercontent.com/u/78334008) | ![박혜린](https://avatars.githubusercontent.com/u/33855307) |
+|                                                                  Designer                                                                   |                                   Frontend Developer                                   |                                   Frontend Developer                                   |                                 (PM) Backend Developer                                 |                                   Backend Developer                                    |
+| :-----------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: |
+|                                                                   김단비                                                                    |                                         전유정                                         |                                         조찬기                                         |                                         김지훈                                         |                                         박혜린                                         |
+|                                                                                                                                             |
+| <img src="https://user-images.githubusercontent.com/78334008/192086155-8f4b8d50-4f40-4916-9c8d-da7fd7069d81.png" alt="김단비" width="100"/> | <img src="https://avatars.githubusercontent.com/u/54320809" alt="전유정" width="100"/> | <img src="https://avatars.githubusercontent.com/u/38618187" alt="조찬기" width="100"/> | <img src="https://avatars.githubusercontent.com/u/78334008" alt="김지훈" width="100"/> | <img src="https://avatars.githubusercontent.com/u/33855307" alt="박혜린" width="100"/> |
