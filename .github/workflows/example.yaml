@@ -4,8 +4,11 @@ on:
     branches: [main]
     types: [opened, synchronize]
   issue_comment:
-    types: [created, edited, deleted]
+    types: [created, edited]
   workflow_dispatch:
+concurrency:
+  group: pull-request-comment
+  cancel-in-progress: true
 jobs:
   pull-request-comment:
     if: contains(github.event.comment.html_url, '/pull/') # check if the comments come from pull request, exclude those from issue.
