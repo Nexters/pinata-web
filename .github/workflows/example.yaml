@@ -1,18 +1,15 @@
-name: pull-request-comment
+name: github-ci-test
 on:
   pull_request:
     branches: [main]
     types: [opened, synchronize]
-  issue_comment:
-    types: [created, edited]
   workflow_dispatch:
 concurrency:
-  group: pull-request-comment
+  group: github-ci-test
   cancel-in-progress: true
 jobs:
-  pull-request-comment:
+  github-ci-test:
     runs-on: [ubuntu-latest]
-    if: ${{ startsWith(github.event.comment.body, 'test') }}
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
