@@ -1,5 +1,8 @@
 name: pull-request-comment
 on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
   issue_comment:
     types: [created, edited, deleted]
   workflow_dispatch:
