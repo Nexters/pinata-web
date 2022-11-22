@@ -15,4 +15,6 @@ jobs:
         uses: actions/checkout@v2
       - name: get sha
         run: git rev-parse --short HEAD
+      - name: get log
+        run: git log --pretty=oneline
         
